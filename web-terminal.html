@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Secure Web Terminal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "terminal-green": "#4ade80",
+                        "terminal-violet": "#a855f7",
+                        "background-dark": "#0a060e",
+                        "surface-dark": "#160d1f",
+                        "border-dark": "#362348",
+                        "text-muted": "#ad92c9",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor-block {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: #4ade80;
+            vertical-align: middle;
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+        }
+        .pixel-frame {
+            box-shadow: 
+                0 -4px 0 0 #362348,
+                0 4px 0 0 #362348,
+                -4px 0 0 0 #362348,
+                4px 0 0 0 #362348,
+                inset 0 2px 0 0 rgba(255,255,255,0.05);
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(127, 19, 236, 0.03);
+            position: absolute;
+            pointer-events: none;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a060e; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #362348; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec; 
+        }
+        .tab-active {
+            box-shadow: 0 -2px 0 0 #7f13ec inset;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-white font-mono overflow-hidden h-screen flex flex-col" onclick="focusInput()">
+    <header class="w-full border-b border-border-dark bg-background-dark/95 backdrop-blur-sm z-50">
+        <div class="max-w-screen-2xl mx-auto px-4">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex items-center gap-4">
+                    <a href="module-library.html"
+                        class="text-text-muted hover:text-white transition-colors flex items-center">
+                        <span class="material-symbols-outlined text-xl">chevron_left</span>
+                        <span class="text-[10px] uppercase font-bold tracking-tighter">Exit</span>
+                    </a>
+                    <div class="h-6 w-px bg-border-dark"></div>
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary text-xl">terminal</span>
+                        <div class="flex flex-col">
+                            <h1 class="text-sm font-black tracking-tight uppercase leading-none">Secure Web Terminal
+                            </h1>
+                            <span class="text-[9px] text-terminal-green uppercase tracking-[0.2em]">Status: Sandboxed /
+                                Encrypted</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <span class="size-2 rounded-full bg-terminal-green animate-pulse"></span>
+                        <span class="text-[10px] text-text-muted uppercase">Kernel 5.4.0-pixel</span>
+                    </div>
+                    <a href="settings.html"
+                        class="size-8 border border-border-dark bg-surface-dark flex items-center justify-center hover:bg-border-dark transition-colors">
+                        <span class="material-symbols-outlined text-sm text-text-muted">settings</span>
+                    </a>
+                    <a href="profile.html"
+                        class="size-8 border border-border-dark bg-surface-dark flex items-center justify-center bg-center bg-no-repeat bg-cover hover:ring-2 hover:ring-primary transition-all"
+                        style="background: linear-gradient(135deg, var(--color-primary) 0%, #ad92c9 100%);"></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="flex items-center bg-surface-dark border-b border-border-dark px-4 overflow-x-auto no-scrollbar">
+        <div class="flex gap-1 py-2">
+            <a href="web-terminal.html"
+                class="px-4 py-1.5 bg-background-dark border border-border-dark text-[10px] text-terminal-green font-bold uppercase tracking-wider flex items-center gap-2 hover:border-primary transition-all tab-active">
+                <span class="material-symbols-outlined text-sm">code</span>
+                bash_main
+            </a>
+            <a href="quick-deploy.html"
+                class="px-4 py-1.5 bg-transparent border border-transparent text-[10px] text-text-muted font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-white/5 transition-all">
+                <span class="material-symbols-outlined text-sm">bolt</span>
+                quick_deploy.sh
+            </a>
+            <a href="network-scan.html"
+                class="px-4 py-1.5 bg-transparent border border-transparent text-[10px] text-text-muted font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-white/5 transition-all">
+                <span class="material-symbols-outlined text-sm">settings_ethernet</span>
+                network_scan.py
+            </a>
+            <a href="clean-cache.html"
+                class="px-4 py-1.5 bg-transparent border border-transparent text-[10px] text-text-muted font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-white/5 transition-all">
+                <span class="material-symbols-outlined text-sm">cleaning_services</span>
+                clean_cache.sh
+            </a>
+            <button class="px-3 py-1.5 text-text-muted hover:text-white">
+                <span class="material-symbols-outlined text-sm">add</span>
+            </button>
+        </div>
+    </div>
+    <main class="flex-1 p-4 md:p-6 lg:p-8 bg-background-dark relative overflow-hidden flex flex-col">
+        <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+            style="background-image: radial-gradient(circle at center, #7f13ec 0%, transparent 70%);"></div>
+        <div class="flex-1 pixel-frame bg-[#0d0912] relative overflow-hidden flex flex-col p-4 font-mono text-sm">
+            <div
+                class="absolute inset-0 pointer-events-none z-10 opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,225,0.06))] bg-[length:100%_4px,3px_100%]">
+            </div>
+
+            <!-- Terminal Output Container -->
+            <div id="terminal-content" class="relative z-0 overflow-y-auto space-y-1 h-full pb-8">
+                <div class="text-terminal-violet opacity-80 mb-4 select-none">
+                    <pre class="leading-tight text-[10px] sm:text-xs font-bold">
+  ██████╗ ███████╗ ██████╗██╗   ██╗██████╗ ███████╗
+ ██╔════╝ ██╔════╝██╔════╝██║   ██║██╔══██╗██╔════╝
+ ██║  ███╗█████╗  ██║     ██║   ██║██████╔╝█████╗  
+ ██║   ██║██╔══╝  ██║     ██║   ██║██╔══██╗██╔══╝  
+ ╚██████╔╝███████╗╚██████╗╚██████╔╝██║  ██║███████╗
+  ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝ v1.0.4
+</pre>
+                </div>
+                <div class="flex gap-2">
+                    <span class="text-terminal-green">[SYSTEM]</span>
+                    <span class="text-white">Initializing secure sandbox environment...</span>
+                </div>
+                <div class="flex gap-2">
+                    <span class="text-terminal-green">[SYSTEM]</span>
+                    <span class="text-white">Loading local node modules... OK</span>
+                </div>
+                <div class="flex gap-2">
+                    <span class="text-terminal-green">[SYSTEM]</span>
+                    <span class="text-white">Establishing offline proxy... OK</span>
+                </div>
+                <div class="flex gap-2 mb-4">
+                    <span class="text-terminal-green">[SYSTEM]</span>
+                    <span class="text-terminal-violet">Terminal ready. Welcome, developer. Type 'help' for
+                        commands.</span>
+                </div>
+
+                <!-- Dynamic Content Will Be Appended Here -->
+                <div id="command-history"></div>
+
+                <!-- Input Line (Always at bottom) -->
+                <div class="flex gap-2 pt-2 items-center">
+                    <span class="text-terminal-green font-bold">user@webhub:~$</span>
+                    <span id="input-display" class="text-white"></span>
+                    <span class="cursor-block"></span>
+                    <!-- Invisible Input for Mobile/Desktop Capture -->
+                    <input id="cmd-input" type="text"
+                        class="absolute opacity-0 top-0 left-0 w-full h-full cursor-default" autocomplete="off"
+                        autofocus>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="w-full border-t border-border-dark bg-background-dark/95 backdrop-blur-sm">
+        <div
+            class="max-w-screen-2xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between text-[10px] font-mono text-text-muted gap-4">
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-1.5">
+                    <span class="size-1.5 bg-terminal-green rounded-full"></span>
+                    <span>SANDBOX: ACTIVE</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[14px]">memory</span>
+                    <span>MEM: 124MB / 512MB</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[14px]">timer</span>
+                    <span>UPTIME: 04:22:11</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="bg-primary/10 text-primary px-2 py-0.5 border border-primary/20">UTF-8</span>
+                <span class="hidden sm:inline opacity-30">|</span>
+                <span>UTF-8: SECURE SHELL SESSION v3.1</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/web-terminal.js"></script>
+</body>
+
+</html>

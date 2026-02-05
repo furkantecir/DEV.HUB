@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Tool Hub - Text Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=VT323&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "none": "0",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+    <div class="flex h-screen w-full overflow-hidden">
+        <!-- SIDEBAR -->
+        <aside class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm transition-transform active:translate-y-1 active:shadow-none"
+                    href="text-tools.html">
+                    <span class="material-symbols-outlined">description</span>
+                    <span class="font-retro text-xl">Text Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="network-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">public</span>
+                    <span class="font-retro text-xl">Network</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="settings.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                    <span class="font-retro text-xl">Settings</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="profile.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">person</span>
+                    <span class="font-retro text-xl">Profile</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <!-- Grid Background -->
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+
+            <!-- HEADER -->
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-white font-retro text-4xl leading-none">Web Tool Hub</h2>
+                            <span
+                                class="px-2 py-0.5 rounded-none bg-border-dark border border-white/10 text-[10px] font-bold text-primary uppercase tracking-widest">Offline</span>
+                        </div>
+                        <p class="text-[#ad92c9] text-sm font-mono opacity-80">&gt; Local • Offline • Personal Utility
+                            Suite</p>
+                    </div>
+                    <button
+                        class="flex items-center gap-2 bg-surface-dark hover:bg-primary text-white border-2 border-primary px-5 py-2 shadow-pixel transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:bg-primary-dark">
+                        <span class="material-symbols-outlined text-[18px]">bolt</span>
+                        <span class="font-bold text-sm tracking-wide uppercase">Quick Action</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- CONTENT -->
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="max-w-7xl mx-auto space-y-8 pb-10">
+                    <!-- Page Title -->
+                    <div class="flex items-center justify-between border-b border-border-dark pb-4">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-white font-retro text-3xl tracking-wide flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary text-3xl">text_fields</span>
+                                TEXT_PROCESSING_UTILITIES
+                            </h3>
+                            <p class="text-gray-400 font-mono text-sm ml-10">// Select a module to begin processing
+                                strings.</p>
+                        </div>
+                        <div class="hidden sm:flex items-center gap-2">
+                            <div class="h-2 w-2 bg-primary animate-pulse"></div>
+                            <span class="font-retro text-lg text-primary">5 Modules Active</span>
+                        </div>
+                    </div>
+
+                    <!-- Tools Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Base64 Encode/Decode -->
+                        <!-- Base64 Encode/Decode -->
+                        <a href="base64-tool.html"
+                            class="flex flex-col items-start gap-4 p-6 bg-surface-dark border-2 border-border-dark hover:border-primary hover:shadow-pixel transition-all text-left group h-full relative overflow-hidden">
+                            <div
+                                class="absolute -right-4 -top-4 w-24 h-24 bg-border-dark/20 rounded-full blur-xl group-hover:bg-primary/10 transition-colors">
+                            </div>
+                            <div
+                                class="w-16 h-16 bg-background-dark border-2 border-border-dark flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors shrink-0 z-10">
+                                <span class="material-symbols-outlined text-3xl">enhanced_encryption</span>
+                            </div>
+                            <div class="flex flex-col z-10">
+                                <span
+                                    class="text-white font-retro text-2xl group-hover:text-primary transition-colors">Base64
+                                    Encode/Decode</span>
+                                <span class="text-gray-400 text-sm font-mono mt-2 leading-relaxed">Securely encode text
+                                    to Base64 format or decode existing Base64 strings back to UTF-8.</span>
+                            </div>
+                            <div
+                                class="mt-auto pt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="font-mono text-xs uppercase font-bold">Launch Tool</span>
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </div>
+                        </a>
+
+                        <!-- JSON Formatter -->
+                        <a href="json-formatter.html"
+                            class="flex flex-col items-start gap-4 p-6 bg-surface-dark border-2 border-border-dark hover:border-primary hover:shadow-pixel transition-all text-left group h-full relative overflow-hidden">
+                            <div
+                                class="absolute -right-4 -top-4 w-24 h-24 bg-border-dark/20 rounded-full blur-xl group-hover:bg-primary/10 transition-colors">
+                            </div>
+                            <div
+                                class="w-16 h-16 bg-background-dark border-2 border-border-dark flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors shrink-0 z-10">
+                                <span class="material-symbols-outlined text-3xl">data_object</span>
+                            </div>
+                            <div class="flex flex-col z-10">
+                                <span
+                                    class="text-white font-retro text-2xl group-hover:text-primary transition-colors">JSON
+                                    Formatter</span>
+                                <span class="text-gray-400 text-sm font-mono mt-2 leading-relaxed">Beautify, validate,
+                                    and minify JSON data structures. Includes error highlighting.</span>
+                            </div>
+                            <div
+                                class="mt-auto pt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="font-mono text-xs uppercase font-bold">Launch Tool</span>
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </div>
+                        </a>
+
+                        <!-- Case Converter -->
+                        <a href="case-converter.html"
+                            class="flex flex-col items-start gap-4 p-6 bg-surface-dark border-2 border-border-dark hover:border-primary hover:shadow-pixel transition-all text-left group h-full relative overflow-hidden">
+                            <div
+                                class="absolute -right-4 -top-4 w-24 h-24 bg-border-dark/20 rounded-full blur-xl group-hover:bg-primary/10 transition-colors">
+                            </div>
+                            <div
+                                class="w-16 h-16 bg-background-dark border-2 border-border-dark flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors shrink-0 z-10">
+                                <span class="material-symbols-outlined text-3xl">format_size</span>
+                            </div>
+                            <div class="flex flex-col z-10">
+                                <span
+                                    class="text-white font-retro text-2xl group-hover:text-primary transition-colors">Case
+                                    Converter</span>
+                                <span class="text-gray-400 text-sm font-mono mt-2 leading-relaxed">Instantly switch
+                                    between camelCase, snake_case, UPPERCASE, sentence case, and more.</span>
+                            </div>
+                            <div
+                                class="mt-auto pt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="font-mono text-xs uppercase font-bold">Launch Tool</span>
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </div>
+                        </a>
+
+                        <!-- Markdown Previewer -->
+                        <a href="markdown-previewer.html"
+                            class="flex flex-col items-start gap-4 p-6 bg-surface-dark border-2 border-border-dark hover:border-primary hover:shadow-pixel transition-all text-left group h-full relative overflow-hidden">
+                            <div
+                                class="absolute -right-4 -top-4 w-24 h-24 bg-border-dark/20 rounded-full blur-xl group-hover:bg-primary/10 transition-colors">
+                            </div>
+                            <div
+                                class="w-16 h-16 bg-background-dark border-2 border-border-dark flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors shrink-0 z-10">
+                                <span class="material-symbols-outlined text-3xl">markdown</span>
+                            </div>
+                            <div class="flex flex-col z-10">
+                                <span
+                                    class="text-white font-retro text-2xl group-hover:text-primary transition-colors">Markdown
+                                    Previewer</span>
+                                <span class="text-gray-400 text-sm font-mono mt-2 leading-relaxed">Write Markdown with a
+                                    live HTML preview panel. Supports GitHub flavored syntax.</span>
+                            </div>
+                            <div
+                                class="mt-auto pt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="font-mono text-xs uppercase font-bold">Launch Tool</span>
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </div>
+                        </a>
+
+                        <!-- Lorem Ipsum Generator -->
+                        <a href="lorem-ipsum-generator.html"
+                            class="flex flex-col items-start gap-4 p-6 bg-surface-dark border-2 border-border-dark hover:border-primary hover:shadow-pixel transition-all text-left group h-full relative overflow-hidden">
+                            <div
+                                class="absolute -right-4 -top-4 w-24 h-24 bg-border-dark/20 rounded-full blur-xl group-hover:bg-primary/10 transition-colors">
+                            </div>
+                            <div
+                                class="w-16 h-16 bg-background-dark border-2 border-border-dark flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors shrink-0 z-10">
+                                <span class="material-symbols-outlined text-3xl">notes</span>
+                            </div>
+                            <div class="flex flex-col z-10">
+                                <span
+                                    class="text-white font-retro text-2xl group-hover:text-primary transition-colors">Lorem
+                                    Ipsum Generator</span>
+                                <span class="text-gray-400 text-sm font-mono mt-2 leading-relaxed">Generate random
+                                    placeholder text paragraphs, sentences, or words for your designs.</span>
+                            </div>
+                            <div
+                                class="mt-auto pt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="font-mono text-xs uppercase font-bold">Launch Tool</span>
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </div>
+                        </a>
+
+                        <!-- RegEx Tester -->
+                        <a href="regex-tester.html"
+                            class="flex flex-col items-start gap-4 p-6 bg-surface-dark border-2 border-border-dark hover:border-primary hover:shadow-pixel transition-all text-left group h-full relative overflow-hidden">
+                            <div
+                                class="absolute -right-4 -top-4 w-24 h-24 bg-border-dark/20 rounded-full blur-xl group-hover:bg-primary/10 transition-colors">
+                            </div>
+                            <div
+                                class="w-16 h-16 bg-background-dark border-2 border-border-dark flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors shrink-0 z-10">
+                                <span class="material-symbols-outlined text-3xl">regular_expression</span>
+                            </div>
+                            <div class="flex flex-col z-10">
+                                <span
+                                    class="text-white font-retro text-2xl group-hover:text-primary transition-colors">RegEx
+                                    Tester</span>
+                                <span class="text-gray-400 text-sm font-mono mt-2 leading-relaxed">Test and debug
+                                    regular expressions in real-time with cheat sheets and match highlighting.</span>
+                            </div>
+                            <div
+                                class="mt-auto pt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="font-mono text-xs uppercase font-bold">Launch Tool</span>
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </div>
+                        </a>
+
+                        <!-- SQL Formatter -->
+                        <a href="sql-formatter.html"
+                            class="flex flex-col items-start gap-4 p-6 bg-surface-dark border-2 border-border-dark hover:border-primary hover:shadow-pixel transition-all text-left group h-full relative overflow-hidden">
+                            <div
+                                class="absolute -right-4 -top-4 w-24 h-24 bg-border-dark/20 rounded-full blur-xl group-hover:bg-primary/10 transition-colors">
+                            </div>
+                            <div
+                                class="w-16 h-16 bg-background-dark border-2 border-border-dark flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors shrink-0 z-10">
+                                <span class="material-symbols-outlined text-3xl">code</span>
+                            </div>
+                            <div class="flex flex-col z-10">
+                                <span
+                                    class="text-white font-retro text-2xl group-hover:text-primary transition-colors">SQL
+                                    Formatter</span>
+                                <span class="text-gray-400 text-sm font-mono mt-2 leading-relaxed">Beautify or minify
+                                    SQL queries. Supports multiple dialects and syntax highlighting.</span>
+                            </div>
+                            <div
+                                class="mt-auto pt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="font-mono text-xs uppercase font-bold">Launch Tool</span>
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </div>
+                        </a>
+
+                        <!-- Unit Converter -->
+                        <a href="unit-converter.html"
+                            class="flex flex-col items-start gap-4 p-6 bg-surface-dark border-2 border-border-dark hover:border-primary hover:shadow-pixel transition-all text-left group h-full relative overflow-hidden">
+                            <div
+                                class="absolute -right-4 -top-4 w-24 h-24 bg-border-dark/20 rounded-full blur-xl group-hover:bg-primary/10 transition-colors">
+                            </div>
+                            <div
+                                class="w-16 h-16 bg-background-dark border-2 border-border-dark flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors shrink-0 z-10">
+                                <span class="material-symbols-outlined text-3xl">transform</span>
+                            </div>
+                            <div class="flex flex-col z-10">
+                                <span
+                                    class="text-white font-retro text-2xl group-hover:text-primary transition-colors">Unit
+                                    Converter</span>
+                                <span class="text-gray-400 text-sm font-mono mt-2 leading-relaxed">Convert pixels to
+                                    REM, Hex to RGB, and other common developer unit transformations.</span>
+                            </div>
+                            <div
+                                class="mt-auto pt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="font-mono text-xs uppercase font-bold">Launch Tool</span>
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </div>
+                        </a>
+
+                        <!-- Request Tool -->
+                        <a href="request-tool.html"
+                            class="flex flex-col items-center justify-center gap-4 p-6 bg-surface-dark/30 border-2 border-dashed border-border-dark hover:bg-surface-dark hover:border-primary hover:shadow-pixel transition-all group h-full cursor-pointer relative overflow-hidden">
+                            <div
+                                class="absolute inset-0 bg-primary/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-4xl text-gray-500 group-hover:text-primary transition-colors z-10">add_circle</span>
+                            <span
+                                class="text-gray-500 font-retro text-xl group-hover:text-white transition-colors z-10 uppercase tracking-wide">Request
+                                New Tool</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modular JavaScript -->
+    <script src="js/storage.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/tasks.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

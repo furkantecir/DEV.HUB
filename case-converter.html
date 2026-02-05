@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - Text Case Converter</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                        "neon-cyan": "#00f3ff",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "none": "0",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                        "glow": "0 0 15px rgba(127, 19, 236, 0.5)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .retro-button-active:active {
+            transform: translate(2px, 2px);
+            box-shadow: none;
+        }
+        
+        button.active {
+            @apply bg-primary text-white border-primary shadow-[inset_2px_2px_4px_rgba(0,0,0,0.4)];
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+    <div class="flex h-screen w-full overflow-hidden">
+        <!-- Sidebar -->
+        <aside
+            class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0 z-20">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm transition-transform active:translate-y-1 active:shadow-none"
+                    href="text-tools.html">
+                    <span class="material-symbols-outlined">description</span>
+                    <span class="font-retro text-xl">Text Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="network-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">public</span>
+                    <span class="font-retro text-xl">Network</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="settings.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                    <span class="font-retro text-xl">Settings</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="profile.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">person</span>
+                    <span class="font-retro text-xl">Profile</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <a class="p-2 border border-border-dark hover:bg-surface-dark text-gray-400 hover:text-primary transition-colors"
+                            href="text-tools.html">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                        </a>
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-white font-retro text-4xl leading-none tracking-tight">CASE_CONVERTER
+                                </h2>
+                                <span
+                                    class="px-2 py-0.5 rounded-none bg-primary/20 border border-primary/40 text-[10px] font-bold text-primary uppercase tracking-widest">Active_Module</span>
+                            </div>
+                            <p class="text-[#ad92c9] text-sm font-mono opacity-80">&gt; Text Processing / Case Utility
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="px-3 py-1 bg-surface-dark border border-border-dark font-mono text-xs text-primary">
+                            LEN: <span id="charCount">0</span>
+                        </div>
+                        <button id="btn-recent"
+                            class="flex items-center gap-2 bg-surface-dark hover:bg-primary text-white border-2 border-primary px-5 py-2 shadow-pixel transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:bg-primary-dark retro-button-active">
+                            <span class="material-symbols-outlined text-[18px]">history</span>
+                            <span class="font-bold text-sm tracking-wide uppercase">Original</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-6 flex flex-col items-center">
+                <div class="w-full max-w-5xl space-y-6">
+                    <div class="relative group">
+                        <div
+                            class="absolute -top-3 left-6 px-2 bg-background-dark text-primary font-retro text-lg z-10 tracking-widest border-x border-primary/30">
+                            INPUT_STREAM
+                        </div>
+                        <div
+                            class="bg-surface-dark border-2 border-border-dark p-4 shadow-pixel-white relative overflow-hidden">
+                            <textarea id="input-text"
+                                class="w-full h-80 bg-background-dark border border-border-dark text-white font-mono p-6 focus:ring-1 focus:ring-primary focus:border-primary outline-none resize-none transition-all placeholder:text-gray-600"
+                                placeholder="Type or paste your text here for instant transformation..."
+                                spellcheck="false"></textarea>
+                            <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-primary/20"></div>
+                            <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-primary/20">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                        <div class="lg:col-span-8 space-y-3">
+                            <div class="text-gray-400 font-retro text-sm uppercase tracking-widest ml-1">Case Selectors
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                                <button data-case="camel"
+                                    class="case-btn bg-surface-dark border-2 border-border-dark hover:border-primary py-3 px-2 text-gray-300 hover:text-white font-retro text-lg shadow-pixel-sm transition-all active:translate-y-1 active:shadow-none">
+                                    camelCase
+                                </button>
+                                <button data-case="snake"
+                                    class="case-btn bg-surface-dark border-2 border-border-dark hover:border-primary py-3 px-2 text-gray-300 hover:text-white font-retro text-lg shadow-pixel-sm transition-all active:translate-y-1 active:shadow-none">
+                                    snake_case
+                                </button>
+                                <button data-case="upper"
+                                    class="case-btn bg-surface-dark border-2 border-border-dark hover:border-primary py-3 px-2 text-gray-300 hover:text-white font-retro text-lg shadow-pixel-sm transition-all active:translate-y-1 active:shadow-none">
+                                    UPPERCASE
+                                </button>
+                                <button data-case="lower"
+                                    class="case-btn bg-surface-dark border-2 border-border-dark hover:border-primary py-3 px-2 text-gray-300 hover:text-white font-retro text-lg shadow-pixel-sm transition-all active:translate-y-1 active:shadow-none">
+                                    lowercase
+                                </button>
+                                <button data-case="title"
+                                    class="case-btn bg-surface-dark border-2 border-border-dark hover:border-primary py-3 px-2 text-gray-300 hover:text-white font-retro text-lg shadow-pixel-sm transition-all active:translate-y-1 active:shadow-none">
+                                    Title Case
+                                </button>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-4 flex flex-col gap-3">
+                            <div class="text-gray-400 font-retro text-sm uppercase tracking-widest ml-1">System Action
+                            </div>
+                            <button id="btn-copy"
+                                class="w-full bg-primary border-2 border-white/20 p-4 shadow-glow flex items-center justify-center gap-3 group relative overflow-hidden active:translate-y-1 transition-all">
+                                <div class="absolute inset-0 bg-white/5 group-hover:bg-white/10 transition-colors">
+                                </div>
+                                <div class="absolute top-0 left-0 w-full h-[1px] bg-white/30"></div>
+                                <span
+                                    class="material-symbols-outlined text-white text-2xl group-hover:scale-110 transition-transform">content_copy</span>
+                                <span class="text-white font-retro text-2xl tracking-widest uppercase">Copy to
+                                    Clipboard</span>
+                            </button>
+                            <div class="flex gap-2">
+                                <button id="btn-clear"
+                                    class="flex-1 bg-red-900/20 border-2 border-red-900/40 hover:bg-red-900/40 text-red-400 font-retro text-lg py-2 transition-all">
+                                    CLEAR
+                                </button>
+                                <button id="btn-download"
+                                    class="flex-1 bg-surface-dark border-2 border-border-dark hover:border-primary text-gray-400 hover:text-white font-retro text-lg py-2 transition-all">
+                                    DOWNLOAD
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-12 border-t-2 border-border-dark pt-4 flex justify-between items-center opacity-60">
+                        <div class="font-mono text-[10px] text-gray-500 flex items-center gap-4">
+                            <span class="flex items-center gap-1">
+                                <span class="w-2 h-2 bg-primary"></span>
+                                CTRL+V TO PASTE
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="w-2 h-2 bg-primary"></span>
+                                TAB TO NAVIGATE
+                            </span>
+                        </div>
+                        <div class="font-retro text-lg text-primary tracking-widest">
+                            EST. 1994 // RETRO_CORE
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/case-tool.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Notes Editor - Web Tool Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#1e1427",
+                        "border-dark": "#362348",
+                        "text-muted": "#ad92c9",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2a1d35 1px, transparent 1px), linear-gradient(to bottom, #2a1d35 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #362348;
+            border-radius: 2px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .grid-bg {
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        .pixel-border {
+            box-shadow:
+                0 -2px 0 0 #362348,
+                0 2px 0 0 #362348,
+                -2px 0 0 0 #362348,
+                2px 0 0 0 #362348;
+        }
+
+        .editor-container {
+            height: calc(100vh - 180px);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-white font-display overflow-hidden min-h-screen flex flex-col">
+    <div class="fixed inset-0 pointer-events-none z-0 grid-bg bg-grid-pattern opacity-20"></div>
+
+    <div class="relative z-10 flex flex-col h-screen">
+        <!-- Header -->
+        <header class="w-full border-b border-border-dark bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
+            <div class="max-w-[1600px] mx-auto px-4 sm:px-6">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Brand & Breadcrumb -->
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center gap-3">
+                            <div class="size-8 bg-primary rounded flex items-center justify-center text-white">
+                                <span class="material-symbols-outlined text-[20px]">terminal</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <h2 class="text-white text-lg font-black tracking-tight leading-none">DEV.HUB</h2>
+                                <span class="text-primary text-[10px] font-mono tracking-widest uppercase">Offline
+                                    Mode</span>
+                            </div>
+                        </div>
+                        <div class="hidden sm:flex items-center gap-2 text-text-muted">
+                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+                            <span class="font-mono text-xs uppercase tracking-widest">Modules</span>
+                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+                            <span
+                                class="text-white font-mono text-xs uppercase tracking-widest bg-surface-dark px-2 py-1 border border-border-dark">Quick
+                                Notes</span>
+                        </div>
+                    </div>
+
+                    <!-- Right Controls -->
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="hidden md:flex items-center gap-2 px-3 py-1 bg-surface-dark border border-border-dark rounded">
+                            <span class="size-2 rounded-full bg-green-500" id="autosave-indicator"></span>
+                            <span class="text-xs font-mono text-text-muted uppercase" id="autosave-status">Autosave:
+                                On</span>
+                        </div>
+                        <div class="h-8 w-px bg-border-dark mx-2"></div>
+                        <div class="flex gap-2">
+                            <button
+                                class="flex items-center justify-center size-9 rounded hover:bg-border-dark text-text-muted hover:text-white transition-colors"
+                                title="Help">
+                                <span class="material-symbols-outlined text-[20px]">help_outline</span>
+                            </button>
+                            <a href="settings.html"
+                                class="flex items-center justify-center size-9 rounded hover:bg-border-dark text-text-muted hover:text-white transition-colors"
+                                title="Settings">
+                                <span class="material-symbols-outlined text-[20px]">settings</span>
+                            </a>
+                            <a href="profile.html"
+                                class="flex items-center justify-center size-9 rounded bg-center bg-no-repeat bg-cover border border-border-dark hover:ring-2 hover:ring-primary transition-all ml-1"
+                                style="background: linear-gradient(135deg, var(--color-primary) 0%, #ad92c9 100%);"
+                                title="Profile"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex overflow-hidden">
+            <!-- Sidebar: Recent Notes -->
+            <aside class="w-72 border-r border-border-dark bg-surface-dark/50 flex flex-col hidden lg:flex">
+                <div class="p-4 border-b border-border-dark bg-surface-dark/80">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-mono text-xs font-bold text-text-muted uppercase tracking-widest">Recent Notes
+                        </h3>
+                        <span class="text-[10px] font-mono text-primary" id="notes-count">00 Total</span>
+                    </div>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-sm text-text-muted">search</span>
+                        <input id="notes-search"
+                            class="w-full bg-background-dark border border-border-dark py-1.5 pl-8 pr-2 text-xs font-mono text-white focus:border-primary focus:ring-0"
+                            placeholder="Filter notes..." type="text" />
+                    </div>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-3 space-y-2" id="notes-list">
+                    <!-- Notes will be dynamically inserted here -->
+                </div>
+
+                <div class="p-4 border-t border-border-dark space-y-2">
+                    <button id="new-note-btn"
+                        class="w-full flex items-center justify-center gap-2 bg-primary/20 hover:bg-primary/30 border border-primary/40 py-2 transition-colors">
+                        <span class="material-symbols-outlined text-sm">add_box</span>
+                        <span class="font-mono text-xs font-bold uppercase tracking-widest">New Session</span>
+                    </button>
+                    <button id="delete-all-btn"
+                        class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500 py-2 transition-colors">
+                        <span class="material-symbols-outlined text-sm text-red-400">delete_sweep</span>
+                        <span class="font-mono text-xs font-bold uppercase tracking-widest text-red-400">Delete
+                            All</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Editor Section -->
+            <section class="flex-1 flex flex-col min-w-0 bg-background-dark/30">
+                <!-- Toolbar -->
+                <div class="h-12 border-b border-border-dark bg-surface-dark/80 px-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-1">
+                            <button id="new-btn"
+                                class="p-1.5 hover:bg-border-dark text-text-muted hover:text-white transition-colors flex items-center gap-1.5"
+                                title="New Note">
+                                <span class="material-symbols-outlined text-[18px]">note_add</span>
+                                <span
+                                    class="hidden xl:inline text-[10px] font-mono uppercase font-bold tracking-tighter">New</span>
+                            </button>
+                            <button id="save-btn"
+                                class="p-1.5 hover:bg-border-dark text-text-muted hover:text-white transition-colors flex items-center gap-1.5"
+                                title="Save">
+                                <span class="material-symbols-outlined text-[18px]">save</span>
+                                <span
+                                    class="hidden xl:inline text-[10px] font-mono uppercase font-bold tracking-tighter">Save</span>
+                            </button>
+                            <div class="w-px h-4 bg-border-dark mx-1"></div>
+                            <button id="copy-btn"
+                                class="p-1.5 hover:bg-border-dark text-text-muted hover:text-white transition-colors flex items-center gap-1.5"
+                                title="Copy to Clipboard">
+                                <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                                <span
+                                    class="hidden xl:inline text-[10px] font-mono uppercase font-bold tracking-tighter">Copy</span>
+                            </button>
+                            <button id="export-btn"
+                                class="p-1.5 hover:bg-border-dark text-text-muted hover:text-white transition-colors flex items-center gap-1.5"
+                                title="Download as .txt">
+                                <span class="material-symbols-outlined text-[18px]">download</span>
+                                <span
+                                    class="hidden xl:inline text-[10px] font-mono uppercase font-bold tracking-tighter">Export</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-6">
+                        <div class="hidden sm:flex items-center gap-2 text-[10px] font-mono text-text-muted">
+                            <span class="uppercase">Lines: <span id="line-count">0</span></span>
+                            <span class="opacity-30">|</span>
+                            <span class="uppercase">Chars: <span id="char-count">0</span></span>
+                        </div>
+                        <button id="fullscreen-btn"
+                            class="p-1.5 hover:bg-border-dark text-primary transition-colors flex items-center"
+                            title="Toggle Fullscreen">
+                            <span class="material-symbols-outlined text-[18px]">fullscreen</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Editor -->
+                <div class="flex-1 p-6 lg:p-10 flex flex-col">
+                    <div
+                        class="flex-1 w-full max-w-4xl mx-auto flex flex-col bg-surface-dark border border-border-dark pixel-border relative">
+                        <!-- Window Header -->
+                        <div
+                            class="h-8 border-b border-border-dark bg-background-dark/50 flex items-center justify-between px-3">
+                            <div class="flex gap-1.5">
+                                <div class="size-2 rounded-full bg-border-dark"></div>
+                                <div class="size-2 rounded-full bg-border-dark"></div>
+                                <div class="size-2 rounded-full bg-border-dark"></div>
+                            </div>
+                            <div class="text-[10px] font-mono text-text-muted uppercase tracking-[0.2em]"
+                                id="note-title">Scratchpad_v2.md</div>
+                        </div>
+
+                        <!-- Textarea -->
+                        <textarea id="editor"
+                            class="flex-1 w-full bg-transparent border-none text-white font-mono text-sm leading-relaxed p-6 resize-none focus:ring-0 placeholder:text-text-muted/20"
+                            placeholder="Start typing your notes here..." spellcheck="false"></textarea>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="w-full border-t border-border-dark bg-background-dark/95 backdrop-blur-sm z-50">
+            <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-3">
+                <div
+                    class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-text-muted">
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center gap-2">
+                            <span class="size-2 bg-primary animate-pulse"></span>
+                            <span class="text-[10px] uppercase">Ready to Sync</span>
+                        </div>
+                        <div class="hidden sm:flex items-center gap-4">
+                            <a class="hover:text-white transition-colors flex items-center gap-1" href="#">
+                                <span class="material-symbols-outlined text-[14px]">keyboard</span>
+                                <span>HOTKEYS</span>
+                            </a>
+                            <a class="hover:text-white transition-colors flex items-center gap-1" href="#">
+                                <span class="material-symbols-outlined text-[14px]">history</span>
+                                <span>REVISIONS</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 text-center md:text-right text-[10px]">
+                        <span>UTF-8</span>
+                        <span class="text-border-dark">|</span>
+                        <span>LF (UNIX)</span>
+                        <span class="text-border-dark">|</span>
+                        <span>V1.0.4-L</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modular JavaScript -->
+    <script src="js/storage.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/quick-notes.js"></script>
+</body>
+
+</html>

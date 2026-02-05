@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - Base64 Encoder &amp; Decoder</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;family=Fira+Code:wght@400;500&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                        "mono": ["Fira Code", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "none": "0",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-glow": "0 0 15px rgba(127, 19, 236, 0.4), 4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .pixel-slider-track {
+            @apply w-16 h-8 bg-surface-dark border-2 border-border-dark relative cursor-pointer flex items-center px-1 transition-colors;
+        }
+
+        .pixel-slider-thumb {
+            @apply w-6 h-6 bg-primary border border-white/20 transition-all duration-200 transform;
+        }
+
+        /* Active State (Decode) */
+        .mode-active .pixel-slider-thumb {
+            @apply translate-x-7 bg-green-500;
+        }
+        
+        .mode-active.pixel-slider-track {
+             @apply border-green-500/50;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+    <div class="flex h-screen w-full overflow-hidden">
+        <aside
+            class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0 z-20">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm transition-transform active:translate-y-1 active:shadow-none"
+                    href="text-tools.html">
+                    <span class="material-symbols-outlined">description</span>
+                    <span class="font-retro text-xl">Text Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="network-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">public</span>
+                    <span class="font-retro text-xl">Network</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="settings.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                    <span class="font-retro text-xl">Settings</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="profile.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">person</span>
+                    <span class="font-retro text-xl">Profile</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <a class="w-10 h-10 border-2 border-border-dark flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary transition-colors"
+                            href="text-tools.html">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                        </a>
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-white font-retro text-4xl leading-none">Base64 Encoder &amp; Decoder
+                                </h2>
+                                <span
+                                    class="px-2 py-0.5 rounded-none bg-border-dark border border-white/10 text-[10px] font-bold text-primary uppercase tracking-widest">Utility_01</span>
+                            </div>
+                            <p class="text-[#ad92c9] text-sm font-mono opacity-80">&gt; text_processing / base64_module
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center gap-4">
+                            <span id="label-encode"
+                                class="font-retro text-xl text-primary uppercase transition-colors">Encode</span>
+                            <div id="mode-toggle" class="pixel-slider-track">
+                                <div class="pixel-slider-thumb shadow-pixel-sm"></div>
+                            </div>
+                            <span id="label-decode"
+                                class="font-retro text-xl text-gray-400 uppercase transition-colors">Decode</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="flex-1 overflow-y-auto p-6 flex flex-col">
+                <div class="max-w-7xl mx-auto w-full flex-1 flex flex-col lg:flex-row gap-6 pb-6">
+                    <div class="flex-1 flex flex-col min-h-[300px]">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2">
+                                <span id="indicator-input" class="w-2 h-2 bg-primary transition-colors"></span>
+                                <label
+                                    class="font-retro text-2xl text-white uppercase tracking-wider">Input_Source</label>
+                            </div>
+                            <span class="text-[10px] font-mono text-border-dark">UTF-8 CHARACTER STREAM</span>
+                        </div>
+                        <div class="relative flex-1 group">
+                            <textarea id="input-text"
+                                class="w-full h-full bg-surface-dark border-2 border-border-dark focus:border-primary focus:ring-0 text-white font-mono p-4 resize-none transition-all placeholder-gray-600 shadow-pixel-white hover:shadow-none"
+                                placeholder="Enter text here to be processed..."></textarea>
+                            <div class="absolute bottom-4 right-4">
+                                <input type="file" id="file-upload" class="hidden" />
+                                <button onclick="document.getElementById('file-upload').click()"
+                                    class="bg-background-dark border border-border-dark p-2 text-gray-400 hover:text-white transition-colors"
+                                    title="Upload File">
+                                    <span class="material-symbols-outlined text-sm">upload_file</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex lg:flex-col justify-center gap-4 items-center shrink-0">
+                        <button id="process-btn"
+                            class="bg-primary text-white w-14 h-14 border-2 border-white/10 shadow-pixel-glow hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center"
+                            title="Process">
+                            <span class="material-symbols-outlined text-3xl">sync_alt</span>
+                        </button>
+                        <button id="clear-btn"
+                            class="bg-surface-dark text-gray-400 w-12 h-12 border-2 border-border-dark hover:border-red-500 hover:text-red-500 transition-all flex items-center justify-center"
+                            title="Clear">
+                            <span class="material-symbols-outlined text-2xl">delete_sweep</span>
+                        </button>
+                    </div>
+                    <div class="flex-1 flex flex-col min-h-[300px]">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2">
+                                <span id="indicator-output" class="w-2 h-2 bg-primary transition-colors"></span>
+                                <label
+                                    class="font-retro text-2xl text-white uppercase tracking-wider">Output_Result</label>
+                            </div>
+                            <span class="text-[10px] font-mono text-border-dark">BASE64 STRING</span>
+                        </div>
+                        <div class="relative flex-1 group">
+                            <textarea id="output-text"
+                                class="w-full h-full bg-surface-dark border-2 border-border-dark text-primary font-mono p-4 resize-none shadow-pixel-white outline-none cursor-default"
+                                placeholder="Results will appear here..." readonly=""></textarea>
+                            <div class="absolute top-4 right-4 flex flex-col gap-2">
+                                <span
+                                    class="px-2 py-1 bg-primary/10 text-primary border border-primary/20 text-[10px] font-mono">LIVE_PREVIEW</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="max-w-7xl mx-auto w-full shrink-0">
+                    <div
+                        class="bg-surface-dark border-2 border-border-dark p-4 flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-6">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-gray-500 font-mono uppercase">Status</span>
+                                <span id="status-text"
+                                    class="font-retro text-lg text-green-400 uppercase tracking-widest">Awaiting_Input</span>
+                            </div>
+                            <div class="h-8 w-px bg-border-dark"></div>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-gray-500 font-mono uppercase">Length</span>
+                                <span id="char-count" class="font-retro text-lg text-white">0 chars</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <button id="btn-clear-all"
+                                class="flex items-center gap-2 bg-surface-dark hover:bg-surface-dark/80 text-gray-300 border-2 border-border-dark px-6 py-2 font-retro text-xl uppercase transition-all active:translate-y-0.5">
+                                <span class="material-symbols-outlined text-lg">close</span>
+                                Clear
+                            </button>
+                            <button id="btn-copy"
+                                class="flex items-center gap-2 bg-primary text-white border-2 border-white/20 px-8 py-3 shadow-pixel-glow font-retro text-2xl uppercase tracking-wider transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none active:bg-primary-dark">
+                                <span class="material-symbols-outlined text-xl">content_copy</span>
+                                Copy Result
+                            </button>
+                            <button id="btn-download"
+                                class="flex items-center gap-2 bg-surface-dark hover:bg-primary text-white border-2 border-primary px-6 py-2 font-retro text-xl uppercase transition-all shadow-pixel hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5">
+                                <span class="material-symbols-outlined text-lg">download</span>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="mt-4 flex items-center justify-center gap-4 text-gray-600 font-mono text-[10px] uppercase tracking-[0.2em]">
+                        <span>Secure Local Processing</span>
+                        <span class="w-1 h-1 bg-gray-600 rounded-full"></span>
+                        <span>No Data Leaves Your Device</span>
+                        <span class="w-1 h-1 bg-gray-600 rounded-full"></span>
+                        <span>v1.0.4-Stable</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/base64-tool.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>FocusTime Reports Analytics</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=VT323&amp;family=Space+Mono:wght@400;700&amp;family=Press+Start+2P&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+        @layer base {
+            :root {
+                --pixel-bg: #1a0b2e;
+                --pixel-surface: #2d144d;
+                --pixel-primary: #a855f7;
+                --pixel-accent: #f472b6;
+                --pixel-border: #4c1d95;
+                --pixel-grid: rgba(139, 92, 246, 0.1);
+            }
+            body {
+                background-color: var(--pixel-bg);
+                background-image: 
+                    linear-gradient(var(--pixel-grid) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--pixel-grid) 1px, transparent 1px);
+                background-size: 32px 32px;
+                image-rendering: pixelated;
+            }
+        }
+        .pixel-border {
+            border: 4px solid var(--pixel-border);
+            box-shadow: 
+                -4px 0 0 0 var(--pixel-bg),
+                4px 0 0 0 var(--pixel-bg),
+                0 -4px 0 0 var(--pixel-bg),
+                0 4px 0 0 var(--pixel-bg),
+                inset -4px -4px 0 0 rgba(0,0,0,0.2),
+                inset 4px 4px 0 0 rgba(255,255,255,0.05);
+        }
+        .pixel-button {
+            position: relative;
+            background-color: var(--pixel-primary);
+            border: none;
+            box-shadow: 
+                -4px 0 0 0 #000,
+                4px 0 0 0 #000,
+                0 -4px 0 0 #000,
+                0 4px 0 0 #000,
+                inset -4px -4px 0 0 rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+        }
+        .pixel-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 
+                -4px 0 0 0 #000,
+                4px 0 0 0 #000,
+                0 -4px 0 0 #000,
+                0 4px 0 0 #000,
+                inset 4px 4px 0 0 rgba(0,0,0,0.3);
+        }
+        /* New Modal Specific Styles */
+        .pixel-modal-container {
+            border: 4px solid #000;
+            background-color: #2e1a47; /* Matches the dark purple in image */
+            box-shadow: 
+                0 0 0 4px #4c1d95, /* Outer purple ring */
+                0 0 40px rgba(0,0,0,0.8);
+        }
+        .pixel-modal-btn {
+            background-color: #a855f7;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0 #000;
+        }
+        .pixel-modal-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0 #000;
+        }
+        .pixel-modal-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 #000;
+        }
+        
+        .pixel-text-shadow {
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: var(--pixel-bg);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--pixel-border);
+        }
+        .pixel-bar {
+            box-shadow: inset -4px 0 0 0 rgba(0,0,0,0.2);
+        }
+        .pixel-grid-dot {
+            background-image: radial-gradient(var(--pixel-border) 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#a855f7",
+                        "pixel-dark": "#1a0b2e",
+                        "pixel-muted": "#6b21a8",
+                        "success": "#22c55e",
+                        "danger": "#ef4444",
+                    },
+                    fontFamily: {
+                        "retro": ["'Press Start 2P'", "cursive"],
+                        "mono": ["'Space Mono'", "monospace"],
+                        "pixel": ["'VT323'", "monospace"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="text-purple-100 h-screen overflow-hidden flex flex-col antialiased">
+
+    <!-- PIXEL NOTIFICATION MODAL -->
+    <div id="pixel-notification-modal"
+        class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div
+            class="pixel-modal-container relative w-full max-w-md p-8 flex flex-col items-center text-center animate-bounce-in">
+            <!-- Icon Box -->
+            <div
+                class="mb-6 size-16 flex items-center justify-center border-4 border-black bg-[#1a0b2e] shadow-[4px_4px_0_#4c1d95]">
+                <span id="modal-icon" class="material-symbols-outlined text-4xl text-pink-400">download</span>
+            </div>
+
+            <h2 class="font-retro text-sm text-pink-400 mb-6 pixel-text-shadow tracking-widest">SYSTEM_NOTIFICATION</h2>
+
+            <h3 id="modal-title" class="font-retro text-lg text-white mb-6 leading-relaxed">
+                FILE DOWNLOAD STARTED
+            </h3>
+
+            <!-- Detail Box -->
+            <div class="w-full bg-[#1a0b2e] border-2 border-black p-3 mb-8 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.5)]">
+                <p id="modal-message" class="font-mono text-xs text-purple-300">focus_report_export.csv</p>
+            </div>
+
+            <button onclick="closePixelModal()"
+                class="pixel-modal-btn px-10 py-3 font-retro text-xs text-white uppercase tracking-wider">
+                TAMAM
+            </button>
+        </div>
+    </div>
+
+    <header class="flex items-center justify-between border-b-4 border-black px-8 py-4 bg-[#2d144d] z-20">
+        <div class="flex items-center gap-10">
+            <div class="flex items-center gap-4 text-white">
+                <div class="size-10 bg-primary flex items-center justify-center pixel-border border-2">
+                    <span class="material-symbols-outlined text-[24px]">analytics</span>
+                </div>
+                <h2 class="text-xl font-retro tracking-tighter pixel-text-shadow">FOCUS<span
+                        class="text-pink-400">TIME</span></h2>
+            </div>
+            <nav class="hidden md:flex items-center gap-6">
+                <!-- Navigation Fixed -->
+                <a class="text-purple-400 font-mono text-xs hover:text-white pb-1" href="utilities.html">DASHBOARD</a>
+                <a class="text-primary font-mono text-xs border-b-4 border-primary pb-1" href="reports.html">REPORTS</a>
+                <a class="text-purple-400 font-mono text-xs hover:text-white pb-1" href="settings.html">SETTINGS</a>
+            </nav>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2 text-pink-400 font-pixel text-lg">
+                <span class="size-2 bg-pink-400 animate-pulse"></span>
+                LIVE_STATS_SYNCED
+            </div>
+            <div class="pixel-border border-2 size-10 bg-center bg-cover"
+                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCROZushHpXKnFDpTMFuZZd7yOS1iN0nYIIuRDQcub4FxVWNYobQffHNZ21gATohMeAWf_b_dC87IQT2EHIknStr3bE3urjClh9WnnF75k6oHqulqbYUeTZZxS4uvnYSehlroCU2VKgPKio49RMrKLyaBX6JSroTFkpWjEcRf-rnbBT6ZXoL0nI7mUFs1PBd292GE5pBK-HHjMBERz1rxKvhtvT7zRdyninfdLFnlmQPQxMzZwK4df5tVV8l5pyR7ZfwCJKGWKStZHo"); image-rendering: pixelated;'>
+            </div>
+        </div>
+    </header>
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-8">
+        <div class="max-w-7xl mx-auto space-y-8">
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <h1 class="font-retro text-2xl text-white pixel-text-shadow">ANALYTICS_OVERVIEW</h1>
+                    <p class="font-pixel text-xl text-purple-400 mt-2">REPORT_PERIOD: <span
+                            id="report-period">LOADING...</span></p>
+                </div>
+                <div class="flex gap-4">
+                    <button
+                        class="pixel-button bg-purple-900 px-4 py-2 font-mono text-[10px] text-white flex items-center gap-2"
+                        onclick="showNotification('DATA_VIEW_UPDATED', 'VIEWING ALL TIME DATA', 'System filter applied successfully.')">
+                        <span class="material-symbols-outlined text-sm">calendar_month</span>
+                        ALL_TIME
+                    </button>
+                    <button
+                        class="pixel-button bg-pink-600 px-4 py-2 font-mono text-[10px] text-white flex items-center gap-2"
+                        onclick="showNotification('FILE DOWNLOAD STARTED', 'EXPORTING DATA...', 'focus_report_2024.csv')">
+                        <span class="material-symbols-outlined text-sm">download</span>
+                        EXPORT_DATA
+                    </button>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 pixel-border bg-[#2d144d] p-6 relative overflow-hidden">
+                    <div class="absolute inset-0 pixel-grid-dot opacity-20"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="font-retro text-xs text-pink-400 tracking-tighter">WEEKLY_FOCUS_TRENDS
+                                (SIMULATED)</h3>
+                            <div class="flex items-center gap-4 font-mono text-[10px]">
+                                <span class="flex items-center gap-2"><span
+                                        class="size-2 bg-primary"></span>FOCUS</span>
+                                <span class="flex items-center gap-2"><span
+                                        class="size-2 bg-pink-500"></span>BREAK</span>
+                            </div>
+                        </div>
+                        <!-- Charts -->
+                        <div class="h-64 flex items-end justify-between gap-4 px-4 border-b-4 border-purple-900">
+                            <!-- Bar Items -->
+                            <div class="flex flex-col items-center flex-1 group">
+                                <div class="w-full flex flex-col justify-end gap-1 h-full">
+                                    <div class="pixel-bar bg-primary w-full h-[45%] hover:bg-white transition-colors">
+                                    </div>
+                                    <div class="pixel-bar bg-pink-500 w-full h-[10%]"></div>
+                                </div>
+                                <span class="font-pixel text-lg text-purple-400 mt-4">MON</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 group">
+                                <div class="w-full flex flex-col justify-end gap-1 h-full">
+                                    <div class="pixel-bar bg-primary w-full h-[75%] hover:bg-white transition-colors">
+                                    </div>
+                                    <div class="pixel-bar bg-pink-500 w-full h-[15%]"></div>
+                                </div>
+                                <span class="font-pixel text-lg text-purple-400 mt-4">TUE</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 group">
+                                <div class="w-full flex flex-col justify-end gap-1 h-full">
+                                    <div class="pixel-bar bg-primary w-full h-[60%] hover:bg-white transition-colors">
+                                    </div>
+                                    <div class="pixel-bar bg-pink-500 w-full h-[12%]"></div>
+                                </div>
+                                <span class="font-pixel text-lg text-purple-400 mt-4">WED</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 group">
+                                <div class="w-full flex flex-col justify-end gap-1 h-full">
+                                    <div class="pixel-bar bg-primary w-full h-[90%] hover:bg-white transition-colors">
+                                    </div>
+                                    <div class="pixel-bar bg-pink-500 w-full h-[20%]"></div>
+                                </div>
+                                <span class="font-pixel text-lg text-white mt-4 font-bold">THU</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 group">
+                                <div class="w-full flex flex-col justify-end gap-1 h-full">
+                                    <div class="pixel-bar bg-primary w-full h-[40%] hover:bg-white transition-colors">
+                                    </div>
+                                    <div class="pixel-bar bg-pink-500 w-full h-[8%]"></div>
+                                </div>
+                                <span class="font-pixel text-lg text-purple-400 mt-4">FRI</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 group">
+                                <div class="w-full flex flex-col justify-end gap-1 h-full">
+                                    <div class="pixel-bar bg-primary w-full h-[25%] hover:bg-white transition-colors">
+                                    </div>
+                                    <div class="pixel-bar bg-pink-500 w-full h-[30%]"></div>
+                                </div>
+                                <span class="font-pixel text-lg text-purple-400 mt-4">SAT</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 group">
+                                <div class="w-full flex flex-col justify-end gap-1 h-full">
+                                    <div class="pixel-bar bg-primary w-full h-[15%] hover:bg-white transition-colors">
+                                    </div>
+                                    <div class="pixel-bar bg-pink-500 w-full h-[10%]"></div>
+                                </div>
+                                <span class="font-pixel text-lg text-purple-400 mt-4">SUN</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Stats Cards -->
+                <div class="space-y-8">
+                    <div class="pixel-border bg-black/40 p-6 flex flex-col items-center justify-center text-center">
+                        <span
+                            class="font-retro text-[10px] text-purple-500 mb-4 tracking-widest uppercase">Total_Focus_Time</span>
+                        <h2 id="avg-focus-display" class="text-6xl font-pixel text-white tabular-nums">00:00</h2>
+                        <span class="font-pixel text-xl text-green-400 mt-2">REAL TIME DATA</span>
+                    </div>
+                    <div class="pixel-border bg-black/40 p-6 flex flex-col items-center justify-center text-center">
+                        <span
+                            class="font-retro text-[10px] text-purple-500 mb-4 tracking-widest uppercase">Productivity_Score</span>
+                        <h2 class="text-4xl font-pixel text-pink-400 uppercase">HIGH</h2>
+                        <span class="font-pixel text-xl text-purple-400 mt-2">Based on activity</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- Heatmap (Visual) -->
+                <div class="lg:col-span-3 pixel-border bg-[#2d144d] p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-retro text-xs text-pink-400 tracking-tighter">TASKS_COMPLETED_HEATMAP (VISUAL)
+                        </h3>
+                        <div class="flex items-center gap-2 font-pixel text-lg text-purple-400">
+                            LESS <div class="flex gap-1">
+                                <div class="size-4 bg-purple-900"></div>
+                                <div class="size-4 bg-purple-800"></div>
+                                <div class="size-4 bg-purple-600"></div>
+                                <div class="size-4 bg-primary"></div>
+                                <div class="size-4 bg-white"></div>
+                            </div> MORE
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-7 gap-2">
+                        <!-- Simulated Data for Design Consistency -->
+                        <div class="aspect-square bg-purple-900 pixel-border border-2"></div>
+                        <div class="aspect-square bg-purple-800 pixel-border border-2"></div>
+                        <div class="aspect-square bg-purple-600 pixel-border border-2"></div>
+                        <div class="aspect-square bg-primary pixel-border border-2"></div>
+                        <div class="aspect-square bg-white pixel-border border-2"></div>
+                        <div class="aspect-square bg-purple-600 pixel-border border-2"></div>
+                        <div class="aspect-square bg-purple-900 pixel-border border-2"></div>
+                        <div class="aspect-square bg-purple-800 pixel-border border-2"></div>
+                        <div class="aspect-square bg-primary pixel-border border-2"></div>
+                        <div class="aspect-square bg-white pixel-border border-2"></div>
+                        <div class="aspect-square bg-primary pixel-border border-2"></div>
+                        <div class="aspect-square bg-purple-600 pixel-border border-2"></div>
+                        <div class="aspect-square bg-purple-900 pixel-border border-2"></div>
+                        <div class="aspect-square bg-purple-900 pixel-border border-2"></div>
+                    </div>
+                </div>
+                <div class="pixel-border bg-indigo-900/40 p-6 flex flex-col gap-4">
+                    <h3 class="font-retro text-[10px] text-indigo-300">QUICK_INSIGHTS</h3>
+                    <div class="space-y-4">
+                        <div class="bg-black/40 p-3 pixel-border border-2">
+                            <p class="font-pixel text-lg text-white leading-tight">CONSISTENCY IS KEY. KEEP UP THE
+                                STREAK.</p>
+                        </div>
+                        <div class="bg-black/40 p-3 pixel-border border-2">
+                            <p class="font-pixel text-lg text-white leading-tight">TAKE REGULAR BREAKS TO AVOID BURNOUT.
+                            </p>
+                        </div>
+                        <button class="w-full pixel-button bg-indigo-600 font-retro text-[8px] py-2 text-white mt-2"
+                            onclick="showNotification('DOWNLOAD STARTED', 'DOWNLOADING TIPS...', 'productivity_tips_v2.pdf')">
+                            VIEW_TIPS.PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-8">
+                <div class="pixel-border bg-[#2d144d] p-4 flex items-center gap-4">
+                    <div class="pixel-button bg-purple-500 p-2"><span
+                            class="material-symbols-outlined text-lg">timer</span></div>
+                    <div>
+                        <p class="font-retro text-[8px] text-purple-400">TOTAL_FOCUS</p>
+                        <p id="total-focus-display" class="font-pixel text-2xl text-white">0h 0m</p>
+                    </div>
+                </div>
+                <div class="pixel-border bg-[#2d144d] p-4 flex items-center gap-4">
+                    <div class="pixel-button bg-green-500 p-2"><span
+                            class="material-symbols-outlined text-lg">task_alt</span></div>
+                    <div>
+                        <p class="font-retro text-[8px] text-purple-400">TASKS_DONE</p>
+                        <p id="total-tasks-display" class="font-pixel text-2xl text-white">0</p>
+                    </div>
+                </div>
+                <div class="pixel-border bg-[#2d144d] p-4 flex items-center gap-4">
+                    <div class="pixel-button bg-pink-500 p-2"><span
+                            class="material-symbols-outlined text-lg">coffee</span></div>
+                    <div>
+                        <p class="font-retro text-[8px] text-purple-400">BREAK_TOTAL</p>
+                        <p class="font-pixel text-2xl text-white">--</p>
+                    </div>
+                </div>
+                <div class="pixel-border bg-[#2d144d] p-4 flex items-center gap-4">
+                    <div class="pixel-button bg-indigo-500 p-2"><span
+                            class="material-symbols-outlined text-lg">military_tech</span></div>
+                    <div>
+                        <p class="font-retro text-[8px] text-purple-400">STREAK_DAYS</p>
+                        <p class="font-pixel text-2xl text-white">ACTIVE</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="bg-black border-t-4 border-purple-900 py-2 px-8 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <span class="font-pixel text-lg text-purple-500 italic">"DATA IS THE FUEL FOR PRODUCTIVITY."</span>
+        </div>
+        <div class="font-mono text-[9px] text-purple-700">
+            SYS_VER: 2.0.4 // ANALYTICS_ENGINE: ONLINE
+        </div>
+    </div>
+
+    <!-- Logic Script -->
+    <script src="js/reports.js"></script>
+
+    <script>
+        function showNotification(title, message, detail) {
+            const modal = document.getElementById('pixel-notification-modal');
+            const mTitle = document.getElementById('modal-title');
+            const mMessage = document.getElementById('modal-message'); // Using message as detail for file name consistency with image
+
+            // Set Dynamic Content
+            mTitle.textContent = title;
+            mMessage.textContent = detail || message;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closePixelModal() {
+            document.getElementById('pixel-notification-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+
+</html>

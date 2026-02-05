@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - RegEx Tester Utility</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "accent-green": "#00ff9f",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                        "mono": ["VT323", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "none": "0",
+                        "sm": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-green": "4px 4px 0px 0px #00ff9f",
+                        "pixel-glow": "0 0 15px rgba(127, 19, 236, 0.4), 4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .pixel-border {
+            border: 4px solid #4d3267;
+            position: relative;
+        }
+
+        .neon-glow {
+            box-shadow: 0 0 10px #7f13ec, 0 0 20px #7f13ec;
+        }
+
+        .match-highlight {
+            background-color: rgba(127, 19, 236, 0.4);
+            box-shadow: 0 0 8px #7f13ec;
+            border-bottom: 2px solid #7f13ec;
+        }
+
+        .syntax-purple {
+            color: #d670ff;
+        }
+
+        .syntax-green {
+            color: #00ff9f;
+        }
+        
+        /* Custom highlighting overlay */
+        .highlight-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            color: transparent;
+            padding: 1rem;
+            white-space: pre-wrap;
+            font-family: 'VT323', monospace;
+            font-size: 1.125rem;
+            line-height: 1.5;
+            overflow: hidden;
+        }
+        
+        textarea#test-string {
+             color: white; 
+             caret-color: #00ff9f;
+             z-index: 10;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark font-display text-white antialiased overflow-hidden">
+    <div class="flex h-screen w-full overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm"
+                    href="text-tools.html">
+                    <span class="material-symbols-outlined">description</span>
+                    <span class="font-retro text-xl">Text Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="network-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">public</span>
+                    <span class="font-retro text-xl">Network</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="settings.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                    <span class="font-retro text-xl">Settings</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="profile.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">person</span>
+                    <span class="font-retro text-xl">Profile</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-white font-retro text-4xl leading-none uppercase tracking-tighter">
+                                RegEx_Tester_Utility</h2>
+                            <span
+                                class="px-2 py-0.5 bg-primary/20 border border-primary/50 text-[10px] font-bold text-primary uppercase tracking-widest">Active_Node</span>
+                        </div>
+                        <p class="text-[#ad92c9] text-sm font-mono opacity-80">&gt; Core_Engine • Text_Processing •
+                            v2.1.0</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <button
+                            class="bg-surface-dark hover:bg-primary/20 border-2 border-border-dark px-4 py-2 font-retro text-lg flex items-center gap-2 transition-all">
+                            <span class="material-symbols-outlined text-sm">save</span> SAVE_PRESET
+                        </button>
+                        <a class="flex items-center gap-2 text-gray-400 hover:text-white font-retro text-xl transition-colors"
+                            href="text-tools.html">
+                            <span class="material-symbols-outlined">arrow_back</span> BACK_TO_TOOLS
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-6 lg:p-8">
+                <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Left Column: Input and Config -->
+                    <div class="lg:col-span-8 space-y-6">
+                        <!-- Regex Input -->
+                        <div class="bg-surface-dark border-4 border-primary p-1 shadow-pixel">
+                            <div class="bg-primary px-4 py-2 flex items-center justify-between">
+                                <h3 class="font-retro text-xl text-white tracking-widest">01. REGULAR_EXPRESSION</h3>
+                                <div class="flex gap-2">
+                                    <button onclick="toggleFlag('g')" id="flag-g"
+                                        class="bg-background-dark px-2 text-xs font-mono text-accent-green border border-accent-green/30 hover:bg-surface-dark cursor-pointer">g</button>
+                                    <button onclick="toggleFlag('m')" id="flag-m"
+                                        class="bg-background-dark px-2 text-xs font-mono text-accent-green border border-accent-green/30 hover:bg-surface-dark cursor-pointer">m</button>
+                                    <button onclick="toggleFlag('i')" id="flag-i"
+                                        class="bg-background-dark px-2 text-xs font-mono text-gray-500 border border-border-dark hover:bg-surface-dark cursor-pointer">i</button>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-background-dark">
+                                <div
+                                    class="relative flex items-center font-mono text-2xl md:text-3xl p-4 min-h-[80px] border-2 border-border-dark">
+                                    <span class="text-gray-600 mr-2">/</span>
+                                    <input id="regex-input" type="text"
+                                        class="flex-1 bg-transparent border-none focus:ring-0 text-white font-mono p-0"
+                                        value="(?<name>[A-Z]\w+)\s(\d{2,4})" spellcheck="false" autocomplete="off">
+                                    <span id="flags-display" class="text-gray-600 ml-2">/gm</span>
+                                    <div class="absolute top-0 right-0 h-full w-1 bg-primary animate-pulse"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Test String -->
+                        <div class="bg-surface-dark border-4 border-border-dark p-1">
+                            <div class="bg-border-dark px-4 py-2 flex items-center justify-between">
+                                <h3 class="font-retro text-xl text-white tracking-widest">02. TEST_STRING</h3>
+                                <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Real-time
+                                    matching active</span>
+                            </div>
+                            <div class="relative bg-background-dark p-4 font-mono text-lg min-h-[300px]">
+                                <textarea id="test-string"
+                                    class="absolute inset-0 w-full h-full bg-transparent border-none focus:ring-0 text-white p-4 resize-none z-10"
+                                    spellcheck="false">John 1992
+Alice 88
+Sarah 2023
+Mike 101</textarea>
+                                <!-- The highlight layer would go here in a more complex implementation, simplified for now -->
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex flex-wrap gap-4">
+                            <button id="copy-pattern-btn"
+                                class="bg-primary hover:bg-primary-dark text-white font-retro text-2xl px-8 py-4 shadow-pixel-glow transition-all active:translate-y-1 active:shadow-none border-2 border-white/20">
+                                COPY_PATTERN
+                            </button>
+                            <button
+                                class="bg-surface-dark hover:bg-border-dark text-white font-retro text-2xl px-8 py-4 shadow-pixel-white transition-all active:translate-y-1 active:shadow-none border-2 border-border-dark">
+                                EXPORT_SNIPPET
+                            </button>
+                            <button id="clear-btn"
+                                class="ml-auto bg-red-900/20 hover:bg-red-900/40 text-red-500 font-retro text-2xl px-6 py-4 border-2 border-red-900/50 transition-all">
+                                CLEAR_ALL
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Results -->
+                    <div class="lg:col-span-4 space-y-6">
+                        <div class="bg-background-dark border-4 border-border-dark p-1 flex flex-col h-full">
+                            <div class="bg-border-dark px-4 py-2 flex items-center gap-2 justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-white text-sm">list_alt</span>
+                                    <h3 class="font-retro text-xl text-white tracking-widest uppercase">MATCH_RESULTS
+                                    </h3>
+                                </div>
+                                <span id="match-count" class="bg-primary px-2 py-0.5 font-retro text-sm">0_FOUND</span>
+                            </div>
+                            <!-- Results Table Container -->
+                            <div class="flex-1 overflow-y-auto max-h-[700px]">
+                                <table class="w-full font-retro text-lg text-left border-collapse">
+                                    <thead class="sticky top-0 bg-surface-dark border-b-2 border-border-dark">
+                                        <tr>
+                                            <th
+                                                class="p-3 text-primary uppercase tracking-widest border-r border-border-dark">
+                                                #</th>
+                                            <th
+                                                class="p-3 text-primary uppercase tracking-widest border-r border-border-dark">
+                                                Value</th>
+                                            <th class="p-3 text-primary uppercase tracking-widest">Group</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="results-body" class="divide-y divide-border-dark/50">
+                                        <!-- Rows generated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Stats Footer -->
+                            <div class="p-4 bg-surface-dark border-t-2 border-border-dark">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="space-y-1">
+                                        <p class="text-[10px] text-gray-500 uppercase font-mono">Total Execution</p>
+                                        <p id="execution-time" class="font-retro text-xl text-accent-green">0.00ms</p>
+                                    </div>
+                                    <div class="space-y-1 text-right">
+                                        <p class="text-[10px] text-gray-500 uppercase font-mono">Groups Defined</p>
+                                        <p id="group-count" class="font-retro text-xl text-primary">0</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer
+                class="mt-auto px-8 py-3 border-t-2 border-border-dark bg-background-dark flex items-center justify-between text-[10px] font-mono text-gray-500 uppercase tracking-[0.2em]">
+                <div class="flex gap-6">
+                    <span>CPU_LOAD: 12%</span>
+                    <span>MEM_USAGE: 256MB</span>
+                </div>
+                <div>
+                    SESSION_ID: 8F2A-0041-B892
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script src="js/regex-tool.js"></script>
+</body>
+
+</html>

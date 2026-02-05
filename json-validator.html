@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>JSON Validator &amp; Formatter | Web Tool Hub</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#1e1427",
+                        "border-dark": "#362348",
+                        "text-muted": "#ad92c9",
+                        "success": "#10b981",
+                        "error": "#ef4444"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2a1d35 1px, transparent 1px), linear-gradient(to bottom, #2a1d35 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #362348;
+            border-radius: 2px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .grid-bg {
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        .pixel-border {
+            box-shadow:
+                0 -2px 0 0 #362348,
+                0 2px 0 0 #362348,
+                -2px 0 0 0 #362348,
+                2px 0 0 0 #362348;
+        }
+
+        .pixel-button {
+            position: relative;
+            background: #1e1427;
+            border: 2px solid #362348;
+            box-shadow:
+                inset -2px -2px 0px 0px #11091a,
+                inset 2px 2px 0px 0px #4b3464;
+            transition: all 0.1s;
+        }
+
+        .pixel-button:hover {
+            border-color: #7f13ec;
+        }
+
+        .pixel-button:active {
+            box-shadow:
+                inset 2px 2px 0px 0px #11091a,
+                inset -2px -2px 0px 0px #4b3464;
+            transform: translateY(1px);
+        }
+
+        .pixel-button-primary {
+            background: #7f13ec;
+            border: 2px solid #a855f7;
+            box-shadow:
+                inset -2px -2px 0px 0px #4b0082,
+                inset 2px 2px 0px 0px #a855f7;
+        }
+
+        .pixel-banner-valid {
+            background: #064e3b;
+            border: 2px solid #10b981;
+            box-shadow: 2px 2px 0px 0px #022c22;
+        }
+
+        .pixel-banner-error {
+            background: #7f1d1d;
+            border: 2px solid #ef4444;
+            box-shadow: 2px 2px 0px 0px #450a0a;
+        }
+
+        .editor-container {
+            min-height: calc(100vh - 280px);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+    <div class="fixed inset-0 pointer-events-none z-0 grid-bg bg-grid-pattern opacity-20"></div>
+    <div class="relative z-10 flex flex-col h-full grow">
+        <header class="w-full border-b border-border-dark bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center gap-3">
+                        <a href="utilities.html" class="mr-2 text-text-muted hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                        </a>
+                        <div class="size-8 bg-primary rounded flex items-center justify-center text-white">
+                            <span class="material-symbols-outlined text-[20px]">data_object</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <h2 class="text-white text-lg font-black tracking-tight leading-none uppercase">JSON
+                                Validator</h2>
+                            <span class="text-primary text-[10px] font-mono tracking-widest uppercase">Tool Module
+                                v1.0</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="hidden md:flex items-center gap-4 mr-4">
+                            <span class="text-[10px] font-mono text-text-muted uppercase">Schema:</span>
+                            <div class="flex gap-2">
+                                <span
+                                    class="px-2 py-0.5 bg-primary/20 border border-primary/40 text-primary text-[10px] font-mono">NONE</span>
+                                <span
+                                    class="px-2 py-0.5 bg-surface-dark border border-border-dark text-text-muted text-[10px] font-mono hover:text-white cursor-pointer">LOAD...</span>
+                            </div>
+                        </div>
+                        <div class="h-8 w-px bg-border-dark mx-2"></div>
+                        <div class="flex gap-2">
+                            <a href="settings.html"
+                                class="flex items-center justify-center size-9 rounded hover:bg-border-dark text-text-muted hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">settings</span>
+                            </a>
+                            <a href="profile.html"
+                                class="ml-2 bg-center bg-no-repeat aspect-square bg-cover rounded size-9 border border-border-dark hover:ring-2 hover:ring-primary transition-all"
+                                style="background: linear-gradient(135deg, var(--color-primary) 0%, #ad92c9 100%);"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col">
+            <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <button id="prettify-btn"
+                        class="pixel-button-primary px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">auto_fix_high</span>
+                        Prettify
+                    </button>
+                    <button id="minify-btn"
+                        class="pixel-button px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">compress</span>
+                        Minify
+                    </button>
+                    <button
+                        class="pixel-button px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2 opacity-50 cursor-not-allowed">
+                        <span class="material-symbols-outlined text-sm">schema</span>
+                        Schema Support
+                    </button>
+                </div>
+                <!-- Status Indicators -->
+                <div class="flex items-center gap-4">
+                    <div id="status-valid" class="pixel-banner-valid px-4 py-1.5 flex items-center gap-2 hidden">
+                        <div class="size-2 bg-success animate-pulse"></div>
+                        <span class="text-[10px] font-mono font-black text-white uppercase tracking-widest">Status:
+                            Valid</span>
+                    </div>
+                    <div id="status-error" class="pixel-banner-error px-4 py-1.5 flex items-center gap-2 hidden">
+                        <div class="size-2 bg-red-400 animate-pulse"></div>
+                        <span class="text-[10px] font-mono font-black text-white uppercase tracking-widest">Status:
+                            Invalid</span>
+                    </div>
+
+                    <button id="copy-btn"
+                        class="pixel-button px-3 py-1.5 text-xs text-text-muted hover:text-white cursor-pointer"
+                        title="Copy Output">
+                        <span class="material-symbols-outlined text-sm">content_copy</span>
+                    </button>
+                    <button id="clear-btn"
+                        class="pixel-button px-3 py-1.5 text-xs text-text-muted hover:text-white cursor-pointer"
+                        title="Clear">
+                        <span class="material-symbols-outlined text-sm">delete</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Editor Grid -->
+            <div
+                class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-px bg-border-dark border-2 border-border-dark shadow-2xl editor-container overflow-hidden">
+                <!-- INPUT -->
+                <div class="bg-background-dark flex flex-col">
+                    <div
+                        class="px-4 py-2 bg-surface-dark border-b border-border-dark flex justify-between items-center">
+                        <span
+                            class="text-[10px] font-mono text-text-muted uppercase tracking-widest flex items-center gap-2">
+                            <span class="size-1.5 bg-primary"></span> RAW_INPUT.JSON
+                        </span>
+                        <span class="text-[10px] font-mono text-text-muted/50 uppercase">UTF-8</span>
+                    </div>
+                    <div class="flex-1 relative">
+                        <textarea id="json-input"
+                            class="absolute inset-0 w-full h-full bg-transparent border-none text-primary font-mono text-sm p-6 focus:ring-0 resize-none leading-relaxed"
+                            spellcheck="false" placeholder="Paste your JSON here...">{
+  "id": "7c3671e0b9214c1583928d08a0d58470",
+  "name": "Web Tool Hub",
+  "version": "3.1.0",
+  "active": true,
+  "config": {
+    "theme": "dark-violet",
+    "offline_mode": true
+  }
+}</textarea>
+                    </div>
+                </div>
+
+                <!-- OUTPUT -->
+                <div class="bg-surface-dark flex flex-col relative">
+                    <div
+                        class="px-4 py-2 bg-background-dark/50 border-b border-border-dark flex justify-between items-center">
+                        <span
+                            class="text-[10px] font-mono text-text-muted uppercase tracking-widest flex items-center gap-2">
+                            <span class="size-1.5 bg-success"></span> VALIDATED_OUTPUT.JSON
+                        </span>
+                        <div class="flex gap-4">
+                            <span id="line-count" class="text-[10px] font-mono text-text-muted/50 uppercase">Lines:
+                                0</span>
+                            <span id="byte-size" class="text-[10px] font-mono text-text-muted/50 uppercase">Size:
+                                0B</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 relative overflow-auto bg-surface-dark">
+                        <!-- Content goes here -->
+                        <pre id="json-output"
+                            class="p-6 font-mono text-sm leading-relaxed overflow-x-auto text-white"></pre>
+                    </div>
+
+                    <!-- Error Overlay (Hidden by default) -->
+                    <div id="error-overlay"
+                        class="absolute bottom-0 left-0 right-0 bg-red-900/90 border-t-2 border-red-500 p-4 transition-transform translate-y-full">
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-white text-lg font-bold">error</span>
+                            <div>
+                                <span
+                                    class="text-[10px] font-mono font-black text-white uppercase tracking-widest block">Status:
+                                    Syntax Error</span>
+                                <span id="error-message" class="text-xs font-mono text-red-200"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="w-full border-t border-border-dark bg-background-dark/95 backdrop-blur-sm mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div
+                    class="flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] font-mono text-text-muted">
+                    <div class="flex items-center gap-6">
+                        <span class="flex items-center gap-1 uppercase">
+                            <span class="material-symbols-outlined text-[14px]">bolt</span>
+                            PROCESS_TIME: <span id="process-time">0ms</span>
+                        </span>
+                        <span class="flex items-center gap-1 uppercase">
+                            <span class="material-symbols-outlined text-[14px]">save</span>
+                            AUTO_SAVE: ON
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-4 text-center md:text-right">
+                        <span>MODE: LOCAL_SANDBOX</span>
+                        <span class="hidden sm:inline text-border-dark">|</span>
+                        <span>OFFLINE WORKSTATION ACTIVE</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/json-validator.js"></script>
+</body>
+
+</html>

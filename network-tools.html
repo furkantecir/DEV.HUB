@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Tool Hub - Network Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=VT323&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                        "success": "#22c55e",
+                        "warning": "#eab308",
+                        "error": "#ef4444",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "none": "0",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                        "pixel-green": "4px 4px 0px 0px #22c55e",
+                    }
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .blinking-cursor::after {
+            content: "█";
+            animation: blink 1s step-end infinite;
+            margin-left: 2px;
+            color: #7f13ec;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+    <div class="flex h-screen w-full overflow-hidden">
+        <!-- SIDEBAR -->
+        <aside class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="text-tools.html">
+                    <span
+                        class="material-symbols-outlined group-hover:text-primary transition-colors">description</span>
+                    <span class="font-retro text-xl">Text Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm transition-transform active:translate-y-1 active:shadow-none"
+                    href="network-tools.html">
+                    <span class="material-symbols-outlined">public</span>
+                    <span class="font-retro text-xl">Network</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="settings.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                    <span class="font-retro text-xl">Settings</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <!-- Grid Background -->
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+
+            <!-- HEADER -->
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-white font-retro text-4xl leading-none">Network & Security</h2>
+                            <span
+                                class="px-2 py-0.5 rounded-none bg-border-dark border border-white/10 text-[10px] font-bold text-primary uppercase tracking-widest">v2.1.0</span>
+                        </div>
+                        <p class="text-[#ad92c9] text-sm font-mono opacity-80 blinking-cursor">&gt; Analyzing local
+                            network environment...</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-surface-dark border border-border-dark px-3 py-1 flex items-center gap-2">
+                            <span class="text-xs text-gray-400 uppercase font-mono">My IP:</span>
+                            <span class="text-green-400 font-mono text-sm">127.0.0.1</span>
+                        </div>
+                        <button
+                            class="bg-surface-dark hover:bg-primary text-white border-2 border-primary w-10 h-10 flex items-center justify-center shadow-pixel transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:bg-primary-dark">
+                            <span class="material-symbols-outlined">refresh</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT -->
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="max-w-7xl mx-auto pb-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <!-- LEFT COLUMN (8 cols) -->
+                        <div class="lg:col-span-8 flex flex-col gap-6">
+                            <!-- IP Information -->
+                            <div
+                                class="bg-surface-dark border-2 border-border-dark p-6 relative group hover:border-primary transition-colors">
+                                <div class="flex items-center justify-between mb-4 border-b border-white/5 pb-2">
+                                    <h3 class="text-white font-retro text-2xl flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary">dns</span>
+                                        IP_INFORMATION
+                                    </h3>
+                                    <span
+                                        class="bg-green-500/20 text-green-400 border border-green-500/30 px-2 py-0.5 text-xs font-mono rounded-none">CONNECTED</span>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-sm">
+                                    <div class="bg-background-dark p-3 border border-border-dark flex flex-col">
+                                        <span class="text-gray-500 text-xs mb-1">Hostname</span>
+                                        <span class="text-white">dev-station-alpha</span>
+                                    </div>
+                                    <div class="bg-background-dark p-3 border border-border-dark flex flex-col">
+                                        <span class="text-gray-500 text-xs mb-1">Public IP</span>
+                                        <span
+                                            class="text-primary cursor-pointer hover:underline decoration-dashed">192.0.2.145</span>
+                                    </div>
+                                    <div class="bg-background-dark p-3 border border-border-dark flex flex-col">
+                                        <span class="text-gray-500 text-xs mb-1">Gateway</span>
+                                        <span class="text-white">192.168.1.1</span>
+                                    </div>
+                                    <div class="bg-background-dark p-3 border border-border-dark flex flex-col">
+                                        <span class="text-gray-500 text-xs mb-1">ISP</span>
+                                        <span class="text-white">Cyberdyne Systems</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- DNS Lookup & Header Checker -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- DNS Lookup -->
+                                <div
+                                    class="bg-surface-dark border-2 border-border-dark p-6 hover:border-primary transition-colors h-full flex flex-col">
+                                    <h3 class="text-white font-retro text-xl mb-4 flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-gray-400">travel_explore</span>
+                                        DNS Lookup
+                                    </h3>
+                                    <div class="flex gap-2 mb-4">
+                                        <input
+                                            class="flex-1 bg-background-dark border-2 border-border-dark text-white font-mono text-sm p-2 focus:border-primary focus:ring-0 placeholder-gray-600"
+                                            placeholder="example.com" type="text" />
+                                        <button
+                                            class="bg-primary text-white px-3 font-bold text-sm border-2 border-primary hover:bg-primary-dark">DIG</button>
+                                    </div>
+                                    <div
+                                        class="bg-background-dark border border-border-dark p-3 font-mono text-xs text-gray-300 flex-1 overflow-auto min-h-[100px]">
+                                        <div class="text-gray-500">// Waiting for input...</div>
+                                    </div>
+                                </div>
+
+                                <!-- Header Checker -->
+                                <div
+                                    class="bg-surface-dark border-2 border-border-dark p-6 hover:border-primary transition-colors h-full flex flex-col">
+                                    <h3 class="text-white font-retro text-xl mb-4 flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-gray-400">http</span>
+                                        Header Checker
+                                    </h3>
+                                    <div class="flex gap-2 mb-4">
+                                        <select
+                                            class="bg-background-dark border-2 border-border-dark text-white font-mono text-sm p-2 focus:border-primary focus:ring-0">
+                                            <option>GET</option>
+                                            <option>POST</option>
+                                            <option>HEAD</option>
+                                        </select>
+                                        <input
+                                            class="flex-1 bg-background-dark border-2 border-border-dark text-white font-mono text-sm p-2 focus:border-primary focus:ring-0 placeholder-gray-600"
+                                            placeholder="https://api.dev" type="text" />
+                                        <button
+                                            class="bg-white/10 hover:bg-white/20 text-white px-3 border-2 border-transparent">
+                                            <span class="material-symbols-outlined text-sm">send</span>
+                                        </button>
+                                    </div>
+                                    <div
+                                        class="bg-background-dark border border-border-dark p-3 font-mono text-xs text-gray-300 flex-1 overflow-auto min-h-[100px]">
+                                        <div class="flex justify-between">
+                                            <span class="text-green-400">200 OK</span>
+                                            <span class="text-gray-500">124ms</span>
+                                        </div>
+                                        <div class="mt-2 text-gray-400">content-type: application/json</div>
+                                        <div class="text-gray-400">server: nginx</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- JWT Debugger -->
+                            <div
+                                class="bg-surface-dark border-2 border-border-dark p-6 hover:border-primary transition-colors">
+                                <div class="flex items-center justify-between mb-4 border-b border-white/5 pb-2">
+                                    <h3 class="text-white font-retro text-2xl flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-warning">key</span>
+                                        JWT_DEBUGGER
+                                    </h3>
+                                    <div class="flex gap-2">
+                                        <button
+                                            class="text-xs text-primary font-mono hover:text-white underline decoration-dashed">[PASTE
+                                            CLIPBOARD]</button>
+                                        <button
+                                            class="text-xs text-gray-400 font-mono hover:text-white">[CLEAR]</button>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border-2 border-border-dark">
+                                    <div class="border-b md:border-b-0 md:border-r border-border-dark p-0">
+                                        <div
+                                            class="bg-background-dark px-3 py-1 text-xs text-gray-400 border-b border-border-dark">
+                                            ENCODED</div>
+                                        <textarea
+                                            class="w-full h-40 bg-transparent text-primary font-mono text-xs p-3 focus:ring-0 border-0 resize-none leading-relaxed"
+                                            spellcheck="false">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</textarea>
+                                    </div>
+                                    <div class="p-0">
+                                        <div
+                                            class="bg-background-dark px-3 py-1 text-xs text-gray-400 border-b border-border-dark">
+                                            DECODED PAYLOAD</div>
+                                        <div
+                                            class="w-full h-40 bg-transparent text-white font-mono text-xs p-3 overflow-auto">
+                                            <span class="text-purple-400">{</span><br />
+                                            <span class="text-blue-400">"sub"</span>: <span
+                                                class="text-green-400">"1234567890"</span>,<br />
+                                            <span class="text-blue-400">"name"</span>: <span
+                                                class="text-green-400">"John Doe"</span>,<br />
+                                            <span class="text-blue-400">"iat"</span>: <span
+                                                class="text-warning">1516239022</span><br />
+                                            <span class="text-purple-400">}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 flex items-center gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                    <span class="text-sm font-mono text-gray-300">Signature Verified</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN (4 cols) -->
+                        <div class="lg:col-span-4 flex flex-col gap-6">
+                            <!-- Port Scanner -->
+                            <div
+                                class="bg-surface-dark border-2 border-border-dark flex flex-col h-full max-h-[500px] hover:border-primary transition-colors">
+                                <div class="p-4 border-b border-border-dark bg-background-dark/50">
+                                    <h3 class="text-white font-retro text-xl flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary">radar</span>
+                                        PORT_SCANNER
+                                    </h3>
+                                    <p class="text-xs text-gray-500 font-mono mt-1">Target: localhost (127.0.0.1)</p>
+                                </div>
+                                <div class="p-4 flex-1 overflow-y-auto">
+                                    <table class="w-full text-left font-mono text-xs">
+                                        <thead>
+                                            <tr class="text-gray-500 border-b border-border-dark">
+                                                <th class="pb-2 font-normal">PORT</th>
+                                                <th class="pb-2 font-normal">SERVICE</th>
+                                                <th class="pb-2 font-normal text-right">STATUS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-border-dark">
+                                            <tr class="group">
+                                                <td class="py-2 text-white">22</td>
+                                                <td class="py-2 text-gray-400">SSH</td>
+                                                <td class="py-2 text-right text-red-400">CLOSED</td>
+                                            </tr>
+                                            <tr class="group">
+                                                <td class="py-2 text-white">80</td>
+                                                <td class="py-2 text-gray-400">HTTP</td>
+                                                <td class="py-2 text-right text-green-400">OPEN</td>
+                                            </tr>
+                                            <tr class="group">
+                                                <td class="py-2 text-white">443</td>
+                                                <td class="py-2 text-gray-400">HTTPS</td>
+                                                <td class="py-2 text-right text-green-400">OPEN</td>
+                                            </tr>
+                                            <tr class="group">
+                                                <td class="py-2 text-white">3000</td>
+                                                <td class="py-2 text-gray-400">NODE</td>
+                                                <td class="py-2 text-right text-green-400">OPEN</td>
+                                            </tr>
+                                            <tr class="group">
+                                                <td class="py-2 text-white">5432</td>
+                                                <td class="py-2 text-gray-400">POSTGRES</td>
+                                                <td class="py-2 text-right text-red-400">CLOSED</td>
+                                            </tr>
+                                            <tr class="group">
+                                                <td class="py-2 text-white">8080</td>
+                                                <td class="py-2 text-gray-400">ALT-HTTP</td>
+                                                <td class="py-2 text-right text-red-400">CLOSED</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="p-4 border-t border-border-dark bg-background-dark/30">
+                                    <button
+                                        class="w-full bg-primary/10 hover:bg-primary/20 border border-primary text-primary font-mono text-xs py-2 uppercase tracking-wide transition-colors">
+                                        Start Scan
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Speed Check -->
+                            <div
+                                class="bg-surface-dark border-2 border-border-dark p-6 hover:border-primary transition-colors">
+                                <h3 class="text-white font-retro text-xl mb-4 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-gray-400">speed</span>
+                                    SPEED_CHECK
+                                </h3>
+                                <div class="flex items-end justify-between mb-2">
+                                    <div class="flex flex-col">
+                                        <span class="text-gray-500 text-xs font-mono">DOWNLOAD</span>
+                                        <span class="text-white text-3xl font-retro tracking-widest">245<span
+                                                class="text-sm text-gray-500 ml-1">Mbps</span></span>
+                                    </div>
+                                    <div class="flex flex-col text-right">
+                                        <span class="text-gray-500 text-xs font-mono">UPLOAD</span>
+                                        <span class="text-white text-3xl font-retro tracking-widest">85<span
+                                                class="text-sm text-gray-500 ml-1">Mbps</span></span>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-background-dark h-1.5 mt-2 overflow-hidden flex">
+                                    <div class="bg-primary h-full w-[65%]"></div>
+                                    <div class="bg-border-dark h-full w-[35%]"></div>
+                                </div>
+                                <div class="flex justify-between mt-2 text-[10px] text-gray-500 font-mono">
+                                    <span>PING: 12ms</span>
+                                    <span>JITTER: 3ms</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modular JavaScript -->
+    <script src="js/storage.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/tasks.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/network-tools.js"></script>
+</body>
+
+</html>

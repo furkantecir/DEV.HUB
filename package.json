@@ -1,0 +1,26 @@
+{
+  "name": "focustime-app",
+  "version": "1.0.0",
+  "description": "A fully offline productivity and focus management application",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite preview --port 8080"
+  },
+  "keywords": [
+    "productivity",
+    "pomodoro",
+    "focus",
+    "task-manager",
+    "offline",
+    "local-storage"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "type": "module"
+}

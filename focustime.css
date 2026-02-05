@@ -1,0 +1,142 @@
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #2563EB;
+}
+
+/* Dark mode scrollbar */
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #2563EB;
+}
+
+/* Slide up animation */
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slide-up 0.6s ease-out;
+}
+
+/* Timer pulse animation */
+@keyframes timer-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+.timer-running #timer-display {
+    animation: timer-pulse 2s ease-in-out infinite;
+}
+
+/* Task card animations */
+.task-card {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Progress circle animation */
+@keyframes progress-fill {
+    from {
+        stroke-dashoffset: 264;
+    }
+}
+
+#progress-circle {
+    animation: progress-fill 1s ease-out;
+}
+
+/* Button hover effects */
+#play-pause-btn:hover {
+    box-shadow: 0 10px 40px -10px rgba(37, 99, 235, 0.6);
+}
+
+/* Tab active state */
+.task-tab.active {
+    border-color: #2563EB;
+    color: #1e293b;
+}
+
+.dark .task-tab.active {
+    color: white;
+}
+
+/* Notification badge pulse */
+@keyframes badge-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+}
+
+header button .bg-red-500 {
+    animation: badge-pulse 2s ease-in-out infinite;
+}
+
+/* Smooth transitions */
+* {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Prevent text selection on timer */
+#timer-display {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Material Icons styling */
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}

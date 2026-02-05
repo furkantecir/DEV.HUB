@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings Debug Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #191022;
+            color: white;
+        }
+
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #7f13ec;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #7f13ec;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #6b10c6;
+        }
+
+        #output {
+            background: #000;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .log {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #7f13ec;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔧 Settings Module Debug Test</h1>
+
+    <div class="test-section">
+        <h2>1. Storage Test</h2>
+        <button onclick="testStorage()">Test LocalStorage</button>
+        <button onclick="clearStorage()">Clear Storage</button>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Settings Module Test</h2>
+        <button onclick="testSettings()">Load Settings</button>
+        <button onclick="changeTheme()">Toggle Theme</button>
+        <button onclick="changeAccent()">Change Accent</button>
+        <button onclick="changeLanguage()">Change Language</button>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Export/Import Test</h2>
+        <button onclick="testExport()">Export Data</button>
+        <button onclick="testImport()">Test Import</button>
+    </div>
+
+    <div id="output"></div>
+
+    <!-- Load modules -->
+    <script src="js/storage.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/tasks.js"></script>
+    <script src="js/timer.js"></script>
+
+    <script>
+        const output = document.getElementById('output');
+
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = 'log';
+            div.style.borderLeftColor = type === 'error' ? '#ef4444' : type === 'success' ? '#22c55e' : '#7f13ec';
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            output.insertBefore(div, output.firstChild);
+        }
+
+        function testStorage() {
+            log('Testing Storage module...');
+            try {
+                Storage.set('test_key', { value: 'test_data', timestamp: Date.now() });
+                const data = Storage.get('test_key');
+                log(`✅ Storage working! Data: ${JSON.stringify(data)}`, 'success');
+            } catch (error) {
+                log(`❌ Storage error: ${error.message}`, 'error');
+            }
+        }
+
+        function clearStorage() {
+            if (confirm('Clear all storage?')) {
+                Storage.clearAll();
+                Storage.init();
+                log('✅ Storage cleared and reinitialized', 'success');
+            }
+        }
+
+        function testSettings() {
+            log('Loading Settings...');
+            try {
+                const settings = Settings.settings;
+                log(`Current Settings: ${JSON.stringify(settings, null, 2)}`, 'success');
+                log(`Theme: ${settings.theme}`, 'info');
+                log(`Accent: ${settings.accentColor}`, 'info');
+                log(`Language: ${settings.language}`, 'info');
+            } catch (error) {
+                log(`❌ Settings error: ${error.message}`, 'error');
+            }
+        }
+
+        function changeTheme() {
+            const currentTheme = Settings.get('theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            log(`Changing theme from ${currentTheme} to ${newTheme}...`);
+            Settings.set('theme', newTheme);
+            log(`✅ Theme changed! HTML class: ${document.documentElement.className}`, 'success');
+        }
+
+        function changeAccent() {
+            const colors = ['#7f13ec', '#9d4edd', '#5a189a'];
+            const current = Settings.get('accentColor');
+            const currentIndex = colors.indexOf(current);
+            const newColor = colors[(currentIndex + 1) % colors.length];
+            log(`Changing accent from ${current} to ${newColor}...`);
+            Settings.set('accentColor', newColor);
+            log(`✅ Accent changed! Check CSS variable: ${getComputedStyle(document.documentElement).getPropertyValue('--color-primary')}`, 'success');
+        }
+
+        function changeLanguage() {
+            const current = Settings.get('language');
+            const newLang = current === 'en' ? 'tr' : 'en';
+            log(`Changing language from ${current} to ${newLang}...`);
+            Settings.set('language', newLang);
+            log(`✅ Language changed!`, 'success');
+        }
+
+        function testExport() {
+            log('Exporting data...');
+            try {
+                const data = Storage.exportData();
+                log(`✅ Export successful! Size: ${JSON.stringify(data).length} bytes`, 'success');
+                log(`Data keys: ${Object.keys(data).join(', ')}`, 'info');
+
+                // Download
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `debug-export-${Date.now()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                log('📥 File downloaded!', 'success');
+            } catch (error) {
+                log(`❌ Export error: ${error.message}`, 'error');
+            }
+        }
+
+        function testImport() {
+            log('Import test - check if data has values...');
+            const data = Storage.exportData();
+            log(`TASKS: ${JSON.stringify(data.TASKS)}`, 'info');
+            log(`SETTINGS: ${JSON.stringify(data.SETTINGS)}`, 'info');
+            log(`STATS: ${JSON.stringify(data.STATS)}`, 'info');
+        }
+
+        // Auto-run on load
+        window.addEventListener('DOMContentLoaded', () => {
+            log('🚀 Debug page loaded', 'success');
+            log('Modules loaded: Storage, Settings, Tasks, Timer', 'info');
+            testSettings();
+        });
+    </script>
+</body>
+
+</html>

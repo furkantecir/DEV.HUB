@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - JSON Formatter &amp; Validator</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;family=Fira+Code:wght@400;500&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                        "neon-purple": "#bc13fe",
+                        "neon-green": "#39ff14"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                        "mono": ["Fira Code", "monospace"],
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-green": "4px 4px 0px 0px #39ff14",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .code-editor-container {
+            background-image:
+                linear-gradient(rgba(77, 50, 103, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(77, 50, 103, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .line-numbers {
+             counter-reset: line;
+        }
+        
+        .line-numbers > span {
+            counter-increment: line;
+            display: block;
+            text-align: right;
+            padding-right: 8px;
+            color: rgba(127, 19, 236, 0.4);
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark font-display text-white antialiased overflow-hidden">
+    <div class="flex h-screen w-full overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="hidden md:flex flex-col w-64 border-r-4 border-primary bg-background-dark h-full shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm"
+                    href="text-tools.html">
+                    <span class="material-symbols-outlined">description</span>
+                    <span class="font-retro text-xl">Text Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="network-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">public</span>
+                    <span class="font-retro text-xl">Network</span>
+                </a>
+                <div class="h-1 bg-border-dark my-4 mx-2"></div>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="settings.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                    <span class="font-retro text-xl">Settings</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="profile.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">person</span>
+                    <span class="font-retro text-xl">Profile</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t-4 border-primary">
+                <div class="bg-surface-dark p-3 border-2 border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-neon-green rounded-full"></div>
+                    <span class="font-retro text-lg text-neon-green">System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <header class="w-full border-b-4 border-primary bg-background-dark z-10 shrink-0">
+                <div class="max-w-full mx-auto px-6 py-4 flex items-center justify-between">
+                    <div class="flex flex-col">
+                        <div class="flex items-center gap-4">
+                            <a class="text-primary hover:text-neon-purple transition-colors" href="text-tools.html">
+                                <span class="material-symbols-outlined text-3xl">arrow_back</span>
+                            </a>
+                            <h2 class="text-white font-retro text-3xl tracking-wide uppercase">
+                                JSON_FORMATTER_&amp;_VALIDATOR</h2>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <div class="flex flex-col items-end">
+                            <span class="text-[10px] font-mono text-primary uppercase tracking-[0.2em]">Current
+                                Session</span>
+                            <span class="font-retro text-xl text-white">TEMP_BUFFER_01</span>
+                        </div>
+                        <div class="w-px h-10 bg-border-dark"></div>
+                        <button id="save-file-btn"
+                            class="bg-primary hover:bg-primary-dark text-white px-6 py-2 border-2 border-white/20 shadow-pixel text-sm font-bold tracking-widest uppercase transition-all active:translate-y-1 active:shadow-none">
+                            Save File
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="flex-1 flex overflow-hidden p-6 gap-6">
+                <!-- Toolbar -->
+                <div class="w-20 flex flex-col gap-4 shrink-0">
+                    <button id="prettify-btn"
+                        class="w-16 h-16 bg-surface-dark border-4 border-primary flex flex-col items-center justify-center hover:bg-primary group transition-colors shadow-pixel-sm"
+                        title="Prettify">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white">auto_fix_high</span>
+                        <span class="text-[8px] font-bold mt-1 text-white uppercase">Prettify</span>
+                    </button>
+                    <button id="minify-btn"
+                        class="w-16 h-16 bg-surface-dark border-4 border-primary flex flex-col items-center justify-center hover:bg-primary group transition-colors shadow-pixel-sm"
+                        title="Minify">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white">compress</span>
+                        <span class="text-[8px] font-bold mt-1 text-white uppercase">Minify</span>
+                    </button>
+                    <button id="validate-btn"
+                        class="w-16 h-16 bg-surface-dark border-4 border-primary flex flex-col items-center justify-center hover:bg-primary group transition-colors shadow-pixel-sm"
+                        title="Validate">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white">fact_check</span>
+                        <span class="text-[8px] font-bold mt-1 text-white uppercase">Validate</span>
+                    </button>
+                    <button id="copy-btn"
+                        class="w-16 h-16 bg-surface-dark border-4 border-primary flex flex-col items-center justify-center hover:bg-primary group transition-colors shadow-pixel-sm"
+                        title="Copy">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white">content_copy</span>
+                        <span class="text-[8px] font-bold mt-1 text-white uppercase">Copy</span>
+                    </button>
+                    <div class="flex-1"></div>
+                    <button id="clear-btn"
+                        class="w-16 h-16 bg-surface-dark border-4 border-red-900 flex flex-col items-center justify-center hover:bg-red-600 group transition-colors shadow-pixel-sm"
+                        title="Clear">
+                        <span class="material-symbols-outlined text-red-500 group-hover:text-white">delete</span>
+                        <span class="text-[8px] font-bold mt-1 text-white uppercase">Clear</span>
+                    </button>
+                </div>
+
+                <!-- Editor -->
+                <div
+                    class="flex-1 flex flex-col border-4 border-primary bg-surface-dark relative code-editor-container">
+                    <div class="h-10 bg-primary/20 border-b-2 border-primary flex items-center px-4 justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 bg-red-500"></div>
+                            <div class="w-2 h-2 bg-yellow-500"></div>
+                            <div class="w-2 h-2 bg-green-500"></div>
+                            <span
+                                class="ml-4 font-mono text-xs text-primary uppercase font-bold tracking-widest">input_data.json</span>
+                        </div>
+                        <span class="font-mono text-[10px] text-primary/60">UTF-8 // JSON</span>
+                    </div>
+                    <div class="flex-1 flex overflow-hidden relative">
+                        <div id="line-numbers"
+                            class="w-12 bg-black/30 border-r border-primary/20 flex flex-col items-center py-4 font-mono text-xs text-primary/40 select-none overflow-hidden line-numbers">
+                            <!-- Line numbers generated by JS -->
+                            <span>1</span>
+                        </div>
+                        <textarea id="json-input"
+                            class="flex-1 bg-transparent p-4 font-mono text-sm resize-none focus:outline-none text-neon-purple leading-relaxed"
+                            placeholder='{ "input": "Paste JSON here..." }' spellcheck="false"></textarea>
+                    </div>
+                    <div
+                        class="h-12 bg-background-dark border-t-4 border-primary flex items-center px-6 justify-between">
+                        <div class="flex items-center gap-8 font-retro text-lg tracking-widest text-primary/80">
+                            <div class="flex items-center gap-2">
+                                <span>LN:</span>
+                                <span id="ln-count" class="text-white">0</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span>CHARS:</span>
+                                <span id="char-count" class="text-white">0</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div id="status-indicator"
+                                class="hidden flex items-center bg-neon-green text-background-dark px-4 py-1 font-retro text-xl border-b-4 border-r-4 border-green-800 shadow-none">
+                                <span id="status-icon"
+                                    class="material-symbols-outlined text-lg mr-2">check_circle</span>
+                                <span id="status-text">VALID</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute inset-0 pointer-events-none opacity-[0.02] -z-10"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 40px 40px;">
+            </div>
+        </main>
+    </div>
+
+    <script src="js/json-tool.js"></script>
+</body>
+
+</html>

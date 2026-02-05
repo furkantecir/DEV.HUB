@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - Live Markdown Previewer</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "none": "0",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+        .markdown-preview h1 { @apply text-3xl font-bold mb-4 border-b border-border-dark pb-2 text-white font-display; }
+        .markdown-preview h2 { @apply text-2xl font-bold mt-6 mb-3 text-white font-display; }
+        .markdown-preview h3 { @apply text-xl font-bold mt-4 mb-2 text-white font-display; }
+        .markdown-preview p { @apply mb-4 text-gray-300 leading-relaxed font-display; }
+        .markdown-preview ul { @apply list-disc ml-6 mb-4 text-gray-300; }
+        .markdown-preview ol { @apply list-decimal ml-6 mb-4 text-gray-300; }
+        .markdown-preview code { @apply bg-background-dark border border-border-dark px-1.5 py-0.5 rounded font-mono text-primary text-sm; }
+        .markdown-preview pre { @apply bg-background-dark p-4 border-2 border-border-dark mb-4 overflow-x-auto rounded-sm; }
+        .markdown-preview pre code { @apply bg-transparent border-none p-0 text-gray-300; }
+        .markdown-preview blockquote { @apply border-l-4 border-primary pl-4 italic text-gray-400 mb-4 bg-primary/5 py-2; }
+        .markdown-preview a { @apply text-primary hover:underline hover:text-primary-dark transition-colors; }
+        .markdown-preview hr { @apply border-t border-border-dark my-6; }
+        .markdown-preview table { @apply w-full border-collapse mb-4; }
+        .markdown-preview th { @apply border-b-2 border-border-dark text-left p-2 text-white font-bold; }
+        .markdown-preview td { @apply border-b border-border-dark p-2 text-gray-300; }
+    </style>
+</head>
+
+<body class="bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+    <div class="flex h-screen w-full overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div
+                    class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20 text-white">
+                    <span class="material-symbols-outlined text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span
+                        class="material-symbols-outlined group-hover:text-primary transition-colors text-xl">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm transition-transform active:translate-y-1 active:shadow-none"
+                    href="text-tools.html">
+                    <span class="material-symbols-outlined text-xl">description</span>
+                    <span class="font-retro text-xl">Text Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="image-tools.html">
+                    <span
+                        class="material-symbols-outlined group-hover:text-primary transition-colors text-xl">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="network-tools.html">
+                    <span
+                        class="material-symbols-outlined group-hover:text-primary transition-colors text-xl">public</span>
+                    <span class="font-retro text-xl">Network</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="settings.html">
+                    <span
+                        class="material-symbols-outlined group-hover:text-primary transition-colors text-xl">settings</span>
+                    <span class="font-retro text-xl">Settings</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="profile.html">
+                    <span
+                        class="material-symbols-outlined group-hover:text-primary transition-colors text-xl">person</span>
+                    <span class="font-retro text-xl">Profile</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <a class="w-10 h-10 flex items-center justify-center border-2 border-border-dark hover:border-primary text-gray-400 hover:text-primary transition-colors"
+                            href="text-tools.html">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                        </a>
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-white font-retro text-4xl leading-none uppercase">Markdown Previewer
+                                </h2>
+                                <span
+                                    class="px-2 py-0.5 rounded-none bg-border-dark border border-white/10 text-[10px] font-bold text-primary uppercase tracking-widest">Live</span>
+                            </div>
+                            <p class="text-[#ad92c9] text-sm font-mono opacity-80">&gt;
+                                text_utilities / markdown_live_preview.exe</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button id="copy-html-btn"
+                            class="flex items-center gap-2 bg-surface-dark hover:bg-primary text-white border-2 border-primary px-4 py-2 shadow-pixel-sm transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none">
+                            <span class="material-symbols-outlined text-[20px]">content_copy</span>
+                            <span class="font-bold text-xs tracking-wide uppercase">Copy HTML</span>
+                        </button>
+                        <button id="export-pdf-btn"
+                            class="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white border-2 border-white/20 px-4 py-2 shadow-pixel-sm transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none">
+                            <span class="material-symbols-outlined text-[20px]">picture_as_pdf</span>
+                            <span class="font-bold text-xs tracking-wide uppercase">Export PDF</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="flex-1 flex overflow-hidden p-6 gap-6 relative z-0">
+                <!-- Input Section -->
+                <div
+                    class="flex-1 flex flex-col bg-surface-dark border-2 border-border-dark shadow-pixel-white relative overflow-hidden">
+                    <div
+                        class="flex items-center justify-between px-4 py-2 bg-background-dark border-b-2 border-border-dark">
+                        <span class="font-retro text-lg text-primary tracking-widest uppercase">Markdown_Input</span>
+                        <div class="flex gap-2">
+                            <div class="w-2 h-2 bg-border-dark"></div>
+                            <div class="w-2 h-2 bg-border-dark"></div>
+                        </div>
+                    </div>
+                    <div class="flex-1 p-0 relative">
+                        <textarea id="markdown-input"
+                            class="w-full h-full bg-transparent text-gray-200 font-mono text-sm p-6 focus:ring-0 border-none resize-none leading-relaxed"
+                            placeholder="# Start typing markdown...
+## Features
+- Live Preview
+- Retro UI
+- PDF Export
+**Bold** and *Italic* text supported."># Live Markdown Previewer v1.0
+This is a modular pixel-style Markdown editor.
+
+## Key Features
+1. **Real-time processing** - See changes as you type.
+2. **Offline ready** - No internet required.
+3. **Pixel Aesthetic** - Optimized for developers.
+
+> "The best way to predict the future is to create it." - Peter Drucker
+
+### Code Sample
+```javascript
+const app = "WebToolHub";
+console.log("System Online");
+```</textarea>
+                    </div>
+                </div>
+
+                <!-- Preview Section -->
+                <div
+                    class="flex-1 flex flex-col bg-background-dark border-2 border-border-dark shadow-pixel-white relative overflow-hidden">
+                    <div
+                        class="flex items-center justify-between px-4 py-2 bg-surface-dark border-b-2 border-border-dark">
+                        <span class="font-retro text-lg text-green-400 tracking-widest uppercase">Live_Preview</span>
+                        <div class="flex gap-2">
+                            <span class="material-symbols-outlined text-gray-500 text-sm">visibility</span>
+                        </div>
+                    </div>
+                    <div id="markdown-preview" class="flex-1 p-6 markdown-preview overflow-y-auto">
+                        <!-- Preview content will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/markdown-tool.js"></script>
+</body>
+
+</html>

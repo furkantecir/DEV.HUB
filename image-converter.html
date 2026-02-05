@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - Image Format Converter</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "none": "0",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                        "neon": "0 0 15px 2px rgba(127, 19, 236, 0.6)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .retro-scanline {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+
+    <!-- Hidden File Input -->
+    <input type="file" id="file-input" multiple accept="image/png, image/jpeg, image/webp" class="hidden" />
+
+    <div class="flex h-screen w-full overflow-hidden">
+        <aside class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm transition-transform active:translate-y-1 active:shadow-none"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <div class="px-4 py-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active Tool</div>
+                <div class="px-4 py-3 bg-surface-dark border-2 border-primary/50 text-primary">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined">transform</span>
+                        <span class="font-retro text-xl uppercase">Converter</span>
+                    </div>
+                </div>
+            </nav>
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <a href="image-tools.html" class="hover:text-primary transition-colors mr-2">
+                                <span class="material-symbols-outlined text-2xl">arrow_back</span>
+                            </a>
+                            <h2 class="text-white font-retro text-4xl leading-none uppercase">Format Converter</h2>
+                            <span
+                                class="px-2 py-0.5 rounded-none bg-primary border border-white/20 text-[10px] font-bold text-white uppercase tracking-widest">Active</span>
+                        </div>
+                        <p class="text-[#ad92c9] text-sm font-mono opacity-80">&gt; WebP • PNG • JPG • AVIF</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button id="add-files-btn"
+                            class="flex items-center gap-2 bg-surface-dark hover:bg-primary text-white border-2 border-primary px-5 py-2 shadow-pixel transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
+                            <span class="material-symbols-outlined text-[18px]">add</span>
+                            <span class="font-retro text-lg tracking-wide">ADD_FILES</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="max-w-7xl mx-auto space-y-8 pb-10">
+                    <section>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="material-symbols-outlined text-primary">target</span>
+                            <h3 class="text-white font-retro text-2xl tracking-widest uppercase">Select Target Format
+                            </h3>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="format-select-container">
+                            <button data-format="image/webp"
+                                class="format-btn group relative bg-primary border-2 border-white/40 p-8 flex flex-col items-center justify-center hover:bg-primary/90 transition-all shadow-pixel">
+                                <span class="font-retro text-5xl text-white mb-2">WEBP</span>
+                                <span class="font-mono text-[10px] text-white/70 uppercase">High Efficiency</span>
+                                <div class="absolute top-2 right-2 check-icon">
+                                    <span class="material-symbols-outlined text-white">check_circle</span>
+                                </div>
+                            </button>
+                            <button data-format="image/png"
+                                class="format-btn group relative bg-surface-dark border-2 border-border-dark p-8 flex flex-col items-center justify-center hover:border-primary transition-all">
+                                <span
+                                    class="font-retro text-5xl text-gray-400 group-hover:text-primary transition-colors">PNG</span>
+                                <span class="font-mono text-[10px] text-gray-500 uppercase">Lossless</span>
+                                <div class="absolute top-2 right-2 check-icon hidden">
+                                    <span class="material-symbols-outlined text-primary">check_circle</span>
+                                </div>
+                            </button>
+                            <button data-format="image/jpeg"
+                                class="format-btn group relative bg-surface-dark border-2 border-border-dark p-8 flex flex-col items-center justify-center hover:border-primary transition-all">
+                                <span
+                                    class="font-retro text-5xl text-gray-400 group-hover:text-primary transition-colors">JPG</span>
+                                <span class="font-mono text-[10px] text-gray-500 uppercase">Standard</span>
+                                <div class="absolute top-2 right-2 check-icon hidden">
+                                    <span class="material-symbols-outlined text-primary">check_circle</span>
+                                </div>
+                            </button>
+                            <button data-format="image/avif" disabled
+                                class="format-btn group relative bg-surface-dark border-2 border-border-dark p-8 flex flex-col items-center justify-center cursor-not-allowed opacity-50">
+                                <span class="font-retro text-5xl text-gray-400">AVIF</span>
+                                <span class="font-mono text-[10px] text-gray-500 uppercase">Next Gen (Soon)</span>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="flex items-center justify-between mb-4 border-b-2 border-border-dark pb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">list_alt</span>
+                                <h3 class="text-white font-retro text-2xl tracking-widest uppercase">Batch Processing
+                                </h3>
+                            </div>
+                            <span id="queue-count"
+                                class="font-mono text-xs text-primary bg-primary/10 px-2 py-1 border border-primary/30 uppercase">0
+                                files queued</span>
+                        </div>
+                        <div class="bg-surface-dark border-2 border-border-dark overflow-hidden min-h-[200px]">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-background-dark border-b-2 border-border-dark">
+                                        <th class="p-4 font-retro text-xl text-gray-400 font-normal uppercase">File_Name
+                                        </th>
+                                        <th class="p-4 font-retro text-xl text-gray-400 font-normal uppercase">Size</th>
+                                        <th
+                                            class="p-4 font-retro text-xl text-gray-400 font-normal uppercase text-center">
+                                            Current</th>
+                                        <th
+                                            class="p-4 font-retro text-xl text-gray-400 font-normal uppercase text-center">
+                                            Target</th>
+                                        <th
+                                            class="p-4 font-retro text-xl text-gray-400 font-normal uppercase text-right">
+                                            Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="batch-table-body" class="font-mono text-sm">
+                                    <!-- Rows will be injected by JS -->
+                                    <tr id="empty-row">
+                                        <td colspan="5" class="p-10 text-center text-gray-500 font-mono">
+                                            No files selected. Click "ADD_FILES" to begin.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <div class="flex justify-center pt-4">
+                        <button id="convert-all-btn"
+                            class="relative group w-full max-w-md disabled:opacity-50 disabled:cursor-not-allowed">
+                            <div
+                                class="absolute inset-0 bg-primary opacity-50 blur-lg group-hover:opacity-80 transition-opacity">
+                            </div>
+                            <div
+                                class="relative flex items-center justify-center gap-4 bg-primary border-2 border-white/30 px-12 py-5 shadow-neon hover:translate-y-[-2px] active:translate-y-[2px] active:shadow-none transition-all">
+                                <span class="material-symbols-outlined text-white text-3xl">play_circle</span>
+                                <span class="font-retro text-4xl text-white tracking-[0.2em] uppercase">Convert
+                                    All</span>
+                            </div>
+                        </button>
+                    </div>
+                    <!-- Hidden download anchor -->
+                    <a id="download-anchor" class="hidden"></a>
+
+                    <div class="bg-black/40 border-l-4 border-primary p-4 font-mono text-sm">
+                        <div class="flex items-center gap-2 text-primary font-bold mb-2">
+                            <span class="material-symbols-outlined text-base">terminal</span>
+                            SESSION_LOG
+                        </div>
+                        <div id="session-log" class="space-y-1 text-gray-400 max-h-40 overflow-y-auto">
+                            <!-- Logs will be here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script -->
+    <script src="js/image-converter.js"></script>
+</body>
+
+</html>

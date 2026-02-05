@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - Lorem Ipsum Generator</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "none": "0",
+                        "sm": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                        "glow": "0 0 15px rgba(127, 19, 236, 0.5)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .pixel-border {
+            border: 4px solid #4d3267;
+            position: relative;
+        }
+
+        .pixel-border::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border: 4px solid #4d3267;
+            pointer-events: none;
+        }
+
+        .retro-input {
+            @apply bg-background-dark border-2 border-border-dark text-white font-retro text-2xl p-3 focus:border-primary focus:ring-0 outline-none;
+        }
+        
+        button.type-btn.active {
+            @apply bg-primary text-white border-white/20;
+        }
+        button.type-btn:not(.active) {
+            @apply bg-background-dark text-gray-400 border-border-dark hover:border-primary/50;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+    <div class="flex h-screen w-full overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm"
+                    href="text-tools.html">
+                    <span class="material-symbols-outlined">description</span>
+                    <span class="font-retro text-xl">Text Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="network-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">public</span>
+                    <span class="font-retro text-xl">Network</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="settings.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                    <span class="font-retro text-xl">Settings</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="profile.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">person</span>
+                    <span class="font-retro text-xl">Profile</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <a class="p-2 border-2 border-border-dark hover:border-primary text-gray-400 hover:text-primary transition-colors"
+                            href="text-tools.html">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                        </a>
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-white font-retro text-4xl leading-none uppercase">Lorem Ipsum Generator
+                                </h2>
+                                <span
+                                    class="px-2 py-0.5 bg-primary/20 border border-primary text-[10px] font-bold text-primary uppercase tracking-widest">Active</span>
+                            </div>
+                            <p class="text-[#ad92c9] text-sm font-mono opacity-80">&gt; Text Tools / Placeholder_Gen</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="hidden sm:flex flex-col items-end mr-4">
+                            <span
+                                class="text-[10px] font-mono text-border-dark uppercase font-bold tracking-[0.2em]">Status_Buffer</span>
+                            <span id="status-text" class="text-green-500 font-retro text-lg">READY_TO_RENDER</span>
+                        </div>
+                        <button
+                            class="bg-surface-dark border-2 border-border-dark p-2 text-gray-400 hover:text-white hover:border-primary">
+                            <span class="material-symbols-outlined">history</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-6 lg:p-10">
+                <div class="max-w-7xl mx-auto h-full flex flex-col lg:flex-row gap-8">
+                    <!-- Config Panel -->
+                    <div class="w-full lg:w-80 flex flex-col gap-6 shrink-0">
+                        <div class="bg-surface-dark border-2 border-border-dark p-6 space-y-8">
+                            <div>
+                                <label class="block text-primary font-retro text-xl mb-4 uppercase tracking-wider">Type
+                                    of Output</label>
+                                <div class="grid grid-cols-1 gap-2">
+                                    <button data-type="paragraphs"
+                                        class="type-btn active flex items-center justify-between px-4 py-3 border-2 font-retro text-xl transition-all">
+                                        Paragraphs
+                                        <span class="material-symbols-outlined text-sm">radio_button_checked</span>
+                                    </button>
+                                    <button data-type="sentences"
+                                        class="type-btn flex items-center justify-between px-4 py-3 border-2 font-retro text-xl transition-all">
+                                        Sentences
+                                        <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                    </button>
+                                    <button data-type="words"
+                                        class="type-btn flex items-center justify-between px-4 py-3 border-2 font-retro text-xl transition-all">
+                                        Words
+                                        <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-primary font-retro text-xl mb-4 uppercase tracking-wider">Quantity</label>
+                                <div class="relative group">
+                                    <input id="quantity" class="retro-input w-full text-center pr-12" max="99" min="1"
+                                        type="number" value="5" />
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col">
+                                        <span id="increase-btn"
+                                            class="material-symbols-outlined text-primary text-sm cursor-pointer hover:text-white select-none">expand_less</span>
+                                        <span id="decrease-btn"
+                                            class="material-symbols-outlined text-primary text-sm cursor-pointer hover:text-white select-none">expand_more</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-4">
+                                <button id="generate-btn"
+                                    class="w-full bg-primary hover:bg-primary-dark text-white font-retro text-3xl py-6 border-4 border-white/20 shadow-glow transition-all active:translate-y-1 active:shadow-none uppercase tracking-[0.2em] relative overflow-hidden group">
+                                    <span class="relative z-10">Generate</span>
+                                    <div
+                                        class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-background-dark/50 border-2 border-dashed border-border-dark p-4">
+                            <h4 class="text-xs font-mono text-border-dark uppercase font-bold mb-2">Options</h4>
+                            <div class="flex items-center gap-3">
+                                <input checked=""
+                                    class="w-4 h-4 bg-background-dark border-border-dark text-primary focus:ring-0 focus:ring-offset-0"
+                                    id="lorem-start" type="checkbox" />
+                                <label
+                                    class="text-sm font-mono text-gray-500 cursor-pointer select-none hover:text-gray-300"
+                                    for="lorem-start">Start with "Lorem
+                                    ipsum..."</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Panel -->
+                    <div class="flex-1 flex flex-col min-w-0">
+                        <div
+                            class="flex-1 bg-surface-dark border-2 border-border-dark flex flex-col relative overflow-hidden">
+                            <div
+                                class="flex items-center justify-between px-4 py-3 border-b-2 border-border-dark bg-background-dark/40 shrink-0">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-primary"></div>
+                                    <span
+                                        class="font-mono text-xs text-gray-400 uppercase tracking-widest">generated_output.txt</span>
+                                </div>
+                                <button id="copy-btn"
+                                    class="flex items-center gap-2 px-4 py-1.5 bg-primary/10 border border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-retro text-lg">
+                                    <span class="material-symbols-outlined text-base">content_copy</span>
+                                    COPY
+                                </button>
+                            </div>
+                            <div class="flex-1 p-8 overflow-y-auto custom-scrollbar relative">
+                                <div id="output-content"
+                                    class="max-w-none prose prose-invert font-mono text-gray-300 leading-relaxed space-y-6">
+                                    <!-- Logic will populate this -->
+                                </div>
+                            </div>
+                            <div
+                                class="px-4 py-2 bg-background-dark border-t-2 border-border-dark flex justify-between items-center shrink-0">
+                                <span class="text-[10px] font-mono text-border-dark uppercase">Enc: UTF-8</span>
+                                <span id="stats" class="text-[10px] font-mono text-border-dark uppercase">Stats: 0
+                                    Paragraphs | 0 Words</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/lorem-tool.js"></script>
+</body>
+
+</html>

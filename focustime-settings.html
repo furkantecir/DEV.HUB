@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Retro Pixel FocusTime Dashboard - Settings</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=VT323&amp;family=Space+Mono:wght@400;700&amp;family=Press+Start+2P&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+        @layer base {
+            :root {
+                --pixel-bg: #1a0b2e;
+                --pixel-surface: #2d144d;
+                --pixel-primary: #a855f7;
+                --pixel-accent: #f472b6;
+                --pixel-border: #4c1d95;
+                --pixel-grid: rgba(139, 92, 246, 0.1);
+            }
+            body {
+                background-color: var(--pixel-bg);
+                background-image: 
+                    linear-gradient(var(--pixel-grid) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--pixel-grid) 1px, transparent 1px);
+                background-size: 32px 32px;
+                image-rendering: pixelated;
+            }
+        }
+        .pixel-border {
+            border: 4px solid var(--pixel-border);
+            box-shadow: 
+                -4px 0 0 0 var(--pixel-bg),
+                4px 0 0 0 var(--pixel-bg),
+                0 -4px 0 0 var(--pixel-bg),
+                0 4px 0 0 var(--pixel-bg),
+                inset -4px -4px 0 0 rgba(0,0,0,0.2),
+                inset 4px 4px 0 0 rgba(255,255,255,0.05);
+        }
+        .pixel-modal-border {
+            border: 4px solid #000;
+            box-shadow: 
+                -8px 0 0 0 #000,
+                8px 0 0 0 #000,
+                0 -8px 0 0 #000,
+                0 8px 0 0 #000,
+                8px 8px 0 0 rgba(0,0,0,0.4);
+        }
+        .pixel-button {
+            position: relative;
+            background-color: var(--pixel-primary);
+            border: none;
+            box-shadow: 
+                -4px 0 0 0 #000,
+                4px 0 0 0 #000,
+                0 -4px 0 0 #000,
+                0 4px 0 0 #000,
+                inset -4px -4px 0 0 rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+        }
+        .pixel-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 
+                -4px 0 0 0 #000,
+                4px 0 0 0 #000,
+                0 -4px 0 0 #000,
+                0 4px 0 0 #000,
+                inset 4px 4px 0 0 rgba(0,0,0,0.3);
+        }
+        .pixel-text-shadow {
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: var(--pixel-bg);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--pixel-border);
+        }
+        .pixel-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 12px;
+            background: #1a0b2e;
+            border: 2px solid #4c1d95;
+            outline: none;
+        }
+        .pixel-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--pixel-accent);
+            cursor: pointer;
+            border: 2px solid #000;
+            box-shadow: -2px 2px 0 0 #000;
+        }
+        .pixel-checkbox {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 4px solid #000;
+            background: #1a0b2e;
+            position: relative;
+            cursor: pointer;
+        }
+        .pixel-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: var(--pixel-primary);
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#a855f7",
+                        "pixel-dark": "#1a0b2e",
+                        "pixel-muted": "#6b21a8",
+                    },
+                    fontFamily: {
+                        "retro": ["'Press Start 2P'", "cursive"],
+                        "mono": ["'Space Mono'", "monospace"],
+                        "pixel": ["'VT323'", "monospace"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="text-purple-100 h-screen overflow-hidden flex flex-col antialiased">
+    <!-- SETTINGS MODAL OVERLAY -->
+    <div class="fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4">
+        <div class="pixel-modal-border bg-[#2d144d] w-full max-w-md p-8 relative overflow-hidden">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="font-retro text-sm text-pink-400 pixel-text-shadow">SESSION_SETTINGS</h2>
+                <a href="focustime.html" class="pixel-button bg-red-500 p-1 flex items-center justify-center text-white"
+                    title="Close">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </a>
+            </div>
+            <div class="space-y-8">
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <label class="font-mono text-xs text-white">FOCUS_DURATION</label>
+                            <span id="label-focus" class="font-pixel text-xl text-primary">25 MIN</span>
+                        </div>
+                        <input id="slider-focus" class="pixel-slider" max="60" min="5" type="range" value="25"
+                            oninput="updateLabel('focus', this.value)" />
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <label class="font-mono text-xs text-white">SHORT_BREAK</label>
+                            <span id="label-short" class="font-pixel text-xl text-green-400">5 MIN</span>
+                        </div>
+                        <input id="slider-short" class="pixel-slider" max="15" min="1" type="range" value="5"
+                            oninput="updateLabel('short', this.value)" />
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <label class="font-mono text-xs text-white">LONG_BREAK</label>
+                            <span id="label-long" class="font-pixel text-xl text-indigo-400">15 MIN</span>
+                        </div>
+                        <input id="slider-long" class="pixel-slider" max="30" min="5" type="range" value="15"
+                            oninput="updateLabel('long', this.value)" />
+                    </div>
+                </div>
+                <div class="h-1 bg-black/30 w-full"></div>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <label class="font-mono text-xs text-white uppercase">Auto-start Breaks</label>
+                        <input checked="" class="pixel-checkbox" type="checkbox" />
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="font-mono text-xs text-white uppercase">Sound Selection</label>
+                        <select
+                            class="bg-black border-2 border-purple-800 font-pixel text-lg text-primary px-2 py-1 focus:outline-none focus:border-pink-500">
+                            <option>8-BIT_BEEP.WAV</option>
+                            <option>CHIP_TUNE.WAV</option>
+                            <option>RETRO_ALARM.WAV</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button
+                        class="pixel-button bg-gray-600 flex-1 py-3 font-retro text-[10px] tracking-widest text-white"
+                        onclick="resetSettings()">RESET</button>
+                    <button
+                        class="pixel-button bg-green-500 flex-1 py-3 font-retro text-[10px] tracking-widest text-white"
+                        onclick="saveSettings()">SAVE</button>
+                </div>
+            </div>
+            <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                <span class="material-symbols-outlined text-8xl">settings</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- BACKGROUND DASHBOARD (Visual Only) -->
+    <header
+        class="flex items-center justify-between border-b-4 border-black px-8 py-4 bg-[#2d144d] z-20 opacity-50 pointer-events-none">
+        <div class="flex items-center gap-10">
+            <div class="flex items-center gap-4 text-white">
+                <div class="size-10 bg-primary flex items-center justify-center pixel-border border-2">
+                    <span class="material-symbols-outlined text-[24px]">timer</span>
+                </div>
+                <h2 class="text-xl font-retro tracking-tighter pixel-text-shadow">FOCUS<span
+                        class="text-pink-400">TIME</span></h2>
+            </div>
+            <div class="hidden md:flex items-center gap-6">
+                <a class="text-primary font-mono text-xs border-b-4 border-primary pb-1" href="#">DASHBOARD</a>
+                <a class="text-purple-400 font-mono text-xs hover:text-white pb-1" href="#">REPORTS</a>
+                <a class="text-purple-400 font-mono text-xs hover:text-white pb-1" href="#">SETTINGS</a>
+            </div>
+        </div>
+    </header>
+    <main class="flex flex-1 overflow-hidden h-full opacity-50 pointer-events-none">
+        <!-- Content hidden for visual overlay effect -->
+        <section class="flex-1 flex flex-col relative overflow-hidden bg-[#1a0b2e] items-center justify-center">
+            <h1 class="text-[100px] font-pixel text-white opacity-20">25:00</h1>
+        </section>
+    </main>
+
+    <script>
+        // Initialize from LocalStorage if available
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedFocus = localStorage.getItem('focus_duration');
+            if (savedFocus) {
+                document.getElementById('slider-focus').value = savedFocus;
+                updateLabel('focus', savedFocus);
+            }
+        });
+
+        function updateLabel(type, value) {
+            document.getElementById(`label-${type}`).textContent = `${value} MIN`;
+        }
+
+        function saveSettings() {
+            const focusVal = document.getElementById('slider-focus').value;
+            localStorage.setItem('focus_duration', focusVal);
+            alert("SETTINGS_SAVED_SUCCESSFULLY!");
+            window.location.href = 'focustime.html';
+        }
+
+        function resetSettings() {
+            document.getElementById('slider-focus').value = 25;
+            updateLabel('focus', 25);
+            document.getElementById('slider-short').value = 5;
+            updateLabel('short', 5);
+            document.getElementById('slider-long').value = 15;
+            updateLabel('long', 15);
+        }
+    </script>
+</body>
+
+</html>

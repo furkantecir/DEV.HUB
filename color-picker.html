@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - Color Picker &amp; Palette Extractor</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Color Thief for Palette Extraction -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "none": "0",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .pixel-border {
+            border-image-slice: 2;
+            border-image-width: 2;
+            border-style: solid;
+        }
+        
+        /* Prevent scroll on button clicks */
+        .overflow-y-auto {
+            scroll-behavior: auto !important;
+        }
+        
+        /* Magnifier/Loupe Styles */
+        .magnifier {
+            display: none;
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            border: 2px solid #7f13ec;
+            background-repeat: no-repeat;
+            background-color: rgba(25, 16, 34, 0.9);
+            pointer-events: none;
+            z-index: 9999;
+            image-rendering: pixelated; /* Crucial for pixel art feel */
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.5);
+            backdrop-filter: blur(2px);
+        }
+        
+        .magnifier-grid {
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(127, 19, 236, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(127, 19, 236, 0.3) 1px, transparent 1px);
+            background-size: 25px 25px; /* 4x4 grid */
+            position: relative;
+        }
+        
+        .crosshair-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 25px;
+            height: 25px;
+            border: 2px solid rgba(255,255,255,0.9);
+            background-color: rgba(127, 19, 236, 0.3); 
+            box-shadow: 0 0 4px rgba(127, 19, 236, 0.8);
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+    <!-- Hidden File Input -->
+    <input type="file" id="file-input" class="hidden" accept="image/jpeg,image/png,image/jpg,image/webp" />
+
+    <div class="flex h-screen w-full overflow-hidden">
+        <aside class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm transition-transform active:translate-y-1 active:shadow-none"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <div class="px-4 py-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Aktif Araç</div>
+                <div class="px-4 py-3 bg-surface-dark border-2 border-primary/50 text-primary">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined">palette</span>
+                        <span class="font-retro text-xl uppercase">Color Picker</span>
+                    </div>
+                </div>
+            </nav>
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-white font-retro text-4xl leading-none uppercase">Color Picker &amp;
+                                Extractor</h2>
+                            <span
+                                class="px-2 py-0.5 rounded-none bg-border-dark border border-white/10 text-[10px] font-bold text-primary uppercase tracking-widest">Active</span>
+                        </div>
+                        <p class="text-[#ad92c9] text-sm font-mono opacity-80" id="file-name-display">&gt; Source: No
+                            Image Loaded</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button type="button" id="upload-btn"
+                            class="flex items-center gap-2 bg-surface-dark hover:bg-surface-dark/80 text-gray-300 hover:text-white border-2 border-border-dark px-4 py-2 hover:border-primary transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">file_upload</span>
+                            <span class="font-bold text-sm tracking-wide uppercase">New Image</span>
+                        </button>
+                        <button type="button" id="export-btn" disabled
+                            class="flex items-center gap-2 bg-border-dark text-gray-600 border-2 border-border-dark px-5 py-2 transition-all cursor-not-allowed disabled:opacity-50">
+                            <span class="material-symbols-outlined text-[18px]">download</span>
+                            <span class="font-bold text-sm tracking-wide uppercase">Export Palette</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+            <div class="flex-1 overflow-y-auto p-6 relative">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 h-full">
+                    <div class="lg:col-span-8 flex flex-col gap-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-retro text-2xl text-white tracking-wide flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">image_search</span> IMAGE_VIEWPORT
+                            </h3>
+                            <div class="flex items-center gap-4 text-xs font-mono text-gray-500">
+                                <span id="hover-color-hex" class="text-primary font-bold">#------</span>
+                                <span id="hover-coords">XY: -, -</span>
+                            </div>
+                        </div>
+                        <div id="canvas-container"
+                            class="relative flex-1 bg-surface-dark border-2 border-border-dark shadow-pixel-white min-h-[500px] overflow-hidden group cursor-crosshair flex items-center justify-center">
+
+                            <!-- Placeholder -->
+                            <div id="placeholder-text" class="text-center p-4">
+                                <span
+                                    class="material-symbols-outlined text-4xl text-gray-600 mb-2">add_photo_alternate</span>
+                                <p class="text-gray-500 font-mono">Upload an image to start picking colors</p>
+                            </div>
+
+                            <!-- Canvas (Hidden initially) -->
+                            <canvas id="image-canvas"
+                                class="hidden max-w-full max-h-full object-contain shadow-2xl border border-white/10"></canvas>
+
+                            <!-- Magnifier (Dynamic) -->
+                            <div id="magnifier" class="magnifier hidden">
+                                <div class="magnifier-grid"></div>
+                                <div class="crosshair-center"></div>
+                                <span id="magnifier-hex"
+                                    class="text-[8px] font-mono text-white absolute bottom-1 left-1/2 -translate-x-1/2 bg-black/60 px-1">#------</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="lg:col-span-4 flex flex-col gap-6 max-h-[calc(100vh-200px)] overflow-y-auto">
+                        <section class="flex flex-col gap-4">
+                            <div class="flex items-center justify-between border-b border-border-dark pb-2">
+                                <h3 class="text-white font-retro text-2xl tracking-wide flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">palette</span> DOMINANT_PALETTE
+                                </h3>
+                            </div>
+                            <div class="space-y-3" id="palette-container">
+                                <!-- Dynamic Palette Items -->
+                                <div class="text-gray-500 font-mono text-sm italic p-4 text-center">
+                                    Palette generated automatically upon upload.
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button type="button" id="add-all-btn" disabled
+                                    class="w-full py-3 border-2 border-border-dark text-gray-600 font-retro text-xl transition-all flex items-center justify-center gap-2 cursor-not-allowed disabled:opacity-50">
+                                    <span class="material-symbols-outlined">library_add</span> ADD_ALL_TO_LIBRARY
+                                </button>
+                            </div>
+                            <!-- Picked Colors History -->
+                            <div class="mt-4 pt-4 border-t border-border-dark">
+                                <h4 class="text-white font-retro text-lg mb-2">PICKED_HISTORY</h4>
+                                <div class="flex flex-wrap gap-2 min-h-[40px]" id="picked-history">
+                                    <!-- History Swatches -->
+                                </div>
+                            </div>
+                        </section>
+                        <section class="mt-auto">
+                            <div class="bg-black/40 border-l-4 border-primary p-4 font-mono text-[11px]">
+                                <div class="flex items-center gap-2 text-primary font-bold mb-2">
+                                    <span class="material-symbols-outlined text-sm">terminal</span> COLOR_ANALYSIS_LOG
+                                </div>
+                                <div class="space-y-1 text-gray-400" id="log-container">
+                                    <div class="flex gap-2">
+                                        <span class="text-gray-600">[SYSTEM]</span>
+                                        <span>Ready. Waiting for image...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/color-picker.js"></script>
+</body>
+
+</html>

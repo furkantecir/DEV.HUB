@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - SVG Optimizer</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;family=JetBrains+Mono&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "none": "0",
+                        "sm": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                        "pixel-inset": "inset 2px 2px 0px 0px rgba(0,0,0,0.5)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .pixel-checkbox {
+            @apply appearance-none w-5 h-5 border-2 border-border-dark bg-background-dark cursor-pointer relative;
+        }
+
+        .pixel-checkbox:checked {
+            @apply bg-primary border-white/40;
+        }
+
+        .pixel-checkbox:checked::after {
+            content: '✔';
+            @apply absolute inset-0 flex items-center justify-center text-white text-xs font-bold;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark font-display text-white antialiased overflow-hidden">
+    <!-- Hidden File Input for Paste/Load features if needed later -->
+    <input type="file" id="file-input" accept="image/svg+xml" class="hidden" />
+
+    <div class="flex h-screen w-full overflow-hidden">
+        <aside
+            class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0 z-20">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg font-bold">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider uppercase">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined">image</span>
+                    <span class="font-retro text-xl text-shadow">Image Tools</span>
+                </a>
+
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <div class="px-4 py-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active Tool</div>
+                <div class="px-4 py-3 bg-surface-dark border-2 border-primary/50 text-primary">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined">code</span>
+                        <span class="font-retro text-xl uppercase">Optimizer</span>
+                    </div>
+                </div>
+            </nav>
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <a class="w-10 h-10 border-2 border-border-dark hover:border-primary flex items-center justify-center text-gray-400 hover:text-primary transition-colors"
+                            href="image-tools.html">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                        </a>
+                        <div class="flex flex-col">
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-white font-retro text-4xl leading-none">SVG_OPTIMIZER</h2>
+                                <span
+                                    class="px-2 py-0.5 bg-primary/20 border border-primary/40 text-[10px] font-bold text-primary uppercase tracking-widest">v2.4.0</span>
+                            </div>
+                            <p class="text-[#ad92c9] text-xs font-mono opacity-80 uppercase tracking-tighter mt-1">&gt;
+                                optimize_xml_vectors.sh --minify --clean-defs</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="flex flex-col items-end mr-4">
+                            <span id="stat-original" class="text-[10px] text-gray-500 font-mono uppercase">Original:
+                                0kb</span>
+                            <span id="stat-optimized" class="text-[10px] text-green-400 font-mono uppercase">Optimized:
+                                0kb (-0%)</span>
+                        </div>
+                        <button id="copy-btn"
+                            class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 font-retro text-xl tracking-wider shadow-pixel border border-white/20 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
+                            COPY_OPTIMIZED_SVG
+                        </button>
+                    </div>
+                </div>
+            </header>
+            <div class="flex-1 flex overflow-hidden">
+                <div class="flex-1 flex flex-col border-r-2 border-border-dark">
+                    <div
+                        class="bg-surface-dark/50 px-4 py-2 border-b-2 border-border-dark flex items-center justify-between">
+                        <span class="text-xs font-mono text-gray-400 uppercase tracking-widest">Input Source Code</span>
+                        <div class="flex gap-2">
+                            <button id="paste-btn"
+                                class="text-[10px] font-mono text-primary hover:text-white border border-primary/30 px-2 py-0.5 hover:bg-primary/20">PASTE</button>
+                            <button id="upload-btn"
+                                class="text-[10px] font-mono text-primary hover:text-white border border-primary/30 px-2 py-0.5 hover:bg-primary/20">UPLOAD
+                                FILE</button>
+                        </div>
+                    </div>
+                    <div class="flex-1 relative bg-[#0d0912]">
+                        <textarea id="svg-input"
+                            class="absolute inset-0 w-full h-full p-6 bg-transparent text-primary/90 font-mono text-sm resize-none focus:ring-0 border-none outline-none leading-relaxed"
+                            spellcheck="false" placeholder="<!-- Paste your SVG code here -->"></textarea>
+                    </div>
+                </div>
+
+                <div class="w-[450px] flex flex-col bg-background-dark overflow-y-auto">
+                    <div class="p-6 border-b-2 border-border-dark bg-surface-dark/20">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="material-symbols-outlined text-primary text-sm">visibility</span>
+                            <span class="text-xs font-mono text-gray-400 uppercase tracking-widest">Live Render
+                                Test</span>
+                        </div>
+                        <div
+                            class="aspect-square bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] bg-background-dark border-2 border-border-dark flex items-center justify-center relative overflow-hidden group">
+
+                            <!-- SVG Preview Container -->
+                            <div id="svg-preview" class="w-full h-full flex items-center justify-center p-4">
+                                <!-- Initial Placeholder -->
+                                <p class="text-gray-600 font-mono text-xs text-center">NO_SVG_DATA</p>
+                            </div>
+
+                            <div class="absolute bottom-3 right-3 flex gap-1">
+                                <button id="zoom-in-btn"
+                                    class="w-8 h-8 bg-surface-dark border border-border-dark text-gray-400 hover:text-white flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-sm">zoom_in</span>
+                                </button>
+                                <button id="reset-zoom-btn"
+                                    class="w-8 h-8 bg-surface-dark border border-border-dark text-gray-400 hover:text-white flex items-center justify-center text-xs font-mono">
+                                    1:1
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div>
+                            <h3 class="font-retro text-2xl text-white mb-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">settings_suggest</span>
+                                OPTIMIZATION_FLAGS
+                            </h3>
+                            <div class="grid grid-cols-1 gap-3" id="options-container">
+                                <label class="flex items-center gap-3 group cursor-pointer">
+                                    <input id="opt-minify" checked class="pixel-checkbox" type="checkbox" />
+                                    <span
+                                        class="font-mono text-sm text-gray-300 group-hover:text-primary transition-colors">XML
+                                        Yapısını Sıkıştır (Minify)</span>
+                                </label>
+                                <label class="flex items-center gap-3 group cursor-pointer">
+                                    <input id="opt-comments" checked class="pixel-checkbox" type="checkbox" />
+                                    <span
+                                        class="font-mono text-sm text-gray-300 group-hover:text-primary transition-colors">Meta
+                                        Veri ve Yorumları Sil</span>
+                                </label>
+                                <label class="flex items-center gap-3 group cursor-pointer">
+                                    <input id="opt-attrs" class="pixel-checkbox" type="checkbox" />
+                                    <span
+                                        class="font-mono text-sm text-gray-300 group-hover:text-primary transition-colors">Gereksiz
+                                        Özellikleri Temizle</span>
+                                </label>
+                                <label class="flex items-center gap-3 group cursor-pointer">
+                                    <input id="opt-ids" checked class="pixel-checkbox" type="checkbox" />
+                                    <span
+                                        class="font-mono text-sm text-gray-300 group-hover:text-primary transition-colors">Kullanılmayan
+                                        ID'leri Sil</span>
+                                </label>
+                                <label class="flex items-center gap-3 group cursor-pointer">
+                                    <input id="opt-precision" checked class="pixel-checkbox" type="checkbox" />
+                                    <span
+                                        class="font-mono text-sm text-gray-300 group-hover:text-primary transition-colors">Hassasiyeti
+                                        Sınırla (Precision)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-border-dark">
+                            <div class="bg-primary/5 border border-primary/20 p-4">
+                                <h4 class="text-primary text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Advanced
+                                    Config</h4>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-mono text-gray-500">Precision:</span>
+                                    <input id="precision-range"
+                                        class="flex-1 accent-primary h-1 bg-surface-dark appearance-none cursor-pointer"
+                                        type="range" min="0" max="5" value="2" />
+                                    <span id="precision-val" class="text-xs font-mono text-primary">2dp</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-auto p-4 border-t-2 border-border-dark bg-surface-dark/40">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-gray-500 uppercase">
+                            <span>Parser: JS_Cleaner_v1</span>
+                            <span id="status-text">Status: Idle</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="h-8 bg-surface-dark border-t-2 border-border-dark flex items-center px-6 gap-6 z-10">
+                <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-primary"></span>
+                    <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Ready to
+                        Process</span>
+                </div>
+                <div class="h-3 w-px bg-border-dark"></div>
+                <!-- Optional Footer Info -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Script -->
+    <script src="js/svg-optimizer.js"></script>
+</body>
+
+</html>

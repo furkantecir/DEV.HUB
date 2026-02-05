@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>To-Do Task Manager - DEV.HUB</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#1e1427",
+                        "border-dark": "#362348",
+                        "text-muted": "#ad92c9",
+                        "pending": "#fbbf24", // yellow-400
+                        "progress": "#3b82f6", // blue-500
+                        "completed": "#10b981", // emerald-500
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "none": "0",
+                        "sm": "0.125rem",
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2a1d35 1px, transparent 1px), linear-gradient(to bottom, #2a1d35 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .pixel-border {
+                box-shadow: 
+                    0 -2px 0 0 #362348,
+                    0 2px 0 0 #362348,
+                    -2px 0 0 0 #362348,
+                    2px 0 0 0 #362348;
+            }
+            .pixel-card {
+                border: 2px solid #362348;
+                position: relative;
+            }
+            .pixel-checkbox {
+                appearance: none;
+                width: 18px;
+                height: 18px;
+                border: 2px solid #362348;
+                background: #191022;
+                display: inline-block;
+                position: relative;
+                cursor: pointer;
+            }
+            .pixel-checkbox:checked {
+                background: #7f13ec;
+            }
+            .pixel-checkbox:checked::after {
+                content: '';
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                width: 10px;
+                height: 10px;
+                background: white;
+            }
+            .retro-modal-border {
+                box-shadow: 
+                    0 0 0 4px #191022,
+                    0 0 0 8px #7f13ec;
+            }
+            .retro-btn-glow-red {
+                box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+                border: 2px solid #ef4444;
+            }
+            .retro-btn-glow-white {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+                border: 2px solid #ad92c9;
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #191022; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #362348; 
+            border-radius: 0px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec; 
+        }
+        .grid-bg {
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-in {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+    <div class="fixed inset-0 pointer-events-none z-0 grid-bg bg-grid-pattern opacity-20"></div>
+
+    <!-- Custom Confirm Modal (Hidden by default) -->
+    <div id="delete-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-background-dark/80 backdrop-blur-sm p-4 hidden transition-opacity duration-200">
+        <div class="w-full max-w-md bg-surface-dark retro-modal-border p-1 animate-slide-in">
+            <div class="border-2 border-border-dark p-6 flex flex-col items-center text-center">
+                <div class="mb-4 text-pending">
+                    <span class="material-symbols-outlined text-6xl"
+                        style="font-variation-settings: 'FILL' 1, 'wght' 700">warning</span>
+                </div>
+                <h2 class="text-2xl font-black font-mono tracking-tighter uppercase mb-2">CONFIRM DELETION?</h2>
+                <p class="text-text-muted font-mono text-xs mb-8 uppercase tracking-widest leading-relaxed">
+                    Warning: This action will permanently remove task ID: #<span id="modal-task-id"
+                        class="text-white font-bold">???</span> from the pipeline. System recovery is not possible.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 w-full">
+                    <button id="modal-confirm-btn"
+                        class="flex-1 retro-btn-glow-red bg-red-900/20 hover:bg-red-900/40 text-white font-mono font-bold py-3 px-6 transition-all group flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-sm group-hover:scale-110">delete_forever</span>
+                        YES / DELETE
+                    </button>
+                    <button id="modal-cancel-btn"
+                        class="flex-1 retro-btn-glow-white bg-white/5 hover:bg-white/10 text-white font-mono font-bold py-3 px-6 transition-all group flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-sm group-hover:scale-110">close</span>
+                        NO / CANCEL
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="relative z-10 flex flex-col h-full grow">
+        <header class="w-full border-b border-border-dark bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <a class="flex items-center gap-3 group" href="index.html">
+                        <div class="size-8 bg-primary flex items-center justify-center text-white">
+                            <span class="material-symbols-outlined text-[20px]">terminal</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <h2 class="text-white text-lg font-black tracking-tight leading-none">DEV.HUB</h2>
+                            <span class="text-primary text-[10px] font-mono tracking-widest uppercase">To-Do
+                                Module</span>
+                        </div>
+                    </a>
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="hidden md:flex items-center gap-2 px-3 py-1 bg-surface-dark border border-border-dark">
+                            <span class="size-2 bg-green-500 animate-pulse"></span>
+                            <span class="text-xs font-mono text-text-muted">TASK_ENGINE: ACTIVE</span>
+                        </div>
+                        <div class="h-8 w-px bg-border-dark mx-2"></div>
+                        <div class="flex gap-2">
+                            <a href="utilities.html"
+                                class="flex items-center justify-center size-9 border border-border-dark hover:bg-surface-dark text-text-muted hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">grid_view</span>
+                            </a>
+                            <a href="settings.html"
+                                class="flex items-center justify-center size-9 border border-border-dark hover:bg-surface-dark text-text-muted hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">settings</span>
+                            </a>
+                            <a href="profile.html"
+                                class="ml-2 bg-center bg-no-repeat aspect-square bg-cover rounded size-9 border border-border-dark hover:ring-2 hover:ring-primary transition-all"
+                                style="background: linear-gradient(135deg, var(--color-primary) 0%, #ad92c9 100%);"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col">
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2 text-text-muted font-mono text-xs uppercase mb-2">
+                        <a href="utilities.html" class="hover:text-white transition-colors">Systems</a>
+                        <span class="material-symbols-outlined text-xs">chevron_right</span>
+                        <span class="text-primary">Task Manager</span>
+                    </div>
+                    <h1 class="text-3xl font-black text-white tracking-tight uppercase">Task Pipeline</h1>
+                </div>
+                <div class="flex gap-2">
+                    <button id="clear-completed-btn"
+                        class="px-4 py-2 border border-border-dark text-xs font-mono text-text-muted hover:text-red-400 hover:border-red-500/50 hover:bg-surface-dark flex items-center gap-2 transition-colors">
+                        <span class="material-symbols-outlined text-sm">delete_sweep</span> CLEAR_DONE
+                    </button>
+                    <!-- Future Filters -->
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="mb-10">
+                <div class="bg-surface-dark border-2 border-border-dark p-1">
+                    <div class="flex flex-col md:flex-row gap-1">
+                        <div class="relative flex-1">
+                            <span
+                                class="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted font-mono select-none">&gt;_</span>
+                            <input id="task-input"
+                                class="w-full bg-background-dark border-none focus:ring-1 focus:ring-primary text-white font-mono py-4 pl-12 pr-4 text-sm placeholder:text-text-muted/30"
+                                placeholder="Enter new task description..." type="text" />
+                        </div>
+                        <div class="flex gap-1 h-full">
+                            <select id="priority-select"
+                                class="bg-background-dark border-none focus:ring-1 focus:ring-primary text-text-muted font-mono text-xs py-4 px-4 h-full appearance-none min-w-[140px] cursor-pointer hover:bg-background-dark/80">
+                                <option value="low">LOW_PRIORITY</option>
+                                <option value="medium" selected>MED_PRIORITY</option>
+                                <option value="high">HIGH_PRIORITY</option>
+                            </select>
+                            <button id="add-task-btn"
+                                class="bg-primary hover:bg-primary/80 text-white font-bold font-mono px-8 py-4 transition-colors flex items-center gap-2 whitespace-nowrap">
+                                <span class="material-symbols-outlined text-sm">add</span> ADD_TASK
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kanban Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 items-start">
+
+                <!-- Pending Column -->
+                <div class="flex flex-col h-full bg-background-dark/20 rounded-lg p-2">
+                    <div class="flex items-center justify-between mb-4 px-1 pb-2 border-b border-border-dark/50">
+                        <div class="flex items-center gap-3">
+                            <div class="size-3 bg-pending"></div>
+                            <h3 class="font-bold text-white tracking-widest text-sm uppercase">Pending</h3>
+                            <span
+                                class="bg-surface-dark border border-border-dark text-text-muted text-[10px] px-1.5 py-0.5 font-mono"
+                                id="pending-count">0</span>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1 min-h-[200px]" id="pending-list">
+                        <!-- Tasks will be injected here -->
+                    </div>
+                </div>
+
+                <!-- In Progress Column -->
+                <div class="flex flex-col h-full bg-background-dark/20 rounded-lg p-2">
+                    <div class="flex items-center justify-between mb-4 px-1 pb-2 border-b border-border-dark/50">
+                        <div class="flex items-center gap-3">
+                            <div class="size-3 bg-progress"></div>
+                            <h3 class="font-bold text-white tracking-widest text-sm uppercase">In Progress</h3>
+                            <span
+                                class="bg-surface-dark border border-border-dark text-text-muted text-[10px] px-1.5 py-0.5 font-mono"
+                                id="progress-count">0</span>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1 min-h-[200px]" id="progress-list">
+                        <!-- Tasks will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Completed Column -->
+                <div class="flex flex-col h-full bg-background-dark/20 rounded-lg p-2">
+                    <div class="flex items-center justify-between mb-4 px-1 pb-2 border-b border-border-dark/50">
+                        <div class="flex items-center gap-3">
+                            <div class="size-3 bg-completed"></div>
+                            <h3 class="font-bold text-white tracking-widest text-sm uppercase">Completed</h3>
+                            <span
+                                class="bg-surface-dark border border-border-dark text-text-muted text-[10px] px-1.5 py-0.5 font-mono"
+                                id="completed-count">0</span>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1 min-h-[200px]" id="completed-list">
+                        <!-- Tasks will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="w-full border-t border-border-dark bg-background-dark/95 backdrop-blur-sm mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div
+                    class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-text-muted">
+                    <div class="flex items-center gap-6">
+                        <a class="hover:text-white transition-colors flex items-center gap-1" href="#">
+                            <span class="material-symbols-outlined text-[14px]">description</span>
+                            DOCS
+                        </a>
+                        <a class="hover:text-white transition-colors flex items-center gap-1" href="#">
+                            <span class="material-symbols-outlined text-[14px]">keyboard</span>
+                            SHORTCUTS
+                        </a>
+                        <button id="export-data-btn" class="hover:text-white transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">database</span>
+                            EXPORT_DATA
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-4 text-center md:text-right">
+                        <span>v1.0.4 TASK_ENGINE</span>
+                        <span class="hidden sm:inline text-border-dark">|</span>
+                        <span>DB_SYNC: 100% SUCCESSFUL</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/todo-list.js"></script>
+</body>
+
+</html>

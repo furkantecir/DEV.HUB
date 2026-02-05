@@ -1,0 +1,81 @@
+/* CSS for the custom success modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    background-image: radial-gradient(rgba(0, 0, 0, 0.8) 1px, transparent 0);
+    background-size: 3px 3px;
+}
+
+.modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 28rem;
+    background-color: #191022;
+    padding: 0.25rem;
+    border: 6px solid #7f13ec;
+    box-shadow: 0 0 30px rgba(127, 19, 236, 0.5);
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-inner {
+    border: 2px solid #5e0eb0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-image: linear-gradient(rgba(127, 19, 236, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(127, 19, 236, 0.05) 1px, transparent 1px);
+    background-size: 4px 4px;
+}
+
+.corner-detail {
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: #7f13ec;
+}
+
+.corner-tl {
+    top: 0.5rem;
+    left: 0.5rem;
+}
+
+.corner-tr {
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
+.corner-bl {
+    bottom: 0.5rem;
+    left: 0.5rem;
+}
+
+.corner-br {
+    bottom: 0.5rem;
+    right: 0.5rem;
+}

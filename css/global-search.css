@@ -1,0 +1,135 @@
+/* ============================================
+   GLOBAL SEARCH MODAL STYLES
+   ============================================ */
+
+#global-search-modal {
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Search Input */
+#global-search-input {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+#global-search-input::placeholder {
+    color: #64748b;
+}
+
+/* Results Container */
+#search-results {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) #191022;
+}
+
+#search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+#search-results::-webkit-scrollbar-track {
+    background: #191022;
+}
+
+#search-results::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 3px;
+}
+
+#search-results::-webkit-scrollbar-thumb:hover {
+    background: #9333ea;
+}
+
+/* Result Items */
+.search-result-item {
+    transition: all 0.15s ease;
+}
+
+.search-result-item.selected {
+    background: rgba(127, 19, 236, 0.2);
+    border-left: 3px solid var(--color-primary);
+}
+
+.search-result-item:hover {
+    background: rgba(127, 19, 236, 0.1);
+}
+
+/* Keyboard Shortcuts */
+.kbd-mini {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 10px;
+    font-family: 'Courier New', monospace;
+    background: rgba(127, 19, 236, 0.1);
+    color: var(--color-primary);
+    border: 1px solid rgba(127, 19, 236, 0.3);
+    border-radius: 3px;
+    margin: 0 2px;
+}
+
+/* Empty State */
+#search-results:empty::before {
+    content: 'Start typing to search...';
+    display: block;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+/* Category Badge */
+.category-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 10px;
+    background: rgba(127, 19, 236, 0.1);
+    color: var(--color-primary);
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Favorite Star Animation */
+.search-result-item .material-symbols-outlined {
+    transition: transform 0.2s ease;
+}
+
+.search-result-item:hover .material-symbols-outlined {
+    transform: scale(1.1);
+}
+
+/* Modal Animation */
+#global-search-modal>div:last-child {
+    animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    #global-search-modal>div:last-child {
+        padding-top: 10vh;
+    }
+
+    #search-results {
+        max-height: 300px;
+    }
+}

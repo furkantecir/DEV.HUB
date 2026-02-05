@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - Request Tool</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/modal.css">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "none": "0",
+                        "sm": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-glow": "0 0 15px rgba(127, 19, 236, 0.4), 4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+        .pixel-border {
+            border: 4px solid #4d3267;
+            position: relative;
+        }
+        .pixel-border::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border: 4px solid #4d3267;
+            pointer-events: none;
+        }
+        .neon-glow {
+            box-shadow: 0 0 10px #7f13ec, 0 0 20px #7f13ec;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark font-display text-white antialiased overflow-hidden">
+    <div class="flex h-screen w-full overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="text-tools.html">
+                    <span
+                        class="material-symbols-outlined group-hover:text-primary transition-colors">description</span>
+                    <span class="font-retro text-xl">Text Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="network-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">public</span>
+                    <span class="font-retro text-xl">Network</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="settings.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                    <span class="font-retro text-xl">Settings</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="profile.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">person</span>
+                    <span class="font-retro text-xl">Profile</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-white font-retro text-4xl leading-none">Web Tool Hub</h2>
+                            <span
+                                class="px-2 py-0.5 bg-border-dark border border-white/10 text-[10px] font-bold text-primary uppercase tracking-widest">Offline</span>
+                        </div>
+                        <p class="text-[#ad92c9] text-sm font-mono opacity-80">&gt; Request Center • v1.0.42-beta</p>
+                    </div>
+                    <a class="flex items-center gap-2 text-gray-400 hover:text-white font-retro text-xl transition-colors"
+                        href="index.html">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        BACK_TO_DASHBOARD
+                    </a>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-6 lg:p-10">
+                <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 pb-12">
+                    <!-- Request Form -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="bg-surface-dark border-4 border-primary p-1 shadow-pixel">
+                            <div class="bg-primary px-4 py-2 flex items-center justify-between">
+                                <h3 class="font-retro text-2xl text-white tracking-widest">REQUEST_NEW_UTILITY</h3>
+                                <span class="material-symbols-outlined text-white">add_circle</span>
+                            </div>
+                            <div class="p-6 space-y-6 bg-surface-dark">
+                                <form id="request-form" onsubmit="event.preventDefault();">
+                                    <div class="space-y-4">
+                                        <div class="space-y-2">
+                                            <label
+                                                class="block font-retro text-xl text-primary tracking-wider uppercase">01.
+                                                Tool Name</label>
+                                            <input required
+                                                class="w-full bg-background-dark border-2 border-border-dark focus:border-primary focus:ring-0 text-white font-mono p-3 placeholder:text-gray-600 transition-colors"
+                                                placeholder="e.g. JWT Debugger, SVG Optimizer..." type="text" />
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label
+                                                class="block font-retro text-xl text-primary tracking-wider uppercase">02.
+                                                Category</label>
+                                            <select
+                                                class="w-full bg-background-dark border-2 border-border-dark focus:border-primary focus:ring-0 text-white font-mono p-3 appearance-none transition-colors">
+                                                <option>TEXT_PROCESSING</option>
+                                                <option>IMAGE_MANIPULATION</option>
+                                                <option>NETWORK_UTILITIES</option>
+                                                <option>DEV_TOOLS</option>
+                                                <option>CRYPTO_UTILS</option>
+                                            </select>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label
+                                                class="block font-retro text-xl text-primary tracking-wider uppercase">03.
+                                                Description</label>
+                                            <textarea required
+                                                class="w-full bg-background-dark border-2 border-border-dark focus:border-primary focus:ring-0 text-white font-mono p-3 placeholder:text-gray-600 transition-colors resize-none"
+                                                placeholder="Detail the functionality and expected inputs/outputs..."
+                                                rows="5"></textarea>
+                                        </div>
+                                        <div class="pt-4">
+                                            <button type="submit"
+                                                class="w-full bg-primary hover:bg-primary-dark text-white font-retro text-3xl py-4 shadow-pixel-glow transition-all active:translate-y-1 active:shadow-none neon-glow border-2 border-white/20">
+                                                SUBMIT_REQUEST
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Community Voting -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="bg-background-dark border-4 border-border-dark p-1">
+                            <div class="bg-border-dark px-4 py-2 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-white text-sm">how_to_vote</span>
+                                <h3 class="font-retro text-xl text-white tracking-widest uppercase">Community_Voting
+                                </h3>
+                            </div>
+                            <div class="p-4 space-y-4 max-h-[600px] overflow-y-auto">
+                                <!-- Vote Item 1 -->
+                                <a href="regex-tester.html"
+                                    class="block bg-surface-dark border-2 border-border-dark p-4 group hover:border-primary transition-colors relative overflow-hidden">
+                                    <div
+                                        class="absolute inset-0 bg-primary/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                    </div>
+                                    <div class="flex items-start justify-between gap-4 relative z-10">
+                                        <div class="space-y-1">
+                                            <div class="flex items-center gap-2">
+                                                <h4
+                                                    class="font-retro text-xl text-white tracking-wide group-hover:text-primary transition-colors">
+                                                    RegEx_Tester_v2</h4>
+                                                <span
+                                                    class="text-[10px] bg-accent-green/20 text-accent-green px-1 border border-accent-green/50">AVAILABLE</span>
+                                            </div>
+                                            <p class="text-xs font-mono text-gray-400 line-clamp-2">Visual regex
+                                                debugger with real-time matching and capture group highlighting.</p>
+                                        </div>
+                                        <div
+                                            class="flex flex-col items-center justify-center min-w-[50px] bg-background-dark border-2 border-border-dark p-2 group-hover:border-primary transition-all">
+                                            <span
+                                                class="material-symbols-outlined text-lg text-primary">rocket_launch</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- Vote Item 2 -->
+                                <a href="sql-formatter.html"
+                                    class="block bg-surface-dark border-2 border-border-dark p-4 group hover:border-primary transition-colors relative overflow-hidden">
+                                    <div
+                                        class="absolute inset-0 bg-primary/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                    </div>
+                                    <div class="flex items-start justify-between gap-4 relative z-10">
+                                        <div class="space-y-1">
+                                            <div class="flex items-center gap-2">
+                                                <h4
+                                                    class="font-retro text-xl text-white tracking-wide group-hover:text-primary transition-colors">
+                                                    SQL_Formatter</h4>
+                                                <span
+                                                    class="text-[10px] bg-accent-green/20 text-accent-green px-1 border border-accent-green/50">AVAILABLE</span>
+                                            </div>
+                                            <p class="text-xs font-mono text-gray-400 line-clamp-2">Pretty print complex
+                                                SQL queries for
+                                                various dialects (MySQL, Postgres, etc).</p>
+                                        </div>
+                                        <div
+                                            class="flex flex-col items-center justify-center min-w-[50px] bg-background-dark border-2 border-border-dark p-2 group-hover:border-primary transition-all">
+                                            <span
+                                                class="material-symbols-outlined text-lg text-primary">rocket_launch</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- Vote Item 3 -->
+                                <a href="unit-converter.html"
+                                    class="block bg-surface-dark border-2 border-border-dark p-4 group hover:border-primary transition-colors relative overflow-hidden">
+                                    <div
+                                        class="absolute inset-0 bg-primary/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                    </div>
+                                    <div class="flex items-start justify-between gap-4 relative z-10">
+                                        <div class="space-y-1">
+                                            <div class="flex items-center gap-2">
+                                                <h4
+                                                    class="font-retro text-xl text-white tracking-wide group-hover:text-primary transition-colors">
+                                                    Unit_Converter</h4>
+                                                <span
+                                                    class="text-[10px] bg-accent-green/20 text-accent-green px-1 border border-accent-green/50">AVAILABLE</span>
+                                            </div>
+                                            <p class="text-xs font-mono text-gray-400 line-clamp-2">Convert between CSS
+                                                units (px, rem, em, %) and other common dev units.</p>
+                                        </div>
+                                        <div
+                                            class="flex flex-col items-center justify-center min-w-[50px] bg-background-dark border-2 border-border-dark p-2 group-hover:border-primary transition-all">
+                                            <span
+                                                class="material-symbols-outlined text-lg text-primary">rocket_launch</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- Vote Item 4 -->
+                                <a href="color-palette-generator.html"
+                                    class="block bg-surface-dark border-2 border-border-dark p-4 group hover:border-primary transition-colors relative overflow-hidden">
+                                    <div
+                                        class="absolute inset-0 bg-primary/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                    </div>
+                                    <div class="flex items-start justify-between gap-4 relative z-10">
+                                        <div class="space-y-1">
+                                            <div class="flex items-center gap-2">
+                                                <h4
+                                                    class="font-retro text-xl text-white tracking-wide group-hover:text-primary transition-colors">
+                                                    Color_Palette_Gen</h4>
+                                                <span
+                                                    class="text-[10px] bg-accent-green/20 text-accent-green px-1 border border-accent-green/50">AVAILABLE</span>
+                                            </div>
+                                            <p class="text-xs font-mono text-gray-400 line-clamp-2">Generate accessible
+                                                color schemes from a seed hex code.</p>
+                                        </div>
+                                        <div
+                                            class="flex flex-col items-center justify-center min-w-[50px] bg-background-dark border-2 border-border-dark p-2 group-hover:border-primary transition-all">
+                                            <span
+                                                class="material-symbols-outlined text-lg text-primary">rocket_launch</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="p-4 bg-surface-dark border-t-2 border-border-dark">
+                                <p class="font-mono text-[10px] text-gray-500 text-center uppercase tracking-widest">
+                                    Total Active Requests: 14 // Updates Weekly</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Custom Success Modal -->
+    <div id="success-modal" class="modal-overlay">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-inner">
+                <div class="mb-6 flex flex-col items-center">
+                    <div class="bg-primary/20 p-4 border-2 border-primary mb-2">
+                        <span class="material-symbols-outlined text-6xl text-primary font-bold">check_box</span>
+                    </div>
+                    <div class="font-retro text-2xl text-primary tracking-[0.2em]">
+                        [ OK ]
+                    </div>
+                </div>
+                <h2 class="font-retro text-4xl text-white mb-4 tracking-tighter leading-none">
+                    REQUEST SUBMITTED<br />SUCCESSFULLY!
+                </h2>
+                <p class="font-mono text-sm text-[#ad92c9] mb-8 opacity-70">
+                    TRANSACTION_ID: 0x7F13EC...COMPLETE
+                </p>
+                <button id="close-modal-btn"
+                    class="group relative px-12 py-3 bg-primary hover:bg-primary-dark transition-all duration-75 border-b-4 border-r-4 border-black/40 active:border-0 active:translate-y-1 active:translate-x-1">
+                    <div class="absolute inset-0 border-2 border-white/30 pointer-events-none"></div>
+                    <span class="font-retro text-3xl text-white tracking-widest uppercase">TAMAM</span>
+                </button>
+                <div class="corner-detail corner-tl"></div>
+                <div class="corner-detail corner-tr"></div>
+                <div class="corner-detail corner-bl"></div>
+                <div class="corner-detail corner-br"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple Interaction Script
+        document.addEventListener('DOMContentLoaded', () => {
+            // Voting Logic
+            const voteBtns = document.querySelectorAll('.vote-btn');
+            voteBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const countSpan = this.querySelector('.count');
+                    let count = parseInt(countSpan.innerText);
+
+                    if (this.classList.contains('voted')) {
+                        count--;
+                        this.classList.remove('voted', 'bg-primary', 'border-primary', 'text-white');
+                        this.classList.add('bg-background-dark', 'border-border-dark');
+                    } else {
+                        count++;
+                        this.classList.add('voted', 'bg-primary', 'border-primary', 'text-white');
+                        this.classList.remove('bg-background-dark', 'border-border-dark');
+                    }
+                    countSpan.innerText = count;
+                });
+            });
+
+            // Form Logic
+            const form = document.getElementById('request-form');
+            const modal = document.getElementById('success-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+
+            const closeModal = () => {
+                modal.classList.remove('active');
+            };
+
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // Close on overlay click
+            modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btn = form.querySelector('button[type="submit"]');
+                const originalText = btn.innerText;
+
+                // Simulate network request
+                btn.innerText = "SENDING...";
+                btn.disabled = true;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                    form.reset();
+
+                    // Show Modal
+                    modal.classList.add('active');
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+
+</html>

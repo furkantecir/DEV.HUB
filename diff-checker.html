@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diff Checker - Web Tool Hub</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=VT323&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2a1d35 1px, transparent 1px), linear-gradient(to bottom, #2a1d35 1px, transparent 1px)",
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .diff-added {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border-bottom: 2px solid #22c55e;
+        }
+
+        .diff-removed {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            text-decoration: line-through;
+            border-bottom: 2px solid #ef4444;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-background-dark text-slate-300 flex flex-col font-display">
+
+    <!-- Grid Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 bg-grid-pattern bg-[length:20px_20px] opacity-20"></div>
+
+    <!-- Header -->
+    <header class="border-b border-border-dark bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50 relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="utilities.html"
+                        class="flex items-center justify-center size-10 bg-surface-dark border border-border-dark hover:border-primary hover:text-white transition-all shadow-sm rounded-none">
+                        <span class="material-symbols-outlined text-xl">arrow_back</span>
+                    </a>
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="size-10 bg-primary flex items-center justify-center shadow-pixel-sm border border-white/20">
+                            <span class="material-symbols-outlined text-white">difference</span>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold text-white font-retro tracking-wider leading-none">DIFF
+                                CHECKER</h1>
+                            <p class="text-[10px] font-mono text-primary uppercase tracking-widest">v1.0 // Text
+                                Comparison Unit</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="compareText()"
+                        class="px-6 py-2 bg-primary text-white font-retro text-xl tracking-wide border-2 border-primary-dark shadow-pixel hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center gap-2 active:bg-primary-dark">
+                        <span class="material-symbols-outlined text-lg">play_arrow</span>
+                        <span>COMPARE</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-[1400px] mx-auto px-4 sm:px-6 py-6 w-full flex flex-col gap-6 relative z-10">
+
+        <!-- Input Area -->
+        <div class="grid md:grid-cols-2 gap-6 h-[60vh] min-h-[400px]" id="input-container">
+            <!-- Original -->
+            <div class="flex flex-col gap-2">
+                <div class="flex justify-between items-end px-1">
+                    <label class="font-retro text-xl text-primary tracking-wide flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">history</span> ORIGINAL_TEXT
+                    </label>
+                    <button onclick="clearInput('original')"
+                        class="text-xs font-mono text-red-400 hover:text-red-300 hover:underline uppercase">[CLEAR
+                        BUFFER]</button>
+                </div>
+                <div
+                    class="flex-1 bg-surface-dark border-2 border-border-dark p-1 relative group focus-within:border-primary transition-colors shadow-lg">
+                    <div
+                        class="absolute top-0 left-0 w-2 h-2 bg-border-dark group-focus-within:bg-primary transition-colors">
+                    </div>
+                    <div
+                        class="absolute top-0 right-0 w-2 h-2 bg-border-dark group-focus-within:bg-primary transition-colors">
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 w-2 h-2 bg-border-dark group-focus-within:bg-primary transition-colors">
+                    </div>
+                    <div
+                        class="absolute bottom-0 right-0 w-2 h-2 bg-border-dark group-focus-within:bg-primary transition-colors">
+                    </div>
+                    <textarea id="input-original"
+                        class="w-full h-full bg-background-dark/50 border-none p-4 font-mono text-sm text-gray-300 focus:ring-0 resize-none placeholder:text-gray-600"
+                        placeholder="// Paste original code or text block here..."></textarea>
+                </div>
+            </div>
+
+            <!-- Modified -->
+            <div class="flex flex-col gap-2">
+                <div class="flex justify-between items-end px-1">
+                    <label class="font-retro text-xl text-green-400 tracking-wide flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">update</span> MODIFIED_TEXT
+                    </label>
+                    <button onclick="clearInput('modified')"
+                        class="text-xs font-mono text-red-400 hover:text-red-300 hover:underline uppercase">[CLEAR
+                        BUFFER]</button>
+                </div>
+                <div
+                    class="flex-1 bg-surface-dark border-2 border-border-dark p-1 relative group focus-within:border-green-500 transition-colors shadow-lg">
+                    <div
+                        class="absolute top-0 left-0 w-2 h-2 bg-border-dark group-focus-within:bg-green-500 transition-colors">
+                    </div>
+                    <div
+                        class="absolute top-0 right-0 w-2 h-2 bg-border-dark group-focus-within:bg-green-500 transition-colors">
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 w-2 h-2 bg-border-dark group-focus-within:bg-green-500 transition-colors">
+                    </div>
+                    <div
+                        class="absolute bottom-0 right-0 w-2 h-2 bg-border-dark group-focus-within:bg-green-500 transition-colors">
+                    </div>
+                    <textarea id="input-modified"
+                        class="w-full h-full bg-background-dark/50 border-none p-4 font-mono text-sm text-gray-300 focus:ring-0 resize-none placeholder:text-gray-600"
+                        placeholder="// Paste new version here to compare..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Area -->
+        <div class="flex-1 flex flex-col min-h-[400px] hidden" id="output-container">
+            <div class="flex justify-between items-center mb-4 border-b border-border-dark pb-2">
+                <h3 class="font-retro text-2xl text-white tracking-widest">ANALYSIS_RESULT</h3>
+                <div class="flex gap-4 items-center">
+                    <div
+                        class="flex items-center gap-2 text-xs font-mono uppercase bg-surface-dark px-3 py-1 border border-border-dark">
+                        <span class="w-2 h-2 bg-red-500"></span>
+                        <span class="text-gray-400">Removed</span>
+                    </div>
+                    <div
+                        class="flex items-center gap-2 text-xs font-mono uppercase bg-surface-dark px-3 py-1 border border-border-dark">
+                        <span class="w-2 h-2 bg-green-500"></span>
+                        <span class="text-gray-400">Added</span>
+                    </div>
+                    <button onclick="resetView()"
+                        class="ml-4 font-retro text-lg text-primary hover:text-white hover:underline uppercase flex items-center gap-1">
+                        <span class="material-symbols-outlined text-lg">edit</span>
+                        Edit Inputs
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-1 bg-surface-dark border-2 border-border-dark p-1 relative shadow-lg">
+                <div class="absolute top-0 left-0 w-2 h-2 bg-primary"></div>
+                <div class="absolute top-0 right-0 w-2 h-2 bg-primary"></div>
+                <div class="absolute bottom-0 left-0 w-2 h-2 bg-primary"></div>
+                <div class="absolute bottom-0 right-0 w-2 h-2 bg-primary"></div>
+                <div class="flex-1 h-full overflow-auto p-6 font-mono text-sm whitespace-pre-wrap bg-background-dark/80 text-gray-300 leading-relaxed"
+                    id="diff-output"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="js/usage-stats.js"></script>
+    <script src="settings.js"></script>
+    <script src="js/global-search.js"></script>
+    <script>
+        // Simple Diff Algorithm (Myers Diff variation simplified for word/line)
+        function compareText() {
+            const original = document.getElementById('input-original').value;
+            const modified = document.getElementById('input-modified').value;
+
+            if (!original && !modified) return;
+
+            // Hide inputs, show output
+            document.getElementById('input-container').classList.add('hidden');
+            document.getElementById('output-container').classList.remove('hidden');
+            document.getElementById('output-container').classList.add('flex');
+
+            const diff = computeDiff(original, modified);
+            renderDiff(diff);
+        }
+
+        function resetView() {
+            document.getElementById('input-container').classList.remove('hidden');
+            document.getElementById('output-container').classList.add('hidden');
+            document.getElementById('output-container').classList.remove('flex');
+        }
+
+        function clearInput(type) {
+            document.getElementById(`input-${type}`).value = '';
+        }
+
+        // Basic Word-level Diff Implementation
+        function computeDiff(text1, text2) {
+            const words1 = text1.split(/(\s+)/);
+            const words2 = text2.split(/(\s+)/);
+            let result = '';
+
+            let i = 0, j = 0;
+            while (i < words1.length || j < words2.length) {
+                if (i < words1.length && j < words2.length && words1[i] === words2[j]) {
+                    result += `<span class="opacity-75">${escapeHtml(words1[i])}</span>`;
+                    i++; j++;
+                } else {
+                    let foundMove = false;
+                    for (let k = 1; k < 5; k++) {
+                        if (i + k < words1.length && words1[i + k] === words2[j]) {
+                            for (let x = 0; x < k; x++) {
+                                result += `<span class="diff-removed">${escapeHtml(words1[i + x])}</span>`;
+                            }
+                            i += k;
+                            foundMove = true;
+                            break;
+                        }
+                        if (j + k < words2.length && words1[i] === words2[j + k]) {
+                            for (let x = 0; x < k; x++) {
+                                result += `<span class="diff-added">${escapeHtml(words2[j + x])}</span>`;
+                            }
+                            j += k;
+                            foundMove = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundMove) {
+                        if (i < words1.length) {
+                            result += `<span class="diff-removed">${escapeHtml(words1[i])}</span>`;
+                            i++;
+                        }
+                        if (j < words2.length) {
+                            result += `<span class="diff-added">${escapeHtml(words2[j])}</span>`;
+                            j++;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        function renderDiff(html) {
+            document.getElementById('diff-output').innerHTML = html;
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Retro Digital Calculator - Web Tool Hub</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#1e1427",
+                        "border-dark": "#362348",
+                        "text-muted": "#ad92c9",
+                        "lcd-green": "#a3ff00",
+                        "lcd-purple": "#d400ff",
+                        "hardware-grey": "#2a1d35",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                        "pixel": ["VT323", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2a1d35 1px, transparent 1px), linear-gradient(to bottom, #2a1d35 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .pixel-shadow {
+                box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.3);
+            }
+            .pixel-inset {
+                box-shadow: inset 4px 4px 0px 0px rgba(0,0,0,0.5);
+            }
+            .grid-bg {
+                background-size: 40px 40px;
+                mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+                -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            }
+            .lcd-glow {
+                text-shadow: 0 0 10px rgba(163, 255, 0, 0.5);
+            }
+            .lcd-glow-purple {
+                text-shadow: 0 0 10px rgba(212, 0, 255, 0.5);
+            }
+            .active-base {
+                outline: 2px solid #d400ff;
+                box-shadow: 0 0 12px rgba(212, 0, 255, 0.4);
+            }
+            .glow-btn {
+                box-shadow: 0 0 8px rgba(127, 19, 236, 0.2);
+            }
+            .glow-btn:hover {
+                box-shadow: 0 0 15px rgba(127, 19, 236, 0.4);
+            }
+            .bit-glow {
+                box-shadow: inset 0 0 8px rgba(212, 0, 255, 0.6), 0 0 8px rgba(212, 0, 255, 0.4);
+            }
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #191022; }
+        ::-webkit-scrollbar-thumb { background: #362348; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7f13ec; }
+    </style>
+</head>
+
+<body class="bg-background-dark text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+    <div class="fixed inset-0 pointer-events-none z-0 grid-bg bg-grid-pattern opacity-20"></div>
+    <div class="relative z-10 flex flex-col h-full grow">
+        <header class="w-full border-b border-border-dark bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center gap-3">
+                        <a class="flex items-center gap-3 hover:opacity-80 transition-opacity" href="utilities.html">
+                            <div class="size-8 bg-primary rounded flex items-center justify-center text-white">
+                                <span class="material-symbols-outlined text-[20px]">terminal</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <h2 class="text-white text-lg font-black tracking-tight leading-none">DEV.HUB</h2>
+                                <span class="text-primary text-[10px] font-mono tracking-widest uppercase">Offline
+                                    Mode</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <nav class="hidden md:flex items-center gap-6 mr-6">
+                            <a class="text-text-muted hover:text-white text-xs font-mono"
+                                href="index.html">DASHBOARD</a>
+                            <a class="text-white text-xs font-mono border-b-2 border-primary pb-1"
+                                href="#">CALCULATOR</a>
+                            <a class="text-text-muted hover:text-white text-xs font-mono"
+                                href="utilities.html">UTILITIES</a>
+                        </nav>
+                        <div class="flex gap-2">
+                            <a href="settings.html"
+                                class="flex items-center justify-center size-9 rounded hover:bg-border-dark text-text-muted hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">settings</span>
+                            </a>
+                            <a href="profile.html"
+                                class="ml-2 bg-center bg-no-repeat aspect-square bg-cover rounded size-9 border border-border-dark hover:ring-2 hover:ring-primary transition-all"
+                                style="background: linear-gradient(135deg, var(--color-primary) 0%, #ad92c9 100%);"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main
+            class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col items-center justify-center">
+            <div class="w-full mb-6 flex items-center gap-2 text-xs font-mono text-text-muted">
+                <a class="hover:text-primary transition-colors" href="utilities.html">SYSTEM</a>
+                <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                <span class="text-white uppercase" id="calc-version-label">PROGRAMMER_CALC_V3</span>
+            </div>
+
+            <!-- Calculator Container -->
+            <div class="relative w-full max-w-[800px] bg-hardware-grey border-[6px] border-border-dark p-6 pixel-shadow rounded-lg transition-all duration-300"
+                id="calc-container">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-col">
+                        <span
+                            class="text-[10px] font-mono font-bold text-text-muted/60 leading-tight tracking-wider">DEV_GEAR
+                            // PRG-01</span>
+                        <span class="text-[10px] font-mono font-bold text-primary leading-tight" id="mode-label">64-BIT
+                            MULTI-BASE
+                            ENGINE + BITWISE_MOD</span>
+                    </div>
+                    <div class="flex gap-1.5">
+                        <div class="size-1.5 bg-red-500 rounded-full"></div>
+                        <div class="size-1.5 bg-green-500 rounded-full"></div>
+                        <div class="size-1.5 bg-lcd-purple rounded-full shadow-[0_0_5px_rgba(212,0,255,0.6)]"></div>
+                    </div>
+                </div>
+
+                <!-- Display Screen -->
+                <div
+                    class="bg-black/90 border-4 border-border-dark p-4.5 mb-4 pixel-inset rounded-sm relative overflow-hidden min-h-[100px] flex flex-col justify-end">
+                    <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none">
+                    </div>
+                    <div class="flex flex-col items-end w-full">
+                        <div class="text-lcd-green/60 font-pixel text-xl tracking-wider h-6 leading-none mb-1 w-full text-right truncate"
+                            id="calc-expression">
+                            0xDEADBEEF &amp; 0xFFFFFFFF
+                        </div>
+                        <div class="text-lcd-green font-pixel text-5xl md:text-6xl leading-none lcd-glow w-full text-right truncate tracking-tight"
+                            id="calc-display">
+                            3,735,928,559
+                        </div>
+                    </div>
+                    <div
+                        class="absolute inset-0 pointer-events-none opacity-5 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]">
+                    </div>
+                </div>
+
+                <!-- Bit Visualizer (Programmer Mode Only) -->
+                <div id="bit-visualizer" class="mb-4 bg-black/40 p-3 border-2 border-border-dark/50 rounded-sm">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-primary text-[14px]">toggle_on</span>
+                        <span
+                            class="text-[9px] font-mono font-bold text-text-muted tracking-widest uppercase">Interactive
+                            Bit-Flip Visualizer</span>
+                    </div>
+                    <div class="flex flex-wrap items-center justify-center gap-y-2 select-none" id="bit-grid">
+                        <!-- Bits will be generated by JS -->
+                        <div class="flex gap-1 mr-2">
+                            <button
+                                class="size-7 bg-lcd-purple/30 border border-lcd-purple bit-glow flex items-center justify-center font-pixel text-lg text-white">1</button>
+                            <button
+                                class="size-7 bg-lcd-purple/30 border border-lcd-purple bit-glow flex items-center justify-center font-pixel text-lg text-white">1</button>
+                            <button
+                                class="size-7 bg-surface-dark border border-border-dark flex items-center justify-center font-pixel text-lg text-text-muted hover:border-primary/50">0</button>
+                            <button
+                                class="size-7 bg-lcd-purple/30 border border-lcd-purple bit-glow flex items-center justify-center font-pixel text-lg text-white">1</button>
+                        </div>
+                        <!-- More bits placeholders -->
+                    </div>
+                </div>
+
+                <!-- Number System Display (Programmer Mode Only) -->
+                <div id="number-systems"
+                    class="grid grid-cols-1 gap-2 mb-4 bg-black/40 p-3 border-2 border-border-dark/50 rounded-sm">
+                    <div class="flex items-center justify-between px-3 py-1 bg-surface-dark/50 border border-primary/20 active-base cursor-pointer hover:bg-surface-dark transition-colors"
+                        data-base="HEX">
+                        <span class="font-mono text-[10px] text-primary font-bold">HEX</span>
+                        <span class="font-pixel text-lg text-lcd-purple lcd-glow-purple"
+                            id="hex-display">DEADBEEF</span>
+                    </div>
+                    <div class="flex items-center justify-between px-3 py-1 bg-surface-dark/50 border border-border-dark cursor-pointer hover:bg-surface-dark transition-colors"
+                        data-base="DEC">
+                        <span class="font-mono text-[10px] text-text-muted font-bold">DEC</span>
+                        <span class="font-pixel text-lg text-lcd-green opacity-80" id="dec-display">3735928559</span>
+                    </div>
+                    <div class="flex items-center justify-between px-3 py-1 bg-surface-dark/50 border border-border-dark cursor-pointer hover:bg-surface-dark transition-colors"
+                        data-base="OCT">
+                        <span class="font-mono text-[10px] text-text-muted font-bold">OCT</span>
+                        <span class="font-pixel text-lg text-lcd-green opacity-80" id="oct-display">33653337357</span>
+                    </div>
+                    <div class="flex items-center justify-between px-3 py-1 bg-surface-dark/50 border border-border-dark cursor-pointer hover:bg-surface-dark transition-colors"
+                        data-base="BIN">
+                        <span class="font-mono text-[10px] text-text-muted font-bold">BIN</span>
+                        <span class="font-pixel text-sm text-lcd-green opacity-60 tracking-tight"
+                            id="bin-display">11011110 10101101 10111110 11101111</span>
+                    </div>
+                </div>
+
+                <!-- Word Size Selector (Programmer Mode Only) -->
+                <div id="word-size-selector" class="flex gap-1 mb-4">
+                    <button
+                        class="flex-1 py-1 px-2 bg-primary text-white text-[9px] font-mono font-bold border-b-2 border-black/40"
+                        data-bits="64">64-BIT</button>
+                    <button
+                        class="flex-1 py-1 px-2 bg-surface-dark text-text-muted text-[9px] font-mono font-bold border-b-2 border-black/40"
+                        data-bits="32">32-BIT</button>
+                    <button
+                        class="flex-1 py-1 px-2 bg-surface-dark text-text-muted text-[9px] font-mono font-bold border-b-2 border-black/40"
+                        data-bits="16">16-BIT</button>
+                    <button
+                        class="flex-1 py-1 px-2 bg-surface-dark text-text-muted text-[9px] font-mono font-bold border-b-2 border-black/40"
+                        data-bits="8">8-BIT</button>
+                </div>
+
+                <!-- Mode Selector -->
+                <div class="flex gap-2 mb-6">
+                    <button id="mode-standard"
+                        class="flex-1 py-2 px-3 bg-surface-dark text-text-muted text-[10px] font-mono font-bold border-b-4 border-black/40 hover:bg-border-dark transition-all">
+                        STANDARD
+                    </button>
+                    <button id="mode-scientific"
+                        class="flex-1 py-2 px-3 bg-surface-dark text-text-muted text-[10px] font-mono font-bold border-b-4 border-black/40 hover:bg-border-dark transition-all"
+                        disabled title="Coming Soon">
+                        SCIENTIFIC
+                    </button>
+                    <button id="mode-programmer"
+                        class="flex-1 py-2 px-3 bg-primary text-white text-[10px] font-mono font-bold border-b-4 border-black/40 shadow-[0_0_10px_rgba(127,19,236,0.3)]">
+                        PROGRAMMER
+                    </button>
+                </div>
+
+                <!-- Keypad Area -->
+                <div class="flex flex-col md:flex-row gap-4">
+                    <!-- Main Keypad -->
+                    <div class="flex-1">
+                        <div class="grid grid-cols-4 md:grid-cols-6 gap-2" id="keypad">
+                            <!-- Keys will be dynamically generated by JS based on mode -->
+                        </div>
+                    </div>
+
+                    <!-- Bitwise Operations Panel (Programmer Mode Only) -->
+                    <div class="w-full md:w-36 flex flex-col gap-2" id="bitwise-panel">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="material-symbols-outlined text-primary text-[14px]">memory</span>
+                            <span
+                                class="text-[9px] font-mono font-bold text-text-muted tracking-tighter uppercase">Bitwise_Ops</span>
+                        </div>
+                        <div
+                            class="grid grid-cols-2 md:grid-cols-1 gap-2 p-2 bg-black/20 border-2 border-border-dark/30 rounded-sm">
+                            <button
+                                class="calc-btn h-10 bg-surface-dark text-primary font-pixel text-lg border-b-4 border-black/50 active:border-b-0 active:translate-y-1 rounded-sm glow-btn flex items-center justify-center gap-2 px-2"
+                                data-op="AND">
+                                <span class="material-symbols-outlined text-[16px]">join_inner</span>
+                                AND
+                            </button>
+                            <button
+                                class="calc-btn h-10 bg-surface-dark text-primary font-pixel text-lg border-b-4 border-black/50 active:border-b-0 active:translate-y-1 rounded-sm glow-btn flex items-center justify-center gap-2 px-2"
+                                data-op="OR">
+                                <span class="material-symbols-outlined text-[16px]">join_right</span>
+                                OR
+                            </button>
+                            <button
+                                class="calc-btn h-10 bg-surface-dark text-primary font-pixel text-lg border-b-4 border-black/50 active:border-b-0 active:translate-y-1 rounded-sm glow-btn flex items-center justify-center gap-2 px-2"
+                                data-op="XOR">
+                                <span class="material-symbols-outlined text-[16px]">join_left</span>
+                                XOR
+                            </button>
+                            <button
+                                class="calc-btn h-10 bg-surface-dark text-primary font-pixel text-lg border-b-4 border-black/50 active:border-b-0 active:translate-y-1 rounded-sm glow-btn flex items-center justify-center gap-2 px-2"
+                                data-op="NOT">
+                                <span class="material-symbols-outlined text-[16px]">error</span>
+                                NOT
+                            </button>
+                            <button
+                                class="calc-btn h-10 bg-surface-dark text-text-muted font-pixel text-lg border-b-4 border-black/50 active:border-b-0 active:translate-y-1 rounded-sm glow-btn flex items-center justify-center gap-2 px-2"
+                                data-op="NAND">
+                                <span class="material-symbols-outlined text-[16px]">tonality</span>
+                                NAND
+                            </button>
+                            <button
+                                class="calc-btn h-10 bg-surface-dark text-text-muted font-pixel text-lg border-b-4 border-black/50 active:border-b-0 active:translate-y-1 rounded-sm glow-btn flex items-center justify-center gap-2 px-2"
+                                data-op="NOR">
+                                <span class="material-symbols-outlined text-[16px]">contrast</span>
+                                NOR
+                            </button>
+                            <div
+                                class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-border-dark/50 col-span-2 md:col-span-1">
+                                <button
+                                    class="calc-btn h-10 bg-border-dark text-white font-pixel text-sm border-b-4 border-black/50 active:border-b-0 active:translate-y-1 rounded-sm flex flex-col items-center justify-center"
+                                    data-op="LSH">
+                                    <span
+                                        class="material-symbols-outlined text-[14px]">keyboard_double_arrow_left</span>
+                                    <span class="text-[8px]">LSH</span>
+                                </button>
+                                <button
+                                    class="calc-btn h-10 bg-border-dark text-white font-pixel text-sm border-b-4 border-black/50 active:border-b-0 active:translate-y-1 rounded-sm flex flex-col items-center justify-center"
+                                    data-op="RSH">
+                                    <span
+                                        class="material-symbols-outlined text-[14px]">keyboard_double_arrow_right</span>
+                                    <span class="text-[8px]">RSH</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-center gap-1 opacity-20">
+                    <div class="h-1 w-8 bg-black rounded-full"></div>
+                    <div class="h-1 w-8 bg-black rounded-full"></div>
+                    <div class="h-1 w-8 bg-black rounded-full"></div>
+                </div>
+            </div>
+
+            <!-- Shortcuts Hint -->
+            <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="flex items-center gap-3">
+                    <kbd
+                        class="px-2 py-1 bg-surface-dark border border-border-dark text-[10px] font-mono text-primary rounded">ENT</kbd>
+                    <span class="text-[10px] font-mono text-text-muted uppercase">Calculate</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <kbd
+                        class="px-2 py-1 bg-surface-dark border border-border-dark text-[10px] font-mono text-primary rounded">H</kbd>
+                    <span class="text-[10px] font-mono text-text-muted uppercase">Hex Mode</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <kbd
+                        class="px-2 py-1 bg-surface-dark border border-border-dark text-[10px] font-mono text-primary rounded">L</kbd>
+                    <span class="text-[10px] font-mono text-text-muted uppercase">Bit Shift</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <kbd
+                        class="px-2 py-1 bg-surface-dark border border-border-dark text-[10px] font-mono text-primary rounded">M</kbd>
+                    <span class="text-[10px] font-mono text-text-muted uppercase">Mem Store</span>
+                </div>
+            </div>
+        </main>
+
+        <footer class="w-full border-t border-border-dark bg-background-dark/95 backdrop-blur-sm mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div
+                    class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-text-muted">
+                    <div class="flex items-center gap-6">
+                        <a class="hover:text-white transition-colors flex items-center gap-1" href="#">
+                            <span class="material-symbols-outlined text-[14px]">description</span>
+                            DOCS
+                        </a>
+                        <a class="hover:text-white transition-colors flex items-center gap-1" href="#">
+                            <span class="material-symbols-outlined text-[14px]">keyboard</span>
+                            SHORTCUTS
+                        </a>
+                        <a class="hover:text-white transition-colors flex items-center gap-1" href="#">
+                            <span class="material-symbols-outlined text-[14px]">history</span>
+                            HISTORY
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-4 text-center md:text-right">
+                        <span class="flex items-center gap-2">
+                            <span class="size-2 bg-green-500 rounded-full"></span>
+                            MEM_USE: 52MB
+                        </span>
+                        <span class="hidden sm:inline text-border-dark">|</span>
+                        <span>V1.2.0-BITWISE-ENABLED</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/calculator.js"></script>
+</body>
+
+</html>

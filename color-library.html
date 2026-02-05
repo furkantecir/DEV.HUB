@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Developer Color Library</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#1e1427",
+                        "border-dark": "#362348",
+                        "text-muted": "#ad92c9",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2a1d35 1px, transparent 1px), linear-gradient(to bottom, #2a1d35 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #191022; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #362348; 
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec; 
+        }
+        .grid-bg {
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+        .pixel-border {
+            box-shadow: 
+                0 -2px 0 0 #362348,
+                0 2px 0 0 #362348,
+                -2px 0 0 0 #362348,
+                2px 0 0 0 #362348;
+        }
+        .pixel-button {
+            position: relative;
+            background: #7f13ec;
+            box-shadow: 
+                inset -2px -2px 0px 0px #4b0082,
+                inset 2px 2px 0px 0px #a855f7;
+            transition: all 0.1s;
+        }
+        .pixel-button:active {
+            box-shadow: 
+                inset 2px 2px 0px 0px #4b0082,
+                inset -2px -2px 0px 0px #a855f7;
+            transform: translateY(1px);
+        }
+        .color-card {
+            background: #1e1427;
+            position: relative;
+        }
+        .color-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid #362348;
+            pointer-events: none;
+        }
+        .pixel-wheel {
+            background-image: conic-gradient(
+                #ff0000 0deg 60deg,
+                #ffff00 60deg 120deg,
+                #00ff00 120deg 180deg,
+                #00ffff 180deg 240deg,
+                #0000ff 240deg 300deg,
+                #ff00ff 300deg 360deg
+            );
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+    <div class="fixed inset-0 pointer-events-none z-0 grid-bg bg-grid-pattern opacity-20"></div>
+    <div class="relative z-10 flex flex-col h-full grow">
+        <header class="w-full border-b border-border-dark bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center gap-3">
+                        <a href="module-library.html" class="mr-2 text-text-muted hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                        </a>
+                        <div class="size-8 bg-primary rounded flex items-center justify-center text-white">
+                            <span class="material-symbols-outlined text-[20px]">palette</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <h2 class="text-white text-lg font-black tracking-tight leading-none uppercase">Color
+                                Library</h2>
+                            <span class="text-primary text-[10px] font-mono tracking-widest uppercase">Palette
+                                v2.0</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a href="settings.html"
+                            class="flex items-center justify-center size-9 rounded hover:bg-border-dark text-text-muted hover:text-white transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">settings</span>
+                        </a>
+                        <a href="profile.html"
+                            class="bg-center bg-no-repeat aspect-square bg-cover rounded size-9 border border-border-dark hover:ring-2 hover:ring-primary transition-all"
+                            style="background: linear-gradient(135deg, var(--color-primary) 0%, #ad92c9 100%);"></a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Editor -->
+                <div class="lg:col-span-2 flex flex-col bg-surface-dark border border-border-dark p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h1 class="text-2xl font-bold text-white mb-1 tracking-tight">Active Palette Selection</h1>
+                            <p class="text-text-muted font-mono text-xs">Pick and analyze colors for your digital
+                                environment.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="pipette-btn"
+                                class="size-8 flex items-center justify-center border border-border-dark hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-sm">colorize</span>
+                            </button>
+                            <button onclick="window.location.reload()"
+                                class="size-8 flex items-center justify-center border border-border-dark hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-sm">refresh</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
+                        <div class="relative group cursor-pointer">
+                            <div
+                                class="size-48 rounded-full pixel-wheel border-4 border-surface-dark shadow-[0_0_20px_rgba(127,19,236,0.3)]">
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div class="size-8 border-2 border-white/50 rounded-full shadow-lg bg-transparent">
+                                </div>
+                            </div>
+                            <!-- Hidden Color Input -->
+                            <input type="color" id="main-color-input"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-crosshair" value="#7F13EC">
+                        </div>
+
+                        <div class="flex-1 w-full space-y-4">
+                            <div class="bg-background-dark p-4 border border-border-dark">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div id="preview-box"
+                                        class="size-12 bg-primary border-2 border-white/20 shadow-[0_0_15px_rgba(127,19,236,0.5)]">
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-[10px] font-mono text-text-muted block uppercase">Primary
+                                            Focus</span>
+                                        <span id="hex-display"
+                                            class="text-xl font-mono text-white font-bold tracking-wider">#7F13EC</span>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div class="bg-surface-dark p-2 border border-border-dark">
+                                        <span class="text-[8px] font-mono text-text-muted block uppercase">RGB</span>
+                                        <span id="rgb-display" class="text-[10px] font-mono text-white">127, 19,
+                                            236</span>
+                                    </div>
+                                    <div class="bg-surface-dark p-2 border border-border-dark">
+                                        <span class="text-[8px] font-mono text-text-muted block uppercase">HSL</span>
+                                        <span id="hsl-display" class="text-[10px] font-mono text-white">270, 85,
+                                            50</span>
+                                    </div>
+                                    <div class="bg-surface-dark p-2 border border-border-dark">
+                                        <span class="text-[8px] font-mono text-text-muted block uppercase">CMYK</span>
+                                        <span id="cmyk-display" class="text-[10px] font-mono text-white">46, 92, 0,
+                                            7</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <input id="copy-code-input"
+                                    class="flex-1 bg-background-dark border-border-dark text-xs font-mono text-white p-2 focus:ring-1 focus:ring-primary focus:border-primary"
+                                    type="text" value="export default { primary: '#7F13EC' }" readonly />
+                                <button id="copy-main-btn"
+                                    class="px-3 bg-border-dark hover:bg-primary transition-colors text-white">
+                                    <span class="material-symbols-outlined text-sm">content_copy</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Utility -->
+                <div class="flex flex-col bg-surface-dark border border-border-dark p-6">
+                    <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-widest">Export Utility</h2>
+                    <div class="space-y-3">
+                        <div id="export-tailwind"
+                            class="group border border-border-dark p-3 hover:bg-primary/5 transition-colors cursor-pointer active:scale-95">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-white uppercase">Tailwind Config</span>
+                                <span
+                                    class="material-symbols-outlined text-xs text-text-muted group-hover:text-primary transition-colors">arrow_forward</span>
+                            </div>
+                            <p class="text-[10px] text-text-muted font-mono leading-tight">Generate full theme object
+                                with semantic color names.</p>
+                        </div>
+                        <div id="export-sass"
+                            class="group border border-border-dark p-3 hover:bg-primary/5 transition-colors cursor-pointer active:scale-95">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-white uppercase">Sass Variables</span>
+                                <span
+                                    class="material-symbols-outlined text-xs text-text-muted group-hover:text-primary transition-colors">arrow_forward</span>
+                            </div>
+                            <p class="text-[10px] text-text-muted font-mono leading-tight">Export as $variable-name
+                                format with HSL mapping.</p>
+                        </div>
+                        <div id="export-css"
+                            class="group border border-border-dark p-3 hover:bg-primary/5 transition-colors cursor-pointer active:scale-95">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-white uppercase">CSS Custom Props</span>
+                                <span
+                                    class="material-symbols-outlined text-xs text-text-muted group-hover:text-primary transition-colors">arrow_forward</span>
+                            </div>
+                            <p class="text-[10px] text-text-muted font-mono leading-tight">Export as --color-name for
+                                modern CSS workflows.</p>
+                        </div>
+                    </div>
+                    <div class="mt-auto pt-6 border-t border-border-dark">
+                        <div class="flex items-center gap-2 text-text-muted text-[10px] font-mono mb-2">
+                            <span class="material-symbols-outlined text-xs">info</span>
+                            Copied to Clipboard
+                        </div>
+                        <div class="h-1 bg-background-dark overflow-hidden">
+                            <div id="copy-feedback-bar" class="h-full bg-primary w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Palettes -->
+            <div>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-3">
+                        Brand Palettes
+                        <span class="text-[10px] font-mono text-text-muted border border-border-dark px-2 py-0.5">32
+                            TOTAL</span>
+                    </h2>
+                    <div class="flex items-center gap-2">
+                        <div class="flex bg-surface-dark border border-border-dark p-0.5">
+                            <button class="px-2 py-1 bg-primary text-white text-[10px] font-mono">GRID</button>
+                            <button
+                                class="px-2 py-1 text-text-muted hover:text-white text-[10px] font-mono">LIST</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Spotify -->
+                    <div
+                        class="group flex flex-col bg-surface-dark border border-border-dark hover:border-primary/50 transition-all duration-300">
+                        <div class="h-32 flex">
+                            <div class="flex-1 bg-[#121212]"></div>
+                            <div class="flex-1 bg-[#282828]"></div>
+                            <div class="flex-1 bg-[#b3b3b3]"></div>
+                            <div class="flex-1 bg-[#1db954]"></div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="text-white font-bold text-sm">Media Player UI</h3>
+                                <span
+                                    class="material-symbols-outlined text-sm text-text-muted group-hover:text-white transition-colors cursor-pointer">star</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-[10px] font-mono">
+                                    <span class="text-text-muted">PRIMARY</span>
+                                    <span class="text-white">#1DB954</span>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono">
+                                    <span class="text-text-muted">SURFACE</span>
+                                    <span class="text-white">#121212</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-border-dark flex gap-2">
+                                <button onclick="loadColor('#1db954')"
+                                    class="flex-1 border border-border-dark text-[10px] font-mono py-1 hover:bg-white/5 transition-colors uppercase text-white">Load</button>
+                                <button
+                                    class="flex-1 border border-border-dark text-[10px] font-mono py-1 hover:bg-white/5 transition-colors uppercase text-text-muted">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Google -->
+                    <div
+                        class="group flex flex-col bg-surface-dark border border-border-dark hover:border-primary/50 transition-all duration-300">
+                        <div class="h-32 flex">
+                            <div class="flex-1 bg-[#f1f1f1]"></div>
+                            <div class="flex-1 bg-[#000000]"></div>
+                            <div class="flex-1 bg-[#5f6368]"></div>
+                            <div class="flex-1 bg-[#4285f4]"></div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="text-white font-bold text-sm">Search Engine Light</h3>
+                                <span class="material-symbols-outlined text-sm text-yellow-500">star</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-[10px] font-mono">
+                                    <span class="text-text-muted">PRIMARY</span>
+                                    <span class="text-white">#4285F4</span>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono">
+                                    <span class="text-text-muted">BG</span>
+                                    <span class="text-white">#F1F1F1</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-border-dark flex gap-2">
+                                <button onclick="loadColor('#4285f4')"
+                                    class="flex-1 border border-border-dark text-[10px] font-mono py-1 hover:bg-white/5 transition-colors uppercase text-white">Load</button>
+                                <button
+                                    class="flex-1 border border-border-dark text-[10px] font-mono py-1 hover:bg-white/5 transition-colors uppercase text-text-muted">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discord -->
+                    <div
+                        class="group flex flex-col bg-surface-dark border border-border-dark hover:border-primary/50 transition-all duration-300">
+                        <div class="h-32 flex">
+                            <div class="flex-1 bg-[#5865f2]"></div>
+                            <div class="flex-1 bg-[#36393f]"></div>
+                            <div class="flex-1 bg-[#202225]"></div>
+                            <div class="flex-1 bg-[#ffffff]"></div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="text-white font-bold text-sm">Communication Hub</h3>
+                                <span
+                                    class="material-symbols-outlined text-sm text-text-muted group-hover:text-white transition-colors cursor-pointer">star</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-[10px] font-mono">
+                                    <span class="text-text-muted">PRIMARY</span>
+                                    <span class="text-white">#5865F2</span>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono">
+                                    <span class="text-text-muted">CHAT</span>
+                                    <span class="text-white">#36393F</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-border-dark flex gap-2">
+                                <button onclick="loadColor('#5865f2')"
+                                    class="flex-1 border border-border-dark text-[10px] font-mono py-1 hover:bg-white/5 transition-colors uppercase text-white">Load</button>
+                                <button
+                                    class="flex-1 border border-border-dark text-[10px] font-mono py-1 hover:bg-white/5 transition-colors uppercase text-text-muted">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reddit -->
+                    <div
+                        class="group flex flex-col bg-surface-dark border border-border-dark hover:border-primary/50 transition-all duration-300">
+                        <div class="h-32 flex">
+                            <div class="flex-1 bg-[#1a1a1b]"></div>
+                            <div class="flex-1 bg-[#ffffff]"></div>
+                            <div class="flex-1 bg-[#ff4500]"></div>
+                            <div class="flex-1 bg-[#878a8c]"></div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="text-white font-bold text-sm">Community Forum</h3>
+                                <span
+                                    class="material-symbols-outlined text-sm text-text-muted group-hover:text-white transition-colors cursor-pointer">star</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-[10px] font-mono">
+                                    <span class="text-text-muted">PRIMARY</span>
+                                    <span class="text-white">#FF4500</span>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono">
+                                    <span class="text-text-muted">TEXT</span>
+                                    <span class="text-white">#1A1A1B</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-border-dark flex gap-2">
+                                <button onclick="loadColor('#ff4500')"
+                                    class="flex-1 border border-border-dark text-[10px] font-mono py-1 hover:bg-white/5 transition-colors uppercase text-white">Load</button>
+                                <button
+                                    class="flex-1 border border-border-dark text-[10px] font-mono py-1 hover:bg-white/5 transition-colors uppercase text-text-muted">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="w-full border-t border-border-dark bg-background-dark/95 backdrop-blur-sm mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div
+                    class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-text-muted">
+                    <div class="flex items-center gap-6">
+                        <a class="hover:text-white transition-colors flex items-center gap-1" href="#">
+                            <span class="material-symbols-outlined text-[14px]">palette</span>
+                            PALETTES: 32
+                        </a>
+                        <a class="hover:text-white transition-colors flex items-center gap-1" href="#">
+                            <span class="material-symbols-outlined text-[14px]">history</span>
+                            RECENT: VIBRANT DARK
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-4 text-center md:text-right">
+                        <span>MODIFIER: ACTIVE</span>
+                        <span class="hidden sm:inline text-border-dark">|</span>
+                        <span>COLOR SPACE: SRGB</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/color-library.js"></script>
+</body>
+
+</html>

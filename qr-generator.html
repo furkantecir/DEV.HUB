@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - DEV.HUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#1e1427",
+                        "border-dark": "#362348",
+                        "text-muted": "#ad92c9",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2a1d35 1px, transparent 1px), linear-gradient(to bottom, #2a1d35 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #362348;
+            border-radius: 2px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .grid-bg {
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        .pixel-corners {
+            box-shadow:
+                0 -4px 0 -2px #1e1427,
+                0 4px 0 -2px #1e1427,
+                -4px 0 0 -2px #1e1427,
+                4px 0 0 -2px #1e1427;
+        }
+
+        .pixel-border {
+            border: 4px solid #362348;
+            border-image-slice: 2;
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+    <div class="fixed inset-0 pointer-events-none z-0 grid-bg bg-grid-pattern opacity-20"></div>
+
+    <div class="relative z-10 flex flex-col h-full grow">
+        <!-- Header -->
+        <header class="w-full border-b border-border-dark bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <a class="flex items-center gap-3 group" href="utilities.html">
+                        <div
+                            class="size-8 bg-primary rounded flex items-center justify-center text-white group-hover:bg-primary/80 transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">terminal</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <h2 class="text-white text-lg font-black tracking-tight leading-none uppercase">Dev.Hub
+                            </h2>
+                            <span class="text-primary text-[10px] font-mono tracking-widest uppercase">Utility
+                                Suite</span>
+                        </div>
+                    </a>
+
+                    <div class="hidden md:flex items-center gap-2 font-mono text-xs text-text-muted">
+                        <span>MODULES</span>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        <span class="text-white">QR_GEN_V2.4</span>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="hidden md:flex items-center gap-2 px-3 py-1 bg-surface-dark border border-border-dark rounded">
+                            <span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+                            <span class="text-xs font-mono text-text-muted uppercase">Ready</span>
+                        </div>
+                        <div class="h-8 w-px bg-border-dark mx-2"></div>
+                        <div class="flex gap-2">
+                            <button
+                                class="flex items-center justify-center size-9 rounded hover:bg-border-dark text-text-muted hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">help_outline</span>
+                            </button>
+                            <a href="settings.html"
+                                class="flex items-center justify-center size-9 rounded hover:bg-border-dark text-text-muted hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">settings</span>
+                            </a>
+                            <a href="profile.html"
+                                class="ml-2 bg-center bg-no-repeat aspect-square bg-cover rounded size-9 border border-border-dark hover:ring-2 hover:ring-primary transition-all"
+                                style="background: linear-gradient(135deg, var(--color-primary) 0%, #ad92c9 100%);"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="mb-8">
+                <a class="text-primary font-mono text-xs hover:underline flex items-center gap-1 mb-2"
+                    href="utilities.html">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    BACK_TO_DASHBOARD
+                </a>
+                <h1 class="text-3xl font-bold text-white tracking-tight">QR Code Generator</h1>
+                <p class="text-text-muted font-mono text-sm mt-1">Encode text or URLs into high-fidelity block
+                    patterns.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left Panel: Input Controls -->
+                <div class="lg:col-span-7 flex flex-col gap-6">
+                    <div
+                        class="bg-surface-dark border border-border-dark p-6 rounded-lg shadow-xl relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+
+                        <div class="space-y-6">
+                            <!-- Input Data -->
+                            <div>
+                                <label
+                                    class="block text-xs font-mono text-text-muted uppercase mb-3 tracking-widest">Input
+                                    Data</label>
+                                <textarea id="qr-input"
+                                    class="w-full bg-background-dark border border-border-dark focus:border-primary focus:ring-1 focus:ring-primary/30 rounded p-4 text-white font-mono text-sm min-h-[160px] resize-none"
+                                    placeholder="https://github.com/developer/utility-hub..."></textarea>
+                            </div>
+
+                            <!-- Settings -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Error Correction -->
+                                <div>
+                                    <label
+                                        class="block text-xs font-mono text-text-muted uppercase mb-2 tracking-widest">Error
+                                        Correction</label>
+                                    <select id="error-correction"
+                                        class="w-full bg-background-dark border border-border-dark focus:border-primary focus:ring-0 rounded p-2.5 text-white font-mono text-xs">
+                                        <option value="L">Level L (7%)</option>
+                                        <option value="M">Level M (15%)</option>
+                                        <option value="Q">Level Q (25%)</option>
+                                        <option value="H" selected>Level H (30%)</option>
+                                    </select>
+                                </div>
+
+                                <!-- Pixel Size -->
+                                <div>
+                                    <label
+                                        class="block text-xs font-mono text-text-muted uppercase mb-2 tracking-widest">Pixel
+                                        Size</label>
+                                    <div
+                                        class="flex items-center gap-4 h-[42px] px-3 bg-background-dark border border-border-dark rounded">
+                                        <input id="pixel-size"
+                                            class="w-full accent-primary bg-border-dark h-1 rounded-full appearance-none cursor-pointer"
+                                            type="range" min="4" max="20" value="8" />
+                                        <span class="text-xs font-mono text-white" id="pixel-size-value">8px</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Generate Button -->
+                            <div class="pt-4">
+                                <button id="generate-btn"
+                                    class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 px-6 rounded flex items-center justify-center gap-3 transition-all active:scale-[0.98] border-b-4 border-purple-900">
+                                    <span class="material-symbols-outlined">qr_code_scanner</span>
+                                    <span class="font-mono tracking-tighter text-lg uppercase">Generate Module</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feature Cards -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-surface-dark/50 border border-border-dark p-4 rounded flex items-center gap-4">
+                            <div
+                                class="size-10 rounded bg-background-dark border border-border-dark flex items-center justify-center text-primary">
+                                <span class="material-symbols-outlined">palette</span>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Custom Style</h4>
+                                <p class="text-[10px] text-text-muted font-mono">Set foreground & background</p>
+                            </div>
+                        </div>
+                        <div class="bg-surface-dark/50 border border-border-dark p-4 rounded flex items-center gap-4">
+                            <div
+                                class="size-10 rounded bg-background-dark border border-border-dark flex items-center justify-center text-primary">
+                                <span class="material-symbols-outlined">history</span>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">History</h4>
+                                <p class="text-[10px] text-text-muted font-mono">Access previous 10 codes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: QR Preview -->
+                <div class="lg:col-span-5">
+                    <div class="sticky top-24 space-y-6">
+                        <!-- QR Code Preview -->
+                        <div
+                            class="bg-surface-dark border border-border-dark p-8 rounded-lg shadow-2xl flex flex-col items-center justify-center min-h-[440px]">
+                            <div id="qr-preview"
+                                class="relative p-6 border-4 border-border-dark bg-white group cursor-zoom-in">
+                                <!-- Corner decorations -->
+                                <div class="absolute -top-1 -left-1 size-3 bg-border-dark"></div>
+                                <div class="absolute -top-1 -right-1 size-3 bg-border-dark"></div>
+                                <div class="absolute -bottom-1 -left-1 size-3 bg-border-dark"></div>
+                                <div class="absolute -bottom-1 -right-1 size-3 bg-border-dark"></div>
+
+                                <!-- QR Code Canvas -->
+                                <canvas id="qr-canvas" class="size-64"></canvas>
+                            </div>
+                            <p class="mt-8 text-xs font-mono text-text-muted tracking-widest uppercase"
+                                id="preview-status">Preview_Buffer_Active</p>
+                        </div>
+
+                        <!-- Export Buttons -->
+                        <div class="grid grid-cols-3 gap-2">
+                            <button id="export-png"
+                                class="flex flex-col items-center justify-center gap-2 p-3 bg-surface-dark border border-border-dark hover:border-primary hover:bg-primary/10 rounded transition-all group">
+                                <span
+                                    class="material-symbols-outlined text-text-muted group-hover:text-primary">image</span>
+                                <span class="text-[10px] font-mono text-text-muted group-hover:text-white">PNG</span>
+                            </button>
+                            <button id="export-svg"
+                                class="flex flex-col items-center justify-center gap-2 p-3 bg-surface-dark border border-border-dark hover:border-primary hover:bg-primary/10 rounded transition-all group">
+                                <span
+                                    class="material-symbols-outlined text-text-muted group-hover:text-primary">slide_library</span>
+                                <span class="text-[10px] font-mono text-text-muted group-hover:text-white">SVG</span>
+                            </button>
+                            <button id="copy-btn"
+                                class="flex flex-col items-center justify-center gap-2 p-3 bg-surface-dark border border-border-dark hover:border-primary hover:bg-primary/10 rounded transition-all group">
+                                <span
+                                    class="material-symbols-outlined text-text-muted group-hover:text-primary">content_copy</span>
+                                <span class="text-[10px] font-mono text-text-muted group-hover:text-white">COPY</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="w-full border-t border-border-dark bg-background-dark/95 backdrop-blur-sm mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div
+                    class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-text-muted">
+                    <div class="flex items-center gap-6">
+                        <a class="hover:text-white transition-colors flex items-center gap-1" href="#">
+                            <span class="material-symbols-outlined text-[14px]">description</span>
+                            DOCS
+                        </a>
+                        <a class="hover:text-white transition-colors flex items-center gap-1" href="#">
+                            <span class="material-symbols-outlined text-[14px]">code</span>
+                            SOURCE
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-4 text-center md:text-right">
+                        <span>CPU_LOAD: 12%</span>
+                        <span class="hidden sm:inline text-border-dark">|</span>
+                        <span>V1.0.4 PRODUCTION_BUILD</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- QRCode.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- Modular JavaScript -->
+    <script src="js/storage.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/qr-generator.js"></script>
+</body>
+
+</html>

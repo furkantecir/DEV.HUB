@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - EXIF Data Remover</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script> <!-- Added EXIF-JS Library -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "none": "0",
+                        "sm": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-danger": "4px 4px 0px 0px #ef4444",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .pixel-border {
+            border-style: solid;
+            border-width: 2px;
+            border-image-slice: 2;
+            border-image-width: 2;
+            border-image-outset: 0;
+            border-image-source: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6'><path d='M0 2h2v2H0zM2 0h2v2H2zM4 2h2v2H4zM2 4h2v2H2z' fill='%234d3267'/></svg>");
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+    <!-- Hidden File Input -->
+    <input type="file" id="file-input" class="hidden" accept="image/jpeg,image/png,image/jpg" />
+
+    <div class="flex h-screen w-full overflow-hidden">
+        <aside class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white border-2 border-white/10 shadow-pixel-sm transition-transform active:translate-y-1 active:shadow-none"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <div class="px-4 py-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active Tool</div>
+                <div class="px-4 py-3 bg-surface-dark border-2 border-primary/50 text-primary">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined">privacy_tip</span>
+                        <span class="font-retro text-xl uppercase">EXIF Remover</span>
+                    </div>
+                </div>
+            </nav>
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-primary/20 border-2 border-primary flex items-center justify-center shadow-pixel-sm">
+                            <span class="material-symbols-outlined text-primary text-3xl">privacy_tip</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-white font-retro text-4xl leading-none">EXIF Data Remover</h2>
+                                <span
+                                    class="px-2 py-0.5 rounded-none bg-red-900/40 border border-red-500/30 text-[10px] font-bold text-red-400 uppercase tracking-widest">Privacy
+                                    Shield</span>
+                            </div>
+                            <p class="text-[#ad92c9] text-sm font-mono opacity-80">&gt; Identify • Sanitize • Protect
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="image-tools.html"
+                            class="flex items-center gap-2 bg-surface-dark hover:bg-surface-dark/80 text-gray-300 hover:text-white border-2 border-border-dark px-4 py-2 transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                            <span class="font-bold text-sm tracking-wide uppercase">Back</span>
+                        </a>
+                    </div>
+                </div>
+            </header>
+            <div class="flex-1 overflow-y-auto p-6" id="drop-zone">
+                <div class="max-w-7xl mx-auto space-y-8 pb-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <div class="lg:col-span-4 space-y-6">
+                            <div class="bg-surface-dark border-2 border-border-dark p-2 shadow-pixel-white">
+                                <div id="preview-container"
+                                    class="aspect-square bg-black/50 border border-border-dark overflow-hidden flex items-center justify-center relative group cursor-pointer hover:bg-black/40 transition-colors">
+                                    <img id="image-preview" alt="Uploaded preview"
+                                        class="w-full h-full object-contain opacity-80 hidden" src="" />
+                                    <!-- Upload Placeholder -->
+                                    <div id="upload-placeholder" class="text-center p-4">
+                                        <span
+                                            class="material-symbols-outlined text-4xl text-gray-500 mb-2">cloud_upload</span>
+                                        <p class="text-xs font-mono text-gray-400">Click or Drop Image Here</p>
+                                    </div>
+                                    <div
+                                        class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors pointer-events-none">
+                                    </div>
+                                    <div id="filename-tag"
+                                        class="absolute bottom-2 right-2 bg-black/80 text-[10px] font-mono px-2 py-1 text-white border border-white/20 hidden">
+                                        IMG_2024_03_15.JPG
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-surface-dark border-2 border-border-dark p-4">
+                                <h4 class="text-white font-retro text-xl mb-4 border-b border-border-dark pb-2">
+                                    FILE_INFO</h4>
+                                <div class="space-y-2 font-mono text-sm" id="file-info-panel">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Size:</span>
+                                        <span class="text-primary" id="file-size">-</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Format:</span>
+                                        <span class="text-primary" id="file-format">-</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Resolution:</span>
+                                        <span class="text-primary" id="file-resolution">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-8 flex flex-col space-y-6">
+                            <div
+                                class="bg-surface-dark border-2 border-border-dark flex-grow overflow-hidden flex flex-col">
+                                <div
+                                    class="p-4 border-b-2 border-border-dark bg-background-dark/50 flex items-center justify-between">
+                                    <h3 class="text-white font-retro text-2xl tracking-wide flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary">data_object</span>
+                                        DETECTED_METADATA_TAGS
+                                    </h3>
+                                    <span id="tag-count-badge"
+                                        class="bg-primary/20 text-primary border border-primary/40 px-3 py-0.5 text-xs font-mono">0
+                                        TAGS FOUND</span>
+                                </div>
+                                <div class="overflow-x-auto max-h-[400px]">
+                                    <table class="w-full text-left font-mono text-sm">
+                                        <thead>
+                                            <tr
+                                                class="border-b border-border-dark text-gray-500 bg-background-dark/30 sticky top-0 backdrop-blur-sm">
+                                                <th class="p-4 font-bold uppercase tracking-wider">Tag Name</th>
+                                                <th class="p-4 font-bold uppercase tracking-wider">Value</th>
+                                                <th class="p-4 font-bold uppercase tracking-wider">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-gray-300" id="metadata-tbody">
+                                            <!-- Dynamic Rows Here -->
+                                            <tr>
+                                                <td colspan="3" class="p-8 text-center text-gray-500 italic">No image
+                                                    loaded. Upload an image to scan for metadata.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div
+                                    class="p-8 bg-background-dark/30 flex flex-col items-center justify-center border-t-2 border-border-dark gap-6 mt-auto">
+                                    <div class="text-center space-y-2">
+                                        <p class="text-gray-400 font-mono text-sm">Temizleme işlemi kalıcıdır ve yerel
+                                            olarak yapılır.</p>
+                                        <p class="text-red-400 font-bold font-retro text-lg uppercase tracking-widest">
+                                            UYARI: ETİKETLERİ SİLMEK KONUM VE CİHAZ BİLGİLERİNİ KALDIRIR.</p>
+                                    </div>
+                                    <div class="flex gap-4">
+                                        <button id="add-fake-btn"
+                                            class="px-6 py-4 bg-gray-700 hover:bg-gray-600 text-white font-retro text-xl tracking-widest border-2 border-gray-500 shadow-pixel transition-all hover:-translate-x-1 hover:-translate-y-1 active:translate-x-0 active:translate-y-0 active:shadow-none">
+                                            TEST VERİSİ EKLE
+                                        </button>
+                                        <button id="strip-btn"
+                                            class="group relative px-12 py-6 bg-red-600 hover:bg-red-500 text-white font-retro text-3xl tracking-widest border-4 border-red-800 shadow-pixel-danger transition-all hover:-translate-x-1 hover:-translate-y-1 active:translate-x-0 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed">
+                                            TÜM META VERİLERİ SİL
+                                            <div class="absolute -top-1 -right-1 w-2 h-2 bg-white"></div>
+                                            <div class="absolute -bottom-1 -left-1 w-2 h-2 bg-white"></div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-t border-border-dark pt-8">
+                        <div class="bg-black/40 border-l-4 border-red-500 p-4 font-mono text-sm">
+                            <div class="flex items-center gap-2 text-red-500 font-bold mb-2">
+                                <span class="material-symbols-outlined text-base">security</span>
+                                PRIVACY_REPORT
+                            </div>
+                            <div class="space-y-1 text-gray-400" id="privacy-log">
+                                <div class="flex gap-2">
+                                    <span class="text-gray-600">[SYSTEM]</span>
+                                    <span>Waiting for file input...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/exif-remover.js"></script>
+</body>
+
+</html>

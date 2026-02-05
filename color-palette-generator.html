@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Tool Hub - Color Palette Generator</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "primary-dark": "#5e0eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#241830",
+                        "border-dark": "#4d3267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "retro": ["VT323", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "none": "0",
+                        "sm": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "pixel": "4px 4px 0px 0px #7f13ec",
+                        "pixel-glow": "0 0 15px rgba(127, 19, 236, 0.4), 4px 4px 0px 0px #7f13ec",
+                        "pixel-sm": "2px 2px 0px 0px #7f13ec",
+                        "pixel-white": "4px 4px 0px 0px rgba(255,255,255,0.1)",
+                        "modal-glow": "0 0 30px rgba(127, 19, 236, 0.6), 8px 8px 0px 0px #000",
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #191022;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border: 2px solid #191022;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f13ec;
+        }
+
+        .pixel-border {
+            border: 4px solid #4d3267;
+            position: relative;
+        }
+
+        .neon-glow {
+            box-shadow: 0 0 10px #7f13ec, 0 0 20px #7f13ec;
+        }
+
+        .color-block {
+            aspect-ratio: 1/1.5;
+            image-rendering: pixelated;
+        }
+
+        .grid-bg {
+            background-image: linear-gradient(#241830 1px, transparent 1px), linear-gradient(90deg, #241830 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        
+        .pixel-mesh {
+            background-image: radial-gradient(rgba(0, 0, 0, 0.5) 25%, transparent 25%);
+            background-size: 4px 4px;
+        }
+        
+        .pixel-button-outline {
+            box-shadow: 
+                0 -4px 0 0 #000,
+                0 4px 0 0 #000,
+                -4px 0 0 0 #000,
+                4px 0 0 0 #000,
+                0 0 15px #7f13ec;
+        }
+    </style>
+    <!-- Chroma.js for Color Logic -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
+</head>
+
+<body class="bg-background-dark font-display text-white antialiased overflow-hidden">
+
+    <!-- Custom Modal (Hidden by default) -->
+    <div id="success-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0 bg-black/80 pixel-mesh backdrop-blur-sm animate-in fade-in duration-200"></div>
+        <div
+            class="relative bg-surface-dark border-[6px] border-primary shadow-modal-glow max-w-sm w-full animate-in zoom-in-95 duration-300">
+            <div class="border-2 border-primary/30 p-8 flex flex-col items-center text-center">
+                <div class="mb-6 bg-primary p-4 shadow-pixel-sm">
+                    <span id="modal-icon" class="material-symbols-outlined text-5xl text-white">content_paste</span>
+                </div>
+                <h3 id="modal-title" class="font-retro text-3xl text-white tracking-[0.2em] mb-8 leading-tight">
+                    SUCCESS:<br />
+                    ACTIONS<br />
+                    COMPLETED!
+                </h3>
+                <button id="close-modal-btn"
+                    class="w-full bg-primary hover:bg-primary-dark text-white font-retro text-2xl py-4 border-b-4 border-r-4 border-black active:border-0 active:translate-x-1 active:translate-y-1 transition-all shadow-pixel-glow group relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-1 bg-white/30"></div>
+                    <span class="relative z-10">TAMAM</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex h-screen w-full overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="hidden md:flex flex-col w-64 border-r-2 border-border-dark bg-background-dark h-full shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary shadow-pixel-sm flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-lg">terminal</span>
+                </div>
+                <h1 class="font-retro text-2xl text-white tracking-wider">WTH_v1.0</h1>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="index.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="font-retro text-xl">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="text-tools.html">
+                    <span
+                        class="material-symbols-outlined group-hover:text-primary transition-colors">description</span>
+                    <span class="font-retro text-xl">Text Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-surface-dark text-white border-2 border-border-dark transition-colors group"
+                    href="color-palette-generator.html">
+                    <span class="material-symbols-outlined text-primary transition-colors">palette</span>
+                    <span class="font-retro text-xl">Color Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="image-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">image</span>
+                    <span class="font-retro text-xl">Image Tools</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="network-tools.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">public</span>
+                    <span class="font-retro text-xl">Network</span>
+                </a>
+                <div class="h-px bg-border-dark my-2 mx-2"></div>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-surface-dark hover:text-white border-2 border-transparent hover:border-border-dark transition-colors group"
+                    href="settings.html">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                    <span class="font-retro text-xl">Settings</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t-2 border-border-dark">
+                <div class="bg-surface-dark p-3 border border-border-dark flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="font-retro text-lg text-green-400">System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+            <div class="absolute inset-0 pointer-events-none opacity-40 grid-bg"></div>
+            <header class="w-full border-b-2 border-border-dark bg-background-dark/80 backdrop-blur-md z-10 shrink-0">
+                <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-white font-retro text-4xl leading-none">COLOR_PALETTE_GEN</h2>
+                            <span
+                                class="px-2 py-0.5 bg-border-dark border border-white/10 text-[10px] font-bold text-primary uppercase tracking-widest">v1.2</span>
+                        </div>
+                        <p class="text-[#ad92c9] text-sm font-mono opacity-80">&gt; Home / Tools / Palette_Gen</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <button id="randomize-btn"
+                            class="flex items-center gap-2 bg-surface-dark border-2 border-border-dark px-4 py-2 text-white font-retro text-xl hover:border-primary transition-colors">
+                            <span class="material-symbols-outlined">refresh</span> RANDOMIZE
+                        </button>
+                        <a class="flex items-center gap-2 text-gray-400 hover:text-white font-retro text-xl transition-colors"
+                            href="request-tool.html">
+                            <span class="material-symbols-outlined">arrow_back</span> BACK
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-6 lg:p-10 relative z-0">
+                <div class="max-w-6xl mx-auto space-y-12 pb-12">
+                    <!-- Input Section -->
+                    <div class="flex flex-col items-center justify-center space-y-6">
+                        <div class="bg-surface-dark border-4 border-primary p-2 shadow-pixel max-w-md w-full">
+                            <div class="bg-primary px-4 py-2">
+                                <h3 class="font-retro text-xl text-white tracking-widest uppercase">SEED_COLOR_INPUT
+                                </h3>
+                            </div>
+                            <div class="p-6 flex flex-col items-center gap-6">
+                                <div class="relative group">
+                                    <label class="cursor-pointer">
+                                        <div id="seed-preview"
+                                            class="w-32 h-32 bg-primary border-4 border-border-dark group-hover:border-primary transition-colors p-1">
+                                        </div>
+                                        <input id="color-input" class="sr-only" type="color" value="#7f13ec" />
+                                    </label>
+                                    <div
+                                        class="absolute -bottom-2 -right-2 bg-primary p-1 shadow-pixel-sm pointer-events-none">
+                                        <span class="material-symbols-outlined text-sm">colorize</span>
+                                    </div>
+                                </div>
+                                <div class="w-full space-y-4">
+                                    <div class="flex items-center gap-2">
+                                        <input id="hex-input"
+                                            class="flex-1 bg-background-dark border-2 border-border-dark focus:border-primary focus:ring-0 text-white font-mono text-center text-2xl p-3 tracking-widest uppercase"
+                                            type="text" value="#7F13EC" maxlength="7" />
+                                        <button id="copy-seed-btn"
+                                            class="bg-border-dark p-3 border-2 border-transparent hover:border-primary transition-colors text-white">
+                                            <span class="material-symbols-outlined">content_copy</span>
+                                        </button>
+                                    </div>
+                                    <select id="harmony-select"
+                                        class="w-full bg-background-dark border-2 border-border-dark focus:border-primary focus:ring-0 text-white font-mono p-3 uppercase tracking-wider">
+                                        <option value="analogous">ANALOGOUS</option>
+                                        <option value="monochromatic">MONOCHROMATIC</option>
+                                        <option value="triadic">TRIADIC</option>
+                                        <option value="complementary">COMPLEMENTARY</option>
+                                        <option value="split-complementary">SPLIT_COMPLEMENTARY</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Section -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b-2 border-border-dark pb-2">
+                            <h4 class="font-retro text-2xl text-primary uppercase tracking-widest">GENERATED_PALETTE
+                            </h4>
+                            <span class="font-mono text-xs text-gray-500 uppercase">5 Harmonizing Swatches</span>
+                        </div>
+
+                        <div id="palette-grid" class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex flex-wrap items-center justify-center gap-6 pt-8">
+                        <button onclick="exportCSS()"
+                            class="flex items-center gap-3 bg-primary hover:bg-primary-dark text-white font-retro text-2xl px-10 py-5 shadow-pixel-glow transition-all active:translate-y-1 active:shadow-none neon-glow border-2 border-white/30">
+                            <span class="material-symbols-outlined">css</span>
+                            EXPORT_TO_CSS
+                        </button>
+                        <button onclick="exportSCSS()"
+                            class="flex items-center gap-3 bg-primary hover:bg-primary-dark text-white font-retro text-2xl px-10 py-5 shadow-pixel-glow transition-all active:translate-y-1 active:shadow-none neon-glow border-2 border-white/30">
+                            <span class="material-symbols-outlined">data_object</span>
+                            EXPORT_TO_SCSS
+                        </button>
+                        <button onclick="exportSVG()"
+                            class="flex items-center gap-3 bg-surface-dark hover:bg-border-dark text-white font-retro text-2xl px-10 py-5 border-4 border-border-dark shadow-pixel transition-all">
+                            <span class="material-symbols-outlined">file_download</span>
+                            SVG_PALETTE
+                        </button>
+                    </div>
+
+                    <!-- Note -->
+                    <div class="bg-surface-dark border-2 border-border-dark p-6 flex gap-6 items-start">
+                        <div class="bg-primary/20 p-3 border-2 border-primary">
+                            <span class="material-symbols-outlined text-primary text-3xl">accessibility_new</span>
+                        </div>
+                        <div>
+                            <h5 class="font-retro text-xl text-white tracking-widest mb-1">ACCESSIBILITY_CHECK</h5>
+                            <p class="font-mono text-sm text-gray-400 leading-relaxed max-w-2xl">
+                                Each color swatch is tested against the current background color (#191022) for WCAG 2.1
+                                compliance.
+                                Use the contrast ratios to ensure your designs remain readable for all users.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="w-full border-t-2 border-border-dark bg-background-dark/80 px-6 py-2 z-10">
+                <div
+                    class="flex items-center justify-between font-mono text-[10px] text-gray-500 uppercase tracking-widest">
+                    <div class="flex gap-4">
+                        <span id="stat-lum">Luminance: --</span>
+                        <span id="stat-hue">Hue: --</span>
+                        <span id="stat-sat">Sat: --</span>
+                    </div>
+                    <div class="flex gap-4">
+                        <span id="stat-time">Last Saved: --:--:--</span>
+                        <span class="text-primary">System_Ready</span>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    <script src="js/color-tool.js"></script>
+</body>
+
+</html>
