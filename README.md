@@ -251,28 +251,6 @@ const data = Storage.exportData();
 - [ ] Task tags and filters
 - [ ] Pomodoro statistics
 
-## 📄 License
-
-MIT License - feel free to use this project for personal or commercial purposes.
-
-## 👨‍💻 Author
-
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
-
-## 🙏 Acknowledgments
-
-- Material Symbols by Google
-- Tailwind CSS
-- Inter & Plus Jakarta Sans fonts
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-1. Check the [Issues](https://github.com/yourusername/focustime/issues) page
-2. Create a new issue if needed
-3. Or contact me directly
 
 ---
 
