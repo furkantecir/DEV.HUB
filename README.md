@@ -235,25 +235,8 @@ Settings.set('accentColor', '#7f13ec');
 const data = Storage.exportData();
 ```
 
-## 🐛 Known Issues
-
-- None at the moment! 🎉
-
-## 🔮 Future Enhancements
-
-- [ ] PWA support (offline installation)
-- [ ] Data sync across devices (optional)
-- [ ] More timer presets (15/30/45 min)
-- [ ] Task templates
-- [ ] Weekly/monthly reports
-- [ ] Dark mode auto-switch
-- [ ] More accent color options
-- [ ] Task tags and filters
-- [ ] Pomodoro statistics
 
 
----
 
-**Made with ❤️ and ☕ by [Your Name]**
 
 **⭐ Star this repo if you find it useful!**
